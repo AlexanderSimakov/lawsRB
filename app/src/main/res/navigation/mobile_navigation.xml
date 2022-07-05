@@ -22,4 +22,10 @@
         android:name="com.team.lawsrb.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_criminal_code"
+        android:name="com.team.lawsrb.ui.criminalcode.CriminalCodeFragment"
+        android:label="@string/menu_criminal_code"
+        tools:layout="@layout/fragment_criminal_code" />
 </navigation>
