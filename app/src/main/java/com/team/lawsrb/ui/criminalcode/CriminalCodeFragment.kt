@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.team.lawsrb.databinding.FragmentCriminalCodeBinding
-import com.team.lawsrb.databinding.FragmentGalleryBinding
-import com.team.lawsrb.ui.gallery.GalleryViewModel
 
 class CriminalCodeFragment : Fragment() {
 

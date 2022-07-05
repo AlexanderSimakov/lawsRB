@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.team.lawsrb.R
-import com.team.lawsrb.databinding.FragmentGalleryBinding
 import com.team.lawsrb.databinding.FragmentSettingsBinding
-import com.team.lawsrb.ui.gallery.GalleryViewModel
 
 class SettingsFragment : Fragment() {
 
