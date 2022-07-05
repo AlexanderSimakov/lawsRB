@@ -16,5 +16,18 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />
+
+        <item
+            android:id="@+id/nav_criminal_code"
+            android:title="@string/menu_criminal_code" />
+        <item
+            android:id="@+id/nav_code_of_criminal_procedure"
+            android:title="@string/menu_code_of_criminal_proсedure" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:title="@string/menu_favorites" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/menu_settings" />
     </group>
 </menu>
