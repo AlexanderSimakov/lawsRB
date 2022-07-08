@@ -2,6 +2,7 @@ package com.team.lawsrb
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.SearchView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -46,6 +47,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.getActionView() as SearchView
+        searchView.queryHint = getString(R.string.action_search)
+
         return true
     }
 
