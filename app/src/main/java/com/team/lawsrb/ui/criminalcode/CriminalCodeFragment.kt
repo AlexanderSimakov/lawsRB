@@ -5,11 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.LinearLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class CriminalCodeFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,
@@ -45,24 +46,11 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragment(int)
-        val fragment = DemoObjectFragment()
-        fragment.arguments = Bundle().apply {
-            // Just for example, to change page text
-            when (position){
-                0 -> putString(ARG_OBJECT, "Разделы")
-                1 -> putString(ARG_OBJECT, "Главы")
-                else -> putString(ARG_OBJECT, "Статьи")
-            }
-        }
-        return fragment
+        // TODO type of fragment should depends on position
+        return DemoObjectFragment()
     }
 }
 
-private const val ARG_OBJECT = "object"
-
-// Instances of this class are fragments representing a single
-// object in our collection.
 class DemoObjectFragment : Fragment() {
 
     override fun onCreateView(
@@ -70,14 +58,13 @@ class DemoObjectFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.fragment_code_viewer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
-            // Just for example
-            val textView: TextView = view.findViewById(R.id.example_text)
-            textView.text = getString(ARG_OBJECT)
+        val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
+        for (i in 1..20){ // for example
+            layout.addView(SectionViewer(layout.context, "Раздел ${i}\n Название статьи"))
         }
     }
 }
