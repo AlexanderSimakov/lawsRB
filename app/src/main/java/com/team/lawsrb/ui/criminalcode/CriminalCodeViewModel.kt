@@ -6,9 +6,4 @@ import androidx.lifecycle.ViewModel
 
 class CriminalCodeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Criminal Code Fragment"
-    }
-    val text: LiveData<String> = _text
-
 }
