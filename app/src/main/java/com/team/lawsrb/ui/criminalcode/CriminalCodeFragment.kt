@@ -31,7 +31,11 @@ class CriminalCodeFragment : Fragment() {
         viewPager.adapter = demoCollectionAdapter
         val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.criminal_code_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "OBJECT ${position+1}"
+            tab.text = when (position){
+                0 -> getString(R.string.pager_item_sections)
+                1 -> getString(R.string.pager_item_chapters)
+                else -> getString(R.string.pager_item_articles)
+            }
         }.attach()
     }
 }
@@ -44,8 +48,12 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
         // Return a NEW fragment instance in createFragment(int)
         val fragment = DemoObjectFragment()
         fragment.arguments = Bundle().apply {
-            // Our object is just an integer :-P
-            putInt(ARG_OBJECT, position + 1)
+            // Just for example, to change page text
+            when (position){
+                0 -> putString(ARG_OBJECT, "Разделы")
+                1 -> putString(ARG_OBJECT, "Главы")
+                else -> putString(ARG_OBJECT, "Статьи")
+            }
         }
         return fragment
     }
@@ -67,8 +75,9 @@ class DemoObjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
+            // Just for example
             val textView: TextView = view.findViewById(R.id.example_text)
-            textView.text = getInt(ARG_OBJECT).toString()
+            textView.text = getString(ARG_OBJECT)
         }
     }
 }

@@ -12,4 +12,9 @@
     <string name="menu_code_of_criminal_proсedure">УПК</string>
     <string name="menu_favorites">Избранное</string>
     <string name="menu_settings">Настройки</string>
+
+    <string name="pager_item_sections">Разделы</string>
+    <string name="pager_item_chapters">Главы</string>
+    <string name="pager_item_articles">Статьи</string>
+
 </resources>
