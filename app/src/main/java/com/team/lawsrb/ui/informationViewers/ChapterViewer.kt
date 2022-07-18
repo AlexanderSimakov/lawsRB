@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.team.lawsrb.R
 
 @SuppressLint("AppCompatCustomView")
-class ChapterViwer(context: Context, title: String) : TextView(context) {
+class ChapterViewer(context: Context, title: String) : TextView(context) {
 
     init { // init text style
         text = title

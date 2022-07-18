@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
 import com.team.lawsrb.ui.informationViewers.ArticleViewer
-import com.team.lawsrb.ui.informationViewers.ChapterViwer
+import com.team.lawsrb.ui.informationViewers.ChapterViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class CriminalCodeFragment : Fragment() {
@@ -87,7 +87,7 @@ class ChapterObjectFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
         for (i in 1..20){ // for example
-            layout.addView(ChapterViwer(layout.context, "Глава ${i}\n Название"))
+            layout.addView(ChapterViewer(layout.context, "Глава ${i}\n Название"))
         }
     }
 }
