@@ -5,14 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
-import com.team.lawsrb.ui.informationViewers.ArticleViewer
-import com.team.lawsrb.ui.informationViewers.ChapterViewer
-import com.team.lawsrb.ui.informationViewers.SectionViewer
+import com.team.lawsrb.ui.codeObjectFragments.ArticleObjectFragment
+import com.team.lawsrb.ui.codeObjectFragments.ChapterObjectFragment
+import com.team.lawsrb.ui.codeObjectFragments.SectionObjectFragment
 
 class CriminalCodeFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,
@@ -49,63 +48,9 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionsObjectFragment()
+            0 -> SectionObjectFragment()
             1 -> ChapterObjectFragment()
             else -> ArticleObjectFragment()
-        }
-    }
-}
-
-class SectionsObjectFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_code_viewer, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (i in 1..20){ // for example
-            layout.addView(SectionViewer(layout.context, "Раздел ${i}\n Название"))
-        }
-    }
-}
-
-class ChapterObjectFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_code_viewer, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (i in 1..20){ // for example
-            layout.addView(ChapterViewer(layout.context, "Глава ${i}\n Название"))
-        }
-    }
-}
-
-class ArticleObjectFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_code_viewer, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (i in 1..20){ // for example
-            layout.addView(ArticleViewer(layout.context, "Статья ${i}\n Название статьи"))
         }
     }
 }
