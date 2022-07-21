@@ -5,7 +5,7 @@ import com.team.lawsrb.basic.codeObjects.Chapter
 import com.team.lawsrb.basic.codeObjects.Part
 import com.team.lawsrb.basic.codeObjects.Section
 
-object CriminalCodeProvider {
+object CriminalCodeProvider: CodeProvider {
     private val parts = mutableListOf<Part>()
     private val sections = mutableListOf<Section>()
     private val chapters = mutableListOf<Chapter>()
@@ -18,12 +18,12 @@ object CriminalCodeProvider {
         for (id in 0..27) articles.add(Article(id, (id-1)/2, "Article ${id+1}"))
     }
 
-    fun getParts() = parts
-    fun getSections() = sections
-    fun getChapters() = chapters
-    fun getArticles() = articles
+    override fun getParts() = parts
+    override fun getSections() = sections
+    override fun getChapters() = chapters
+    override fun getArticles() = articles
 
-    fun getSections(part: Part): MutableList<Section>{
+    override fun getSections(part: Part): MutableList<Section>{
         val sections = mutableListOf<Section>()
         for (section in this.sections){
             if (section.partId == part.id) sections.add(section)
@@ -31,7 +31,7 @@ object CriminalCodeProvider {
         return sections
     }
 
-    fun getChapters(section: Section): MutableList<Chapter>{
+    override fun getChapters(section: Section): MutableList<Chapter>{
         val chapters = mutableListOf<Chapter>()
         for (chapter in this.chapters){
             if (chapter.sectionId == section.id) chapters.add(chapter)
@@ -39,7 +39,7 @@ object CriminalCodeProvider {
         return chapters
     }
 
-    fun getArticles(chapter: Chapter): MutableList<Article>{
+    override fun getArticles(chapter: Chapter): MutableList<Article>{
         val articles = mutableListOf<Article>()
         for (article in this.articles){
             if (article.chapterId == chapter.id) articles.add(article)
