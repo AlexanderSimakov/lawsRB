@@ -1,4 +1,3 @@
 package com.team.lawsrb.basic.codeObjects
 
-class Article {
-}
+data class Article(val id: Int, val chapterId: Int, val title: String, var isLiked: Boolean = false)

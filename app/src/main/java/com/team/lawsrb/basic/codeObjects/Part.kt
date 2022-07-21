@@ -1,4 +1,5 @@
 package com.team.lawsrb.basic.codeObjects
 
-class Part {
-}
+data class Part(val id: Int,
+           val title: String,
+           var isLiked: Boolean = false)
