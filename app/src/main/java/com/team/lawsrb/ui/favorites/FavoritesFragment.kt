@@ -27,7 +27,7 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
-    ()}
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         demoCollectionAdapter = DemoCollectionAdapter(this)
