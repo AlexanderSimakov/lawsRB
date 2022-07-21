@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
 import com.team.lawsrb.ui.informationViewers.ArticleViewer
 
 class ArticleObjectFragment : Fragment() {
@@ -21,8 +22,9 @@ class ArticleObjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (i in 1..20){ // for example
-            layout.addView(ArticleViewer(layout.context, "Статья ${i}\n Название статьи"))
+        val articles = CriminalCodeProvider.getArticles()
+        for (article in articles){
+            layout.addView(ArticleViewer(layout.context, article.title))
         }
     }
 }

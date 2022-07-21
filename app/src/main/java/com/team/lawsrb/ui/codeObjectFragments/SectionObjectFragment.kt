@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class SectionObjectFragment : Fragment() {
@@ -21,8 +22,9 @@ class SectionObjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (i in 1..20){ // for example
-            layout.addView(SectionViewer(layout.context, "Раздел ${i}\n Название"))
+        val sections = CriminalCodeProvider.getSections()
+        for (section in sections){
+            layout.addView(SectionViewer(layout.context, section.title))
         }
     }
 }
