@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
 import com.team.lawsrb.ui.informationViewers.ChapterViewer
 
-class ChapterObjectFragment : Fragment() {
+class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +23,7 @@ class ChapterObjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val chapters = CriminalCodeProvider.getChapters()
+        val chapters = codeProvider.getChapters()
         for (chapter in chapters){
             layout.addView(ChapterViewer(layout.context, chapter.title))
         }

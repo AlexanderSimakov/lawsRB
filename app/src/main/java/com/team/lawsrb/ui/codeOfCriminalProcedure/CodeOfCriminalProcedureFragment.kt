@@ -10,6 +10,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.CodeOfCriminalProcedureProvider
+import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.ui.codeObjectFragments.ArticleObjectFragment
 import com.team.lawsrb.ui.codeObjectFragments.ChapterObjectFragment
 import com.team.lawsrb.ui.codeObjectFragments.SectionObjectFragment
@@ -49,9 +51,9 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionObjectFragment()
-            1 -> ChapterObjectFragment()
-            else -> ArticleObjectFragment()
+            0 -> SectionObjectFragment(CodeOfCriminalProcedureProvider)
+            1 -> ChapterObjectFragment(CodeOfCriminalProcedureProvider)
+            else -> ArticleObjectFragment(CodeOfCriminalProcedureProvider)
         }
     }
 }
