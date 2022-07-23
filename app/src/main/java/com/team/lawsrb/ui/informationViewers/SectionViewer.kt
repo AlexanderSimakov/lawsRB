@@ -17,6 +17,7 @@ class SectionViewer(context: Context, section: Section,
         text = section.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
+        tag = "Section${section.id}"
 
         val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         params.setMargins(40, 20, 40, 20)

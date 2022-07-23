@@ -16,6 +16,7 @@ class PartViewer(context: Context, part: Part,
         text = part.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
+        tag = "Part${part.id}"
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,

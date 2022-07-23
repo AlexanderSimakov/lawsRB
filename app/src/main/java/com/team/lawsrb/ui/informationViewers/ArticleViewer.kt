@@ -16,6 +16,7 @@ class ArticleViewer(context: Context, article: Article,
         text = article.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
+        tag = "Article${article.id}"
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,

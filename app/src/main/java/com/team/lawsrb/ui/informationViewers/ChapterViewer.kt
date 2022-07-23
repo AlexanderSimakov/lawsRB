@@ -16,6 +16,7 @@ class ChapterViewer(context: Context, chapter: Chapter,
         text = chapter.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
+        tag = "Chapter${chapter.id}"
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
