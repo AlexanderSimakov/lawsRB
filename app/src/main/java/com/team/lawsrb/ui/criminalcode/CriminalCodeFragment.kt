@@ -49,9 +49,9 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionObjectFragment(CriminalCodeProvider)
-            1 -> ChapterObjectFragment(CriminalCodeProvider)
-            else -> ArticleObjectFragment(CriminalCodeProvider)
+            0 -> SectionObjectFragment(CriminalCodeProvider, R.id.criminal_code_pager)
+            1 -> ChapterObjectFragment(CriminalCodeProvider, R.id.criminal_code_pager)
+            else -> ArticleObjectFragment(CriminalCodeProvider, R.id.criminal_code_pager)
         }
     }
 }

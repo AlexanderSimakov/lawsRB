@@ -50,9 +50,9 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionObjectFragment(FavoritesProvider)
-            1 -> ChapterObjectFragment(FavoritesProvider)
-            else -> ArticleObjectFragment(FavoritesProvider)
+            0 -> SectionObjectFragment(FavoritesProvider, R.id.favorites_pager)
+            1 -> ChapterObjectFragment(FavoritesProvider, R.id.favorites_pager)
+            else -> ArticleObjectFragment(FavoritesProvider, R.id.favorites_pager)
         }
     }
 }

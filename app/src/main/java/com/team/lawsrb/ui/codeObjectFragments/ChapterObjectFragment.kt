@@ -14,7 +14,7 @@ import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.ui.informationViewers.ChapterViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
-class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment() {
+class ChapterObjectFragment(private val codeProvider: CodeProvider, private val pager_id: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +30,7 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment()
         for (section in codeProvider.getSections()){
             val sectionViewer = SectionViewer(layout.context, section, false)
             sectionViewer.setOnClickListener { view ->
-                val viewPager = view.rootView.findViewById<ViewPager2>(R.id.criminal_code_pager)
+                val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                 viewPager.setCurrentItem(0, true)
                 SectionObjectFragment.scrollTo(sectionViewer.tag.toString())
             }
@@ -39,7 +39,7 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment()
             for (chapter in codeProvider.getChapters(section)){
                 val chapterView = ChapterViewer(layout.context, chapter)
                 chapterView.setOnClickListener { view ->
-                    val viewPager = view.rootView.findViewById<ViewPager2>(R.id.criminal_code_pager)
+                    val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                     viewPager.setCurrentItem(2, true)
                     ArticleObjectFragment.scrollTo(chapterView.tag.toString())
                 }
