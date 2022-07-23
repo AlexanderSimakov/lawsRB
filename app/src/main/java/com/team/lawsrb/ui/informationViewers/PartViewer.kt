@@ -6,12 +6,14 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.codeObjects.Part
 
 @SuppressLint("AppCompatCustomView")
-class PartViewer(context: Context, title: String, private val isDark: Boolean = true) : TextView(context) {
+class PartViewer(context: Context, part: Part,
+                 private val isDark: Boolean = true) : TextView(context) {
 
     init { // init text style
-        text = title
+        text = part.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
 

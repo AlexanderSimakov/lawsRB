@@ -25,12 +25,10 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val sections = codeProvider.getSections()
-        for (section in sections){
-            layout.addView(SectionViewer(layout.context, section.title, false))
-            val chapters = codeProvider.getChapters(section)
-            for (chapter in chapters){
-                layout.addView(ChapterViewer(layout.context, chapter.title))
+        for (section in codeProvider.getSections()){
+            layout.addView(SectionViewer(layout.context, section, false))
+            for (chapter in codeProvider.getChapters(section)){
+                layout.addView(ChapterViewer(layout.context, chapter))
             }
         }
     }

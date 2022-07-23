@@ -24,12 +24,10 @@ class SectionObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val parts = codeProvider.getParts()
-        for (part in parts){
-            layout.addView(PartViewer(layout.context, part.title, false))
-            val sections = codeProvider.getSections(part)
-            for (section in sections){
-                layout.addView(SectionViewer(layout.context, section.title))
+        for (part in codeProvider.getParts()){
+            layout.addView(PartViewer(layout.context, part, false))
+            for (section in codeProvider.getSections(part)){
+                layout.addView(SectionViewer(layout.context, section))
             }
         }
     }

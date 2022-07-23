@@ -7,13 +7,14 @@ import android.widget.LinearLayout.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.codeObjects.Section
 
 @SuppressLint("AppCompatCustomView")
-class SectionViewer(context: Context, title: String,
+class SectionViewer(context: Context, section: Section,
                     private val isDark: Boolean = true) : TextView(context) {
 
     init { // init text style
-        text = title
+        text = section.title
         gravity = Gravity.CENTER_HORIZONTAL
         textSize = 20F
 

@@ -25,12 +25,10 @@ class ArticleObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val chapters = codeProvider.getChapters()
-        for (chapter in chapters){
-            layout.addView(ChapterViewer(layout.context, chapter.title, false))
-            val articles = codeProvider.getArticles(chapter)
-            for (article in articles){
-                layout.addView(ArticleViewer(layout.context, article.title))
+        for (chapter in codeProvider.getChapters()){
+            layout.addView(ChapterViewer(layout.context, chapter, false))
+            for (article in codeProvider.getArticles(chapter)){
+                layout.addView(ArticleViewer(layout.context, article))
             }
         }
     }
