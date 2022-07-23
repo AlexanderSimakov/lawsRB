@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
@@ -26,9 +27,20 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
         for (section in codeProvider.getSections()){
-            layout.addView(SectionViewer(layout.context, section, false))
+            val sectionViewer = SectionViewer(layout.context, section, false)
+            sectionViewer.setOnClickListener { view ->
+                val viewPager = view.rootView.findViewById<ViewPager2>(R.id.criminal_code_pager)
+                viewPager.setCurrentItem(0, true)
+            }
+            layout.addView(sectionViewer)
+
             for (chapter in codeProvider.getChapters(section)){
-                layout.addView(ChapterViewer(layout.context, chapter))
+                val chapterView = ChapterViewer(layout.context, chapter)
+                chapterView.setOnClickListener { view ->
+                    val viewPager = view.rootView.findViewById<ViewPager2>(R.id.criminal_code_pager)
+                    viewPager.setCurrentItem(2, true)
+                }
+                layout.addView(chapterView)
             }
         }
     }
