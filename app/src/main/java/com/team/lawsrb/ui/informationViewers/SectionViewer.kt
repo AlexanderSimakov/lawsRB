@@ -9,7 +9,8 @@ import androidx.core.content.ContextCompat
 import com.team.lawsrb.R
 
 @SuppressLint("AppCompatCustomView")
-class SectionViewer(context: Context, title: String) : TextView(context) {
+class SectionViewer(context: Context, title: String,
+                    private val isDark: Boolean = true) : TextView(context) {
 
     init { // init text style
         text = title
@@ -21,7 +22,11 @@ class SectionViewer(context: Context, title: String) : TextView(context) {
         this.setPadding(20, 20, 20, 20)
         layoutParams = params
 
-        this.setBackgroundResource(R.color.purple_200)
+        if (isDark){
+            this.setBackgroundResource(R.color.purple_200)
+        }else{
+
+        }
     }
 
     // TODO: onClickListener to switch between tabs -> maybe
