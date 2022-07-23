@@ -10,6 +10,8 @@ import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
 import com.team.lawsrb.ui.informationViewers.ArticleViewer
+import com.team.lawsrb.ui.informationViewers.ChapterViewer
+import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class ArticleObjectFragment(private val codeProvider: CodeProvider) : Fragment() {
 
@@ -23,9 +25,13 @@ class ArticleObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val articles = codeProvider.getArticles()
-        for (article in articles){
-            layout.addView(ArticleViewer(layout.context, article.title))
+        val chapters = codeProvider.getChapters()
+        for (chapter in chapters){
+            layout.addView(ChapterViewer(layout.context, chapter.title, false))
+            val articles = codeProvider.getArticles(chapter)
+            for (article in articles){
+                layout.addView(ArticleViewer(layout.context, article.title))
+            }
         }
     }
 }

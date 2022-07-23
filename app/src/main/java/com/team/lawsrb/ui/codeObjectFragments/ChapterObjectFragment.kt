@@ -10,6 +10,8 @@ import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
 import com.team.lawsrb.ui.informationViewers.ChapterViewer
+import com.team.lawsrb.ui.informationViewers.PartViewer
+import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment() {
 
@@ -23,9 +25,13 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val chapters = codeProvider.getChapters()
-        for (chapter in chapters){
-            layout.addView(ChapterViewer(layout.context, chapter.title))
+        val sections = codeProvider.getSections()
+        for (section in sections){
+            layout.addView(SectionViewer(layout.context, section.title, false))
+            val chapters = codeProvider.getChapters(section)
+            for (chapter in chapters){
+                layout.addView(ChapterViewer(layout.context, chapter.title))
+            }
         }
     }
 }

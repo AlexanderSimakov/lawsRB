@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
+import com.team.lawsrb.ui.informationViewers.PartViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class SectionObjectFragment(private val codeProvider: CodeProvider) : Fragment() {
@@ -23,9 +24,13 @@ class SectionObjectFragment(private val codeProvider: CodeProvider) : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        val sections = codeProvider.getSections()
-        for (section in sections){
-            layout.addView(SectionViewer(layout.context, section.title))
+        val parts = codeProvider.getParts()
+        for (part in parts){
+            layout.addView(PartViewer(layout.context, part.title, false))
+            val sections = codeProvider.getSections(part)
+            for (section in sections){
+                layout.addView(SectionViewer(layout.context, section.title))
+            }
         }
     }
 }
