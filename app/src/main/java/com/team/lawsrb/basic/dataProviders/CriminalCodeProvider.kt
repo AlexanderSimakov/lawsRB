@@ -16,6 +16,14 @@ object CriminalCodeProvider: CodeProvider {
         for (id in 0..5) sections.add(Section(id, if (id > 3) 1 else 0, "Section ${id+1}"))
         for (id in 0..13) chapters.add(Chapter(id, (id-1)/2, "Chapter ${id+1}"))
         for (id in 0..27) articles.add(Article(id, (id-1)/2, "Article ${id+1}"))
+        for (article in articles){
+            article.items.add("1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+            article.items.add("2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+            article.items.add("3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+            article.items.add("4. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+            article.items.add("5. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+            article.items.add("6. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
+        }
     }
 
     override fun getParts() = parts
