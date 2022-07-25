@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
+import com.team.lawsrb.ui.informationViewers.ArticleContentFragment
 import com.team.lawsrb.ui.informationViewers.ArticleViewer
 import com.team.lawsrb.ui.informationViewers.ChapterViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
@@ -39,7 +40,14 @@ class ArticleObjectFragment(private val codeProvider: CodeProvider, private val 
             layout.addView(chapterViewer)
 
             for (article in codeProvider.getArticles(chapter)){
-                layout.addView(ArticleViewer(layout.context, article))
+                val articleViewer = ArticleViewer(layout.context, article)
+                articleViewer.setOnClickListener { view ->
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(((this.view as ViewGroup).parent as View).id, ArticleContentFragment(article))
+                        ?.addToBackStack(ArticleContentFragment::class.java.name)
+                        ?.commit()
+                }
+                layout.addView(articleViewer)
             }
         }
     }
