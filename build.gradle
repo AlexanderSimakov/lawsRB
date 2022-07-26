@@ -1,8 +1,26 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.7.10"
+    }
+}
+
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+}
+
+apply plugin: "org.jetbrains.dokka"
+subprojects {
+    plugins.apply("org.jetbrains.dokka")
+}
+
+dokkaHtmlMultiModule{
+    outputDirectory.set(file("${buildDir}/dokka"))
+    moduleName.set("LawsRB")
+    suppressObviousFunctions.set(false)
+    suppressInheritedMembers.set(true)
 }
 
 task clean(type: Delete) {
