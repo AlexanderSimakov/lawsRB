@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -47,6 +48,116 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dark_card_with_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/purple_200">
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginRight="35dp">
+
+            <TextView
+                android:id="@+id/dark_card_with_button_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello"
+                android:textAppearance="?attr/textAppearanceSearchResultTitle"/>
+
+            <TextView
+                android:id="@+id/dark_card_with_button_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello some big big big text"
+                android:textAppearance="?attr/textAppearanceBody1"/>
+        </LinearLayout>
+
+        <!-- Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right|center">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/dark_card_with_button_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/light_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="8dp">
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/light_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello"
+                android:textAppearance="?attr/textAppearanceSearchResultTitle"/>
+
+            <TextView
+                android:id="@+id/light_card_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello some big big big text"
+                android:textAppearance="?attr/textAppearanceBody1"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dark_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/purple_200">
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/dark_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello"
+                android:textAppearance="?attr/textAppearanceSearchResultTitle"/>
+
+            <TextView
+                android:id="@+id/dark_card_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello some big big big text"
+                android:textAppearance="?attr/textAppearanceBody1"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
