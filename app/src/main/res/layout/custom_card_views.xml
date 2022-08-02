@@ -46,7 +46,8 @@
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/light_card_with_button_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:button="@drawable/card_checkbox_selector"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -93,7 +94,8 @@
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/dark_card_with_button_checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:button="@drawable/card_checkbox_selector"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
