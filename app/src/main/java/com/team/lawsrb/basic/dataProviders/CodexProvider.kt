@@ -1,9 +1,6 @@
 package com.team.lawsrb.basic.dataProviders
 
-import com.team.lawsrb.basic.codexObjects.Article
-import com.team.lawsrb.basic.codexObjects.Chapter
-import com.team.lawsrb.basic.codexObjects.Part
-import com.team.lawsrb.basic.codexObjects.Section
+import com.team.lawsrb.basic.codexObjects.*
 
 /**
  * Description

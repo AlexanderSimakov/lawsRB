@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodexProvider
-import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
 import com.team.lawsrb.ui.informationViewers.CardViewFactory
-import com.team.lawsrb.ui.informationViewers.PartViewer
-import com.team.lawsrb.ui.informationViewers.SectionViewer
 
 class SectionObjectFragment(private val codeProvider: CodexProvider, private val pager_id: Int) : Fragment() {
 
