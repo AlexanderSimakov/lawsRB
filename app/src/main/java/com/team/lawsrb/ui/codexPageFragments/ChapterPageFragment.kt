@@ -10,10 +10,14 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.codexObjects.Chapter
+import com.team.lawsrb.basic.codexObjects.Section
 import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.ui.informationViewers.CardViewFactory
 
-class ChapterPageFragment(private val codeProvider: CodexProvider, private val pager_id: Int) : Fragment() {
+class ChapterPageFragment(private val codeProvider: CodexProvider,
+                          private val pager_id: Int) : Fragment() {
+    private lateinit var layout: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,28 +29,34 @@ class ChapterPageFragment(private val codeProvider: CodexProvider, private val p
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Scrollable.view = view
-        val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (section in codeProvider.getSections()){
-            val sectionCard = CardViewFactory.getLightCard(layout.context, section.title, "Section content")
-            sectionCard.tag = "Section${section.id}"
-            sectionCard.setOnClickListener {
-                val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
-                viewPager.setCurrentItem(0, true)
-                SectionPageFragment.scrollTo(sectionCard.tag.toString())
-            }
-            layout.addView(sectionCard)
+        layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
 
-            for (chapter in codeProvider.getChapters(section)){
-                val chapterCard = CardViewFactory.getDarkCard(layout.context, chapter.title, "Chapter content")
-                chapterCard.tag = "Chapter${chapter.id}"
-                chapterCard.setOnClickListener {
-                    val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
-                    viewPager.setCurrentItem(2, true)
-                    ArticlePageFragment.scrollTo(chapterCard.tag.toString())
-                }
-                layout.addView(chapterCard)
-            }
+        for (section in codeProvider.getSections()){
+            addSectionToLayout(section)
+            codeProvider.getChapters(section).forEach { addChapterToLayout(it) }
         }
+    }
+
+    private fun addSectionToLayout(section: Section){
+        val sectionCard = CardViewFactory.getLightCard(layout.context, section.title, "Section content")
+        sectionCard.tag = "Section${section.id}"
+        sectionCard.setOnClickListener {
+            val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
+            viewPager.setCurrentItem(0, true)
+            SectionPageFragment.scrollTo(sectionCard.tag.toString())
+        }
+        layout.addView(sectionCard)
+    }
+
+    private fun addChapterToLayout(chapter: Chapter){
+        val chapterCard = CardViewFactory.getDarkCard(layout.context, chapter.title, "Chapter content")
+        chapterCard.tag = "Chapter${chapter.id}"
+        chapterCard.setOnClickListener {
+            val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
+            viewPager.setCurrentItem(2, true)
+            ArticlePageFragment.scrollTo(chapterCard.tag.toString())
+        }
+        layout.addView(chapterCard)
     }
 
     override fun onResume() {
