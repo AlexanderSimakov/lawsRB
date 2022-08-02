@@ -5,17 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
-import com.team.lawsrb.ui.codexObjectFragments.ArticleObjectFragment
-import com.team.lawsrb.ui.codexObjectFragments.ChapterObjectFragment
-import com.team.lawsrb.ui.codexObjectFragments.SectionObjectFragment
 
-class CodeOfCriminalProcedureFragment : Fragment() {
-    private lateinit var demoCollectionAdapter: DemoCollectionAdapter
+class CodexOfCriminalProcedureFragment : Fragment() {
+    private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
@@ -27,9 +22,9 @@ class CodeOfCriminalProcedureFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        demoCollectionAdapter = DemoCollectionAdapter(this)
+        collectionAdapter = CollectionAdapter(this)
         viewPager = view.findViewById(R.id.code_of_criminal_procedure_pager)
-        viewPager.adapter = demoCollectionAdapter
+        viewPager.adapter = collectionAdapter
 
         val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.code_of_criminal_procedure_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -40,20 +35,5 @@ class CodeOfCriminalProcedureFragment : Fragment() {
                 else -> throw IllegalArgumentException("Position was $position")
             }
         }.attach()
-    }
-}
-
-class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    private val itemCount: Int = 3
-
-    override fun getItemCount(): Int = itemCount
-
-    override fun createFragment(position: Int): Fragment {
-        return when (position){
-            0 -> SectionObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            1 -> ChapterObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            2 -> ArticleObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            else -> throw IllegalArgumentException("Position was $position, expected from 0 to ${itemCount - 1}")
-        }
     }
 }
