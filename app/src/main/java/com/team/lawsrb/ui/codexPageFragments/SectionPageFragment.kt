@@ -32,8 +32,8 @@ class SectionPageFragment(private val codeProvider: CodexProvider, private val p
             for (section in codeProvider.getSections(part)){
                 val sectionCard = CardViewFactory.getDarkCard(layout.context, section.title, "Section content")
                 sectionCard.tag = "Section${section.id}"
-                sectionCard.setOnClickListener { view ->
-                    val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
+                sectionCard.setOnClickListener {
+                    val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
                     viewPager.setCurrentItem(1, true)
                     ChapterPageFragment.scrollTo(sectionCard.tag.toString())
                 }
