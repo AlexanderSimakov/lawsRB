@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:cardElevation="0dp">
 
         <!-- Text -->
         <LinearLayout
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginRight="35dp">
+            android:layout_marginEnd="35dp">
 
             <TextView
                 android:id="@+id/light_card_with_button_title"
@@ -60,7 +61,9 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/card_background_dark">
+        app:cardBackgroundColor="@color/card_background_dark"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="8dp">
 
         <!-- Text -->
         <LinearLayout
@@ -68,7 +71,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginRight="35dp">
+            android:layout_marginEnd="35dp">
 
             <TextView
                 android:id="@+id/dark_card_with_button_title"
@@ -108,7 +111,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:cardElevation="0dp">
 
         <!-- Text -->
         <LinearLayout
@@ -140,7 +144,9 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/card_background_dark">
+        app:cardBackgroundColor="@color/card_background_dark"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="8dp">
 
         <!-- Text -->
         <LinearLayout
