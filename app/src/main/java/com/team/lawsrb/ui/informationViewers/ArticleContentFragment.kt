@@ -27,10 +27,8 @@ class ArticleContentFragment(private val article: Article) : Fragment() {
         view.findViewById<TextView>(R.id.fragment_article_content_title)
             .text = article.title
 
-        var content = ""
-        for (item in article.items) content += item + "\n"
         view.findViewById<TextView>(R.id.fragment_article_content_text)
-            .text = content
+            .text = article.content
 
     }
 }

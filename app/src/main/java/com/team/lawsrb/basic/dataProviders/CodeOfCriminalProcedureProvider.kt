@@ -12,10 +12,10 @@ object CodeOfCriminalProcedureProvider : CodeProvider {
     private val articles = mutableListOf<Article>()
 
     init {
-        for (id in 0..1) parts.add(Part(id, "Part ${id+1}"))
-        for (id in 0..5) sections.add(Section(id, if (id > 3) 1 else 0, "Section ${id+1}"))
-        for (id in 0..13) chapters.add(Chapter(id, (id-1)/2, "Chapter ${id+1}"))
-        for (id in 0..27) articles.add(Article(id, (id-1)/2, "Article ${id+1}"))
+        for (id in 0..1) parts.add(Part("Part ${id+1}", id))
+        for (id in 0..5) sections.add(Section("Section ${id+1}", id, if (id > 3) 1 else 0))
+        for (id in 0..13) chapters.add(Chapter("Chapter ${id+1}", id, (id-1)/2))
+        for (id in 0..27) articles.add(Article("Article ${id+1}", id, (id-1)/2))
     }
 
     override fun getParts() = parts
@@ -26,7 +26,7 @@ object CodeOfCriminalProcedureProvider : CodeProvider {
     override fun getSections(part: Part): MutableList<Section>{
         val sections = mutableListOf<Section>()
         for (section in this.sections){
-            if (section.partId == part.id) sections.add(section)
+            if (section.parentId == part.id) sections.add(section)
         }
         return sections
     }
@@ -34,7 +34,7 @@ object CodeOfCriminalProcedureProvider : CodeProvider {
     override fun getChapters(section: Section): MutableList<Chapter>{
         val chapters = mutableListOf<Chapter>()
         for (chapter in this.chapters){
-            if (chapter.sectionId == section.id) chapters.add(chapter)
+            if (chapter.parentId == section.id) chapters.add(chapter)
         }
         return chapters
     }
@@ -42,7 +42,7 @@ object CodeOfCriminalProcedureProvider : CodeProvider {
     override fun getArticles(chapter: Chapter): MutableList<Article>{
         val articles = mutableListOf<Article>()
         for (article in this.articles){
-            if (article.chapterId == chapter.id) articles.add(article)
+            if (article.parentId == chapter.id) articles.add(article)
         }
         return articles
     }
