@@ -5,9 +5,8 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.LinearLayout.*
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codeObjects.Section
+import com.team.lawsrb.basic.codexObjects.Section
 
 @SuppressLint("AppCompatCustomView")
 class SectionViewer(context: Context, section: Section,

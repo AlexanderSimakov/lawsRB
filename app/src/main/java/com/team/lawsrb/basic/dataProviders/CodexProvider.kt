@@ -1,14 +1,14 @@
 package com.team.lawsrb.basic.dataProviders
 
-import com.team.lawsrb.basic.codeObjects.Article
-import com.team.lawsrb.basic.codeObjects.Chapter
-import com.team.lawsrb.basic.codeObjects.Part
-import com.team.lawsrb.basic.codeObjects.Section
+import com.team.lawsrb.basic.codexObjects.Article
+import com.team.lawsrb.basic.codexObjects.Chapter
+import com.team.lawsrb.basic.codexObjects.Part
+import com.team.lawsrb.basic.codexObjects.Section
 
 /**
  * Description
  */
-interface CodeProvider{
+interface CodexProvider{
 
     /**
      * Return All [Part]s from codex.

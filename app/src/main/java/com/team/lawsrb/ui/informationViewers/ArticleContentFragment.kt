@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codeObjects.Article
+import com.team.lawsrb.basic.codexObjects.Article
 
 class ArticleContentFragment(private val article: Article) : Fragment() {
     override fun onCreateView(

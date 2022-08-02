@@ -5,15 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.FavoritesProvider
-import com.team.lawsrb.ui.codeObjectFragments.ArticleObjectFragment
-import com.team.lawsrb.ui.codeObjectFragments.ChapterObjectFragment
-import com.team.lawsrb.ui.codeObjectFragments.SectionObjectFragment
+import com.team.lawsrb.ui.codexObjectFragments.ArticleObjectFragment
+import com.team.lawsrb.ui.codexObjectFragments.ChapterObjectFragment
+import com.team.lawsrb.ui.codexObjectFragments.SectionObjectFragment
 
 class FavoritesFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,

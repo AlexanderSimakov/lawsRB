@@ -13,15 +13,15 @@
 
     <fragment
         android:id="@+id/nav_criminal_code"
-        android:name="com.team.lawsrb.ui.criminalcode.CriminalCodeFragment"
+        android:name="com.team.lawsrb.ui.criminalCodex.CriminalCodeFragment"
         android:label="@string/menu_criminal_code"
-        tools:layout="@layout/fragment_criminal_code" />
+        tools:layout="@layout/fragment_criminal_codex" />
 
     <fragment
         android:id="@+id/nav_code_of_criminal_procedure"
-        android:name="com.team.lawsrb.ui.codeOfCriminalProcedure.CodeOfCriminalProcedureFragment"
+        android:name="com.team.lawsrb.ui.codexOfCriminalProcedure.CodeOfCriminalProcedureFragment"
         android:label="@string/menu_code_of_criminal_proсedure"
-        tools:layout="@layout/fragment_code_of_criminal_procedure" />
+        tools:layout="@layout/fragment_codex_of_criminal_procedure" />
 
     <fragment
         android:id="@+id/nav_favorites"

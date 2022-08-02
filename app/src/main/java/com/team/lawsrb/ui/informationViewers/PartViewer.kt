@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codeObjects.Part
+import com.team.lawsrb.basic.codexObjects.Part
 
 @SuppressLint("AppCompatCustomView")
 class PartViewer(context: Context, part: Part,

@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codeObjects.Chapter
+import com.team.lawsrb.basic.codexObjects.Chapter
 
 @SuppressLint("AppCompatCustomView")
 class ChapterViewer(context: Context, chapter: Chapter,

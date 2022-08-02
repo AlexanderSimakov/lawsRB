@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codeObjects.Article
+import com.team.lawsrb.basic.codexObjects.Article
 
 @SuppressLint("AppCompatCustomView")
 class ArticleViewer(context: Context, article: Article,

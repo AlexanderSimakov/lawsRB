@@ -1,4 +1,4 @@
-package com.team.lawsrb.basic.codeObjects
+package com.team.lawsrb.basic.codexObjects
 
 /**
  * A *data class* that represents single codex article with items.

@@ -1,20 +1,18 @@
-package com.team.lawsrb.ui.codeOfCriminalProcedure
+package com.team.lawsrb.ui.codexOfCriminalProcedure
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.dataProviders.CodeOfCriminalProcedureProvider
-import com.team.lawsrb.basic.dataProviders.CodeProvider
-import com.team.lawsrb.ui.codeObjectFragments.ArticleObjectFragment
-import com.team.lawsrb.ui.codeObjectFragments.ChapterObjectFragment
-import com.team.lawsrb.ui.codeObjectFragments.SectionObjectFragment
+import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
+import com.team.lawsrb.ui.codexObjectFragments.ArticleObjectFragment
+import com.team.lawsrb.ui.codexObjectFragments.ChapterObjectFragment
+import com.team.lawsrb.ui.codexObjectFragments.SectionObjectFragment
 
 class CodeOfCriminalProcedureFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,
@@ -27,7 +25,7 @@ class CodeOfCriminalProcedureFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_code_of_criminal_procedure, container, false)
+        return inflater.inflate(R.layout.fragment_codex_of_criminal_procedure, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,9 +49,9 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionObjectFragment(CodeOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            1 -> ChapterObjectFragment(CodeOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            else -> ArticleObjectFragment(CodeOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
+            0 -> SectionObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
+            1 -> ChapterObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
+            else -> ArticleObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
         }
     }
 }

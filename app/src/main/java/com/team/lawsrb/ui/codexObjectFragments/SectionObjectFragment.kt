@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codeObjectFragments
+package com.team.lawsrb.ui.codexObjectFragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,12 +10,11 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.dataProviders.CodeProvider
-import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
+import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.ui.informationViewers.PartViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
-class SectionObjectFragment(private val codeProvider: CodeProvider, private val pager_id: Int) : Fragment() {
+class SectionObjectFragment(private val codexProvider: CodexProvider, private val pager_id: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,10 +27,10 @@ class SectionObjectFragment(private val codeProvider: CodeProvider, private val 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Scrollable.view = view
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (part in codeProvider.getParts()){
+        for (part in codexProvider.getParts()){
             layout.addView(PartViewer(layout.context, part, false))
 
-            for (section in codeProvider.getSections(part)){
+            for (section in codexProvider.getSections(part)){
                 val sectionViewer = SectionViewer(layout.context, section)
                 sectionViewer.setOnClickListener { view ->
                     val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
