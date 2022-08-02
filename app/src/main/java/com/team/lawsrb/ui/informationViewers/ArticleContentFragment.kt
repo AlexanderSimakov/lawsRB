@@ -20,10 +20,6 @@ class ArticleContentFragment(private val article: Article) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.setOnClickListener { activity?.supportFragmentManager?.popBackStack() }
-        view.findViewById<LinearLayout>(R.id.fragment_article_content_scroll_layout)
-            .setOnClickListener { activity?.supportFragmentManager?.popBackStack() }
-
         view.findViewById<TextView>(R.id.fragment_article_content_title)
             .text = article.title
 

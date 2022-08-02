@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codexObjectFragments
+package com.team.lawsrb.ui.codeObjectFragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,12 +10,11 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.dataProviders.CodexProvider
-import com.team.lawsrb.ui.informationViewers.ArticleContentFragment
-import com.team.lawsrb.ui.informationViewers.ArticleViewer
-import com.team.lawsrb.ui.informationViewers.ChapterViewer
+import com.team.lawsrb.basic.dataProviders.CodeProvider
+import com.team.lawsrb.basic.dataProviders.CriminalCodeProvider
+import com.team.lawsrb.ui.informationViewers.*
 
-class ArticleObjectFragment(private val codexProvider: CodexProvider, private val pager_id: Int) : Fragment() {
+class ArticleObjectFragment(private val codeProvider: CodeProvider, private val pager_id: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,24 +27,25 @@ class ArticleObjectFragment(private val codexProvider: CodexProvider, private va
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Scrollable.view = view
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-        for (chapter in codexProvider.getChapters()){
-            val chapterViewer = ChapterViewer(layout.context, chapter, false)
-            chapterViewer.setOnClickListener { view ->
+        for (chapter in codeProvider.getChapters()){
+            val chapterCard = CardViewFactory.getLightCard(layout.context, chapter.title, "Chapter content")
+            chapterCard.tag = "Chapter${chapter.id}"
+            chapterCard.setOnClickListener { view ->
                 val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                 viewPager.setCurrentItem(1, true)
-                ChapterObjectFragment.scrollTo(chapterViewer.tag.toString())
+                ChapterObjectFragment.scrollTo(chapterCard.tag.toString())
             }
-            layout.addView(chapterViewer)
+            layout.addView(chapterCard)
 
-            for (article in codexProvider.getArticles(chapter)){
-                val articleViewer = ArticleViewer(layout.context, article)
-                articleViewer.setOnClickListener { view ->
+            for (article in codeProvider.getArticles(chapter)){
+                val articleCard = CardViewFactory.getDarkCardWithButton(layout.context, article.title, "Article content")
+                articleCard.setOnClickListener { view ->
                     activity?.supportFragmentManager?.beginTransaction()
                         ?.replace(((this.view as ViewGroup).parent as View).id, ArticleContentFragment(article))
                         ?.addToBackStack(ArticleContentFragment::class.java.name)
                         ?.commit()
                 }
-                layout.addView(articleViewer)
+                layout.addView(articleCard)
             }
         }
     }
