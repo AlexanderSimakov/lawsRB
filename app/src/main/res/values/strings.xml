@@ -8,14 +8,20 @@
     <string name="action_settings">Settings</string>
     <string name="action_search">Поиск</string>
 
+    <!-- Menu -->
     <string name="menu_home">Home</string>
     <string name="menu_criminal_code">УК</string>
     <string name="menu_code_of_criminal_proсedure">УПК</string>
     <string name="menu_favorites">Избранное</string>
     <string name="menu_settings">Настройки</string>
 
+    <!-- Pager -->
     <string name="pager_item_sections">Разделы</string>
     <string name="pager_item_chapters">Главы</string>
     <string name="pager_item_articles">Статьи</string>
+
+    <!-- Card -->
+    <string name="card_default_title">Title</string>
+    <string name="card_default_content">Some content</string>
 
 </resources>
