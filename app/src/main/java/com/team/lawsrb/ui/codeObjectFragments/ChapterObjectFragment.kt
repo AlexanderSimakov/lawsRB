@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodeProvider
+import com.team.lawsrb.ui.informationViewers.CardViewFactory
 import com.team.lawsrb.ui.informationViewers.ChapterViewer
 import com.team.lawsrb.ui.informationViewers.SectionViewer
 
@@ -28,22 +29,24 @@ class ChapterObjectFragment(private val codeProvider: CodeProvider, private val 
         Scrollable.view = view
         val layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
         for (section in codeProvider.getSections()){
-            val sectionViewer = SectionViewer(layout.context, section, false)
-            sectionViewer.setOnClickListener { view ->
+            val sectionCard = CardViewFactory.getLightCard(layout.context, section.title, "Section content")
+            sectionCard.tag = "Section${section.id}"
+            sectionCard.setOnClickListener { view ->
                 val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                 viewPager.setCurrentItem(0, true)
-                SectionObjectFragment.scrollTo(sectionViewer.tag.toString())
+                SectionObjectFragment.scrollTo(sectionCard.tag.toString())
             }
-            layout.addView(sectionViewer)
+            layout.addView(sectionCard)
 
             for (chapter in codeProvider.getChapters(section)){
-                val chapterView = ChapterViewer(layout.context, chapter)
-                chapterView.setOnClickListener { view ->
+                val chapterCard = CardViewFactory.getDarkCard(layout.context, chapter.title, "Chapter content")
+                chapterCard.tag = "Chapter${chapter.id}"
+                chapterCard.setOnClickListener { view ->
                     val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                     viewPager.setCurrentItem(2, true)
-                    ArticleObjectFragment.scrollTo(chapterView.tag.toString())
+                    ArticleObjectFragment.scrollTo(chapterCard.tag.toString())
                 }
-                layout.addView(chapterView)
+                layout.addView(chapterCard)
             }
         }
     }
