@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codexObjectFragments
+package com.team.lawsrb.ui.codexPageFragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.ui.informationViewers.*
 
-class ArticleObjectFragment(private val codeProvider: CodexProvider, private val pager_id: Int) : Fragment() {
+class ArticlePageFragment(private val codeProvider: CodexProvider, private val pager_id: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,7 @@ class ArticleObjectFragment(private val codeProvider: CodexProvider, private val
             chapterCard.setOnClickListener { view ->
                 val viewPager = view.rootView.findViewById<ViewPager2>(pager_id)
                 viewPager.setCurrentItem(1, true)
-                ChapterObjectFragment.scrollTo(chapterCard.tag.toString())
+                ChapterPageFragment.scrollTo(chapterCard.tag.toString())
             }
             layout.addView(chapterCard)
 
