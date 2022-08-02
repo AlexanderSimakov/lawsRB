@@ -15,8 +15,6 @@ import com.team.lawsrb.ui.codexObjectFragments.ChapterObjectFragment
 import com.team.lawsrb.ui.codexObjectFragments.SectionObjectFragment
 
 class CodeOfCriminalProcedureFragment : Fragment() {
-    // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
     private lateinit var demoCollectionAdapter: DemoCollectionAdapter
     private lateinit var viewPager: ViewPager2
 
@@ -32,26 +30,30 @@ class CodeOfCriminalProcedureFragment : Fragment() {
         demoCollectionAdapter = DemoCollectionAdapter(this)
         viewPager = view.findViewById(R.id.code_of_criminal_procedure_pager)
         viewPager.adapter = demoCollectionAdapter
+
         val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.code_of_criminal_procedure_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)
                 1 -> getString(R.string.pager_item_chapters)
-                else -> getString(R.string.pager_item_articles)
+                2 -> getString(R.string.pager_item_articles)
+                else -> throw IllegalArgumentException("Position was $position")
             }
         }.attach()
     }
 }
 
 class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    private val itemCount: Int = 3
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = itemCount
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
             0 -> SectionObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
             1 -> ChapterObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
-            else -> ArticleObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
+            2 -> ArticleObjectFragment(CodexOfCriminalProcedureProvider, R.id.code_of_criminal_procedure_pager)
+            else -> throw IllegalArgumentException("Position was $position, expected from 0 to ${itemCount - 1}")
         }
     }
 }
