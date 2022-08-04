@@ -15,7 +15,6 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 
 class SectionPageFragment(private val codeProvider: CodexProvider,
                           private val pager_id: Int) : Fragment() {
-    //private lateinit var layout: LinearLayout
     private var items: MutableList<Any> = mutableListOf()
 
     override fun onCreateView(
@@ -32,16 +31,6 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
         val rvSections = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
         rvSections.adapter = SectionsPageAdapter(items)
         rvSections.layoutManager = LinearLayoutManager(context)
-
-        /*
-        Scrollable.view = view
-        layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-
-        for (part in codeProvider.getParts()){
-            layout.addView(CardViewFactory.getLightCard(layout.context, part.title, "Part content"))
-            codeProvider.getSections(part).forEach { addSectionToLayout(it) }
-        }
-         */
     }
 
     private fun initItems(){
@@ -50,39 +39,6 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
             codeProvider.getSections(part).forEach { items.add(it) }
         }
     }
-
-    /*
-    private fun addSectionToLayout(section: Section){
-        val sectionCard = CardViewFactory.getDarkCard(layout.context, section.title, "Section content")
-        sectionCard.tag = "Section${section.id}"
-        sectionCard.setOnClickListener {
-            val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
-            viewPager.setCurrentItem(1, true)
-            ChapterPageFragment.scrollTo(sectionCard.tag.toString())
-        }
-        layout.addView(sectionCard)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        view?.findViewById<ScrollView>(R.id.code_viewer_fragment_scroll_view)?.smoothScrollTo(0, y)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        y = view?.findViewById<ScrollView>(R.id.code_viewer_fragment_scroll_view)?.scrollY ?: 0
-    }
-
-    companion object Scrollable{
-        @SuppressLint("StaticFieldLeak")
-        private var view: View? = null
-        private var y: Int = 0
-
-        fun scrollTo(tag: String){
-            y = view?.findViewWithTag<View>(tag)?.top ?: y
-        }
-    }
-    */
 }
 
 class SectionsPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -15,7 +15,6 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 
 class ChapterPageFragment(private val codeProvider: CodexProvider,
                           private val pager_id: Int) : Fragment() {
-    //private lateinit var layout: LinearLayout
     private var items: MutableList<Any> = mutableListOf()
 
     override fun onCreateView(
@@ -32,16 +31,6 @@ class ChapterPageFragment(private val codeProvider: CodexProvider,
         val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
         rvItems.adapter = ChapterPageAdapter(items)
         rvItems.layoutManager = LinearLayoutManager(context)
-
-        /*
-        Scrollable.view = view
-        layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
-
-        for (section in codeProvider.getSections()){
-            addSectionToLayout(section)
-            codeProvider.getChapters(section).forEach { addChapterToLayout(it) }
-        }
-        */
     }
 
     private fun initItems(){
@@ -50,50 +39,6 @@ class ChapterPageFragment(private val codeProvider: CodexProvider,
             codeProvider.getChapters(section).forEach { items.add(it) }
         }
     }
-
-    /*
-    private fun addSectionToLayout(section: Section){
-        val sectionCard = CardViewFactory.getLightCard(layout.context, section.title, "Section content")
-        sectionCard.tag = "Section${section.id}"
-        sectionCard.setOnClickListener {
-            val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
-            viewPager.setCurrentItem(0, true)
-            SectionPageFragment.scrollTo(sectionCard.tag.toString())
-        }
-        layout.addView(sectionCard)
-    }
-
-    private fun addChapterToLayout(chapter: Chapter){
-        val chapterCard = CardViewFactory.getDarkCard(layout.context, chapter.title, "Chapter content")
-        chapterCard.tag = "Chapter${chapter.id}"
-        chapterCard.setOnClickListener {
-            val viewPager = it.rootView.findViewById<ViewPager2>(pager_id)
-            viewPager.setCurrentItem(2, true)
-            ArticlePageFragment.scrollTo(chapterCard.tag.toString())
-        }
-        layout.addView(chapterCard)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        view?.findViewById<ScrollView>(R.id.code_viewer_fragment_scroll_view)?.smoothScrollTo(0, y)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        y = view?.findViewById<ScrollView>(R.id.code_viewer_fragment_scroll_view)?.scrollY ?: 0
-    }
-
-    companion object Scrollable{
-        @SuppressLint("StaticFieldLeak")
-        private var view: View? = null
-        private var y: Int = 0
-
-        fun scrollTo(tag: String){
-            y = view?.findViewWithTag<View>(tag)?.top ?: y
-        }
-    }
-    */
 }
 
 class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
