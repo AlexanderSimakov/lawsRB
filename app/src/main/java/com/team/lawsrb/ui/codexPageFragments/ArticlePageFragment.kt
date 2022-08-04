@@ -1,5 +1,6 @@
 package com.team.lawsrb.ui.codexPageFragments
 
+import android.animation.LayoutTransition
 import android.opengl.Visibility
 import android.os.Bundle
 import android.transition.AutoTransition
@@ -36,7 +37,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
         initItems()
 
         val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
-        rvItems.adapter = ArticlePageAdapter(items)
+        rvItems.adapter = ArticlePageAdapter(items, rvItems)
         rvItems.layoutManager = LinearLayoutManager(context)
 
         /*
@@ -103,7 +104,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
      */
 }
 
-class ArticlePageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticlePageAdapter (private val items: List<Any>, private val rvView: View) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isArticle = 1
     private val isChapter = 2
 
@@ -155,7 +156,7 @@ class ArticlePageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
                 viewHolder.card.setOnClickListener {
-                    TransitionManager.beginDelayedTransition(viewHolder.card, AutoTransition())
+                    TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
                     if (viewHolder.expandable.visibility == View.VISIBLE){
                         viewHolder.expandable.visibility = View.GONE
                     }else{
