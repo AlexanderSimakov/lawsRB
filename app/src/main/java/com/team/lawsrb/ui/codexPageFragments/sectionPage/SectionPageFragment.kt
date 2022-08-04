@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codexPageFragments
+package com.team.lawsrb.ui.codexPageFragments.sectionPage
 
 import android.os.Bundle
 import android.view.LayoutInflater

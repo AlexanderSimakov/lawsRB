@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codexPageFragments
+package com.team.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
 import android.transition.AutoTransition
