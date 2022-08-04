@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/light_card_with_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="8dp"
+        app:cardElevation="0dp">
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginEnd="35dp">
+
+            <TextView
+                android:id="@+id/light_card_with_favorites_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/card_default_title"
+                android:textAppearance="?attr/textAppearanceHeadline6"/>
+
+            <TextView
+                android:id="@+id/light_card_with_favorites_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/card_default_content"
+                android:textAppearance="?attr/textAppearanceBody1"/>
+        </LinearLayout>
+
+        <!-- Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right|center">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/light_card_with_favorites_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/card_checkbox_selector"
+                app:useMaterialThemeColors="false"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
