@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.FavoritesProvider
-import com.team.lawsrb.ui.codexPageFragments.ArticlePageFragment
-import com.team.lawsrb.ui.codexPageFragments.ChapterPageFragment
-import com.team.lawsrb.ui.codexPageFragments.SectionPageFragment
+import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
+import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
+import com.team.lawsrb.ui.codexPageFragments.sectionPage.SectionPageFragment
 
 class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     private val itemCount: Int = 3
