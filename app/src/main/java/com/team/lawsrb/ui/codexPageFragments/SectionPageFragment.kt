@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codexObjects.Chapter
 import com.team.lawsrb.basic.codexObjects.Part
 import com.team.lawsrb.basic.codexObjects.Section
 import com.team.lawsrb.basic.dataProviders.CodexProvider
