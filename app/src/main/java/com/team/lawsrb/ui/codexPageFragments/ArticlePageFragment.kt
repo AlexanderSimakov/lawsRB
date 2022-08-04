@@ -1,14 +1,19 @@
 package com.team.lawsrb.ui.codexPageFragments
 
+import android.opengl.Visibility
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Article
 import com.team.lawsrb.basic.codexObjects.Chapter
@@ -103,9 +108,12 @@ class ArticlePageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     private val isChapter = 2
 
     inner class ArticleViewHolder(articleCardView: View) : RecyclerView.ViewHolder(articleCardView) {
+        val card: MaterialCardView = articleCardView.findViewById(R.id.dark_card_with_favorites)
         val title: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_title)
         val content: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_content)
         val checkBox: CheckBox = articleCardView.findViewById(R.id.dark_card_with_favorites_checkbox)
+        val expandable: LinearLayout = articleCardView.findViewById(R.id.dark_card_with_favorites_expandable)
+        val expandableText: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_expandable_text)
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
@@ -145,6 +153,15 @@ class ArticlePageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as ArticleViewHolder).title.text = article.title
                 viewHolder.content.text = "Section content"
                 viewHolder.checkBox.isChecked = article.isLiked
+                viewHolder.expandableText.text = article.content
+                viewHolder.card.setOnClickListener {
+                    TransitionManager.beginDelayedTransition(viewHolder.card, AutoTransition())
+                    if (viewHolder.expandable.visibility == View.VISIBLE){
+                        viewHolder.expandable.visibility = View.GONE
+                    }else{
+                        viewHolder.expandable.visibility = View.VISIBLE
+                    }
+                }
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
