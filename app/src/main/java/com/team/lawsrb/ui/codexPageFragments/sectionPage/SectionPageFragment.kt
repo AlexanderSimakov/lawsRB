@@ -26,7 +26,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
         initItems()
 
         val rvSections = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
-        rvSections.adapter = SectionsPageAdapter(items)
+        rvSections.adapter = SectionPageAdapter(items)
         rvSections.layoutManager = LinearLayoutManager(context)
     }
 

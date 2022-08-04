@@ -58,7 +58,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.content.text = "Part content"
+                viewHolder.content.text = "Chapter content"
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
         }

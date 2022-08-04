@@ -62,7 +62,7 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
             isArticle -> {
                 val article: Article = items[position] as Article
                 (viewHolder as ArticleViewHolder).title.text = article.title
-                viewHolder.content.text = "Section content"
+                viewHolder.content.text = "Article content"
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
                 viewHolder.card.setOnClickListener {
@@ -77,7 +77,7 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.content.text = "Part content"
+                viewHolder.content.text = "Chapter content"
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }

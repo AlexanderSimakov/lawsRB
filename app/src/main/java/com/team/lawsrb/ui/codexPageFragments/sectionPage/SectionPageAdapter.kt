@@ -9,7 +9,7 @@ import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Part
 import com.team.lawsrb.basic.codexObjects.Section
 
-class SectionsPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
     private val isPart = 2
 
