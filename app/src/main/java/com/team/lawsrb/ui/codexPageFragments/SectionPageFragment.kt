@@ -16,7 +16,7 @@ import com.team.lawsrb.ui.informationViewers.CardViewFactory
 
 class SectionPageFragment(private val codeProvider: CodexProvider,
                           private val pager_id: Int) : Fragment() {
-    private lateinit var layout: LinearLayout
+    //private lateinit var layout: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +27,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        /*
         Scrollable.view = view
         layout = view.findViewById<LinearLayout>(R.id.code_viewer_fragment_content)
 
@@ -34,8 +35,10 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
             layout.addView(CardViewFactory.getLightCard(layout.context, part.title, "Part content"))
             codeProvider.getSections(part).forEach { addSectionToLayout(it) }
         }
+         */
     }
 
+    /*
     private fun addSectionToLayout(section: Section){
         val sectionCard = CardViewFactory.getDarkCard(layout.context, section.title, "Section content")
         sectionCard.tag = "Section${section.id}"
@@ -66,4 +69,5 @@ class SectionPageFragment(private val codeProvider: CodexProvider,
             y = view?.findViewWithTag<View>(tag)?.top ?: y
         }
     }
+    */
 }

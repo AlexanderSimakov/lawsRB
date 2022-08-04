@@ -17,7 +17,7 @@ import com.team.lawsrb.ui.informationViewers.*
 
 class ArticlePageFragment(private val codeProvider: CodexProvider,
                           private val pager_id: Int) : Fragment() {
-    private lateinit var layout: LinearLayout
+    //private lateinit var layout: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +28,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        /*
         Scrollable.view = view
         layout = view.findViewById(R.id.code_viewer_fragment_content)
 
@@ -35,8 +36,10 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
             addChapterToLayout(chapter)
             codeProvider.getArticles(chapter).forEach { addArticleToLayout(it) }
         }
+        */
     }
 
+    /*
     private fun addChapterToLayout(chapter: Chapter){
         val chapterCard = CardViewFactory.getLightCard(layout.context, chapter.title, "Chapter content")
         chapterCard.tag = "Chapter${chapter.id}"
@@ -78,4 +81,5 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
             y = view?.findViewWithTag<View>(tag)?.top ?: y
         }
     }
+     */
 }
