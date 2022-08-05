@@ -8,11 +8,11 @@ import kotlin.concurrent.schedule
 object PageNavigation {
     var viewPager: ViewPager2? = null
 
-    private class Recycler(val recyclerView: RecyclerView, val items: MutableList<Any>)
+    private class Recycler(val recyclerView: RecyclerView, val items: List<Any>)
     private var recyclers: MutableList<Recycler> = mutableListOf()
     private val delayBeforeScrolling = 300L
 
-    fun addRecyclerView(view: RecyclerView, items: MutableList<Any>, number: Int) {
+    fun addRecyclerView(view: RecyclerView, items: List<Any>, number: Int) {
         recyclers.add(number, Recycler(view, items))
     }
 
