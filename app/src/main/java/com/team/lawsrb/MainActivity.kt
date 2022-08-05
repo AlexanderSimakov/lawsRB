@@ -3,6 +3,7 @@ package com.team.lawsrb
 import android.os.Bundle
 import android.view.Menu
 import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -50,6 +51,16 @@ class MainActivity : AppCompatActivity() {
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.getActionView() as SearchView
         searchView.queryHint = getString(R.string.action_search)
+
+        searchView.setOnQueryTextListener( object : OnQueryTextListener{
+            override fun onQueryTextChange(text: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(text: String?): Boolean {
+                return false
+            }
+        })
 
         return true
     }
