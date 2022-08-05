@@ -28,6 +28,7 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.light_card)
         val title: TextView = chapterCardView.findViewById(R.id.light_card_title)
         val content: TextView = chapterCardView.findViewById(R.id.light_card_content)
     }
@@ -78,6 +79,9 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
                 viewHolder.content.text = "Chapter content"
+                viewHolder.card.setOnClickListener {
+                    // PageNavigation.moveLeftTo(chapter.id)
+                }
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }

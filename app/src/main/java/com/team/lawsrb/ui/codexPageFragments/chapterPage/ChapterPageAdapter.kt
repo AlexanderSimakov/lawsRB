@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Chapter
 import com.team.lawsrb.basic.codexObjects.Section
@@ -14,11 +15,13 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     private val isChapter = 2
 
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.light_card)
         val title: TextView = sectionCardView.findViewById(R.id.light_card_title)
         val content: TextView = sectionCardView.findViewById(R.id.light_card_content)
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.dark_card)
         val title: TextView = chapterCardView.findViewById(R.id.dark_card_title)
         val content: TextView = chapterCardView.findViewById(R.id.dark_card_content)
     }
@@ -54,11 +57,17 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 val section: Section = items[position] as Section
                 (viewHolder as SectionViewHolder).title.text = section.title
                 viewHolder.content.text = "Section content"
+                viewHolder.card.setOnClickListener {
+                    // PageNavigation.moveLeftTo(section.id)
+                }
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
                 viewHolder.content.text = "Chapter content"
+                viewHolder.card.setOnClickListener {
+                    // PageNavigation.moveRightTo(chapter.id)
+                }
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
         }

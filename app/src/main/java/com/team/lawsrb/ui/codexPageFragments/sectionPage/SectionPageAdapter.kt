@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Part
 import com.team.lawsrb.basic.codexObjects.Section
@@ -19,6 +20,7 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     }
 
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.dark_card)
         val title: TextView = sectionCardView.findViewById(R.id.dark_card_title)
         val content: TextView = sectionCardView.findViewById(R.id.dark_card_content)
     }
@@ -54,6 +56,9 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 val section: Section = items[position] as Section
                 (viewHolder as SectionViewHolder).title.text = section.title
                 viewHolder.content.text = "Section content"
+                viewHolder.card.setOnClickListener {
+                    // PageNavigation.moveRightTo(section.id)
+                }
             }
             isPart -> {
                 val part: Part = items[position] as Part
