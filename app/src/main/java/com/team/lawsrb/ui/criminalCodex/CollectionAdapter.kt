@@ -15,9 +15,9 @@ class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionPageFragment(CriminalCodexProvider, R.id.criminal_code_pager)
-            1 -> ChapterPageFragment(CriminalCodexProvider, R.id.criminal_code_pager)
-            2 -> ArticlePageFragment(CriminalCodexProvider, R.id.criminal_code_pager)
+            0 -> SectionPageFragment(CriminalCodexProvider)
+            1 -> ChapterPageFragment(CriminalCodexProvider)
+            2 -> ArticlePageFragment(CriminalCodexProvider)
             else -> throw IllegalArgumentException("Position was $position, expected from 0 to ${itemCount - 1}")
         }
     }
