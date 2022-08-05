@@ -13,6 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
+import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
+import com.team.lawsrb.basic.dataProviders.FavoritesProvider
 import com.team.lawsrb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -57,10 +60,20 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
 
-            override fun onQueryTextSubmit(text: String?): Boolean {
+            override fun onQueryTextSubmit(text: String): Boolean {
+                FavoritesProvider.searchQuery = text
+                CriminalCodexProvider.searchQuery = text
+                CodexOfCriminalProcedureProvider.searchQuery = text
                 return false
             }
         })
+
+        searchView.setOnCloseListener {
+            FavoritesProvider.searchQuery = ""
+            CriminalCodexProvider.searchQuery = ""
+            CodexOfCriminalProcedureProvider.searchQuery = ""
+            false
+        }
 
         return true
     }

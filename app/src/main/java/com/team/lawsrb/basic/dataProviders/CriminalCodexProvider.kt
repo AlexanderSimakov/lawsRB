@@ -14,6 +14,31 @@ object CriminalCodexProvider: CodexProvider {
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
+    var searchQuery: String = ""
+        set(value: String) {
+            field = value
+            updateItems()
+        }
+
+    private fun updateItems(){
+        // Example code
+        if (searchQuery != ""){
+            val articleItems = mutableListOf<Any>()
+            for (chapter in chapters){
+                articleItems.add(chapter)
+                articles.filter { (it.parentId == chapter.id) && (it.id % 2 == 1)  }.forEach { articleItems.add(it) }
+            }
+            articlePageItems.value = articleItems
+        }else{
+            val articleItems = mutableListOf<Any>()
+            for (chapter in chapters){
+                articleItems.add(chapter)
+                articles.filter { it.parentId == chapter.id  }.forEach { articleItems.add(it) }
+            }
+            articlePageItems.value = articleItems
+        }
+    }
+
     init {
         for (id in 0..1) parts.add(Part("Part ${id+1}", id))
         for (id in 0..5) sections.add(Section("Section ${id+1}", id, if (id > 3) 1 else 0))
