@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.CodexProvider
+import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ArticlePageFragment(private val codeProvider: CodexProvider,
@@ -28,7 +29,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider,
 
         val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
         rvItems.adapter = ArticlePageAdapter(items, rvItems)
-        rvItems.layoutManager = LinearLayoutManager(context)
+        rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 2)
     }
 
