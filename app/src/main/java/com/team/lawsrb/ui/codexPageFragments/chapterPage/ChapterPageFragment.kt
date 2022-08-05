@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team.lawsrb.R
@@ -12,31 +14,34 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
-class ChapterPageFragment(private val codeProvider: CodexProvider,
-                          private val pager_id: Int) : Fragment() {
-    private var items: MutableList<Any> = mutableListOf()
+class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() {
+    private lateinit var model: ChapterPageViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        model = ViewModelProvider(this, ChapterViewModelFactory(codeProvider))
+            .get(ChapterPageViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_code_viewer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initItems()
+        val items = model.getItems().value as List<Any>
 
         val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
         rvItems.adapter = ChapterPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 1)
-    }
 
-    private fun initItems(){
-        for (section in codeProvider.getSections()){
-            items.add(section)
-            codeProvider.getChapters(section).forEach { items.add(it) }
+        val itemsObserver = Observer<List<Any>> { newItems ->
+            rvItems.adapter = ChapterPageAdapter(newItems)
+            PageNavigation.addRecyclerView(rvItems, newItems, 1)
         }
+
+        model.getItems().observe(viewLifecycleOwner, itemsObserver)
     }
 }
