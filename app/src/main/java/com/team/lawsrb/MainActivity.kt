@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
 
         val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.getActionView() as SearchView
+        val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.action_search)
 
         searchView.setOnQueryTextListener( object : OnQueryTextListener{
