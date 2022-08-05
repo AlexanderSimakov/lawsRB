@@ -81,7 +81,7 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
                 viewHolder.content.text = "Chapter content"
                 viewHolder.card.setOnClickListener {
-                    PageNavigation.moveLeftTo(chapter.id)
+                    PageNavigation.moveLeftTo(chapter)
                 }
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")

@@ -13,12 +13,21 @@ object PageNavigation {
         recyclers.add(number, Recycler(view, items))
     }
 
-    fun moveLeftTo(id: Int) {
-        viewPager!!.currentItem -= 1
+    fun moveLeftTo(codexObject: Any) {
+        viewPager!!.setCurrentItem(viewPager!!.currentItem - 1, true)
+        adjustPosition(codexObject)
     }
 
-    fun moveRightTo(id: Int) {
-        viewPager!!.currentItem += 1
+    fun moveRightTo(codexObject: Any) {
+        viewPager!!.setCurrentItem(viewPager!!.currentItem + 1, true)
+        adjustPosition(codexObject)
+    }
+
+    private fun adjustPosition(codexObject: Any){
+        recyclers[viewPager!!.currentItem].let { recycler ->
+            val position = recycler.items.indexOfFirst { it == codexObject }
+            recycler.recyclerView.smoothScrollToPosition(position)
+        }
     }
 
     fun clear(){

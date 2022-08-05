@@ -59,7 +59,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as SectionViewHolder).title.text = section.title
                 viewHolder.content.text = "Section content"
                 viewHolder.card.setOnClickListener {
-                    PageNavigation.moveLeftTo(section.id)
+                    PageNavigation.moveLeftTo(section)
                 }
             }
             isChapter -> {
@@ -67,7 +67,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
                 viewHolder.content.text = "Chapter content"
                 viewHolder.card.setOnClickListener {
-                    PageNavigation.moveRightTo(chapter.id)
+                    PageNavigation.moveRightTo(chapter)
                 }
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
