@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class CodexOfCriminalProcedureFragment : Fragment() {
     private lateinit var collectionAdapter: CollectionAdapter
@@ -25,6 +26,8 @@ class CodexOfCriminalProcedureFragment : Fragment() {
         collectionAdapter = CollectionAdapter(this)
         viewPager = view.findViewById(R.id.code_of_criminal_procedure_pager)
         viewPager.adapter = collectionAdapter
+        PageNavigation.clear()
+        PageNavigation.viewPager = viewPager
 
         val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.code_of_criminal_procedure_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

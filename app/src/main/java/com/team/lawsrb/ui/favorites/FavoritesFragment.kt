@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class FavoritesFragment : Fragment() {
     private lateinit var collectionAdapter: CollectionAdapter
@@ -25,6 +26,9 @@ class FavoritesFragment : Fragment() {
         collectionAdapter = CollectionAdapter(this)
         viewPager = view.findViewById(R.id.favorites_pager)
         viewPager.adapter = collectionAdapter
+
+        PageNavigation.clear()
+        PageNavigation.viewPager = viewPager
 
         val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.favorites_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

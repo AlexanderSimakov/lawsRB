@@ -9,6 +9,7 @@ import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Chapter
 import com.team.lawsrb.basic.codexObjects.Section
+import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
@@ -58,7 +59,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as SectionViewHolder).title.text = section.title
                 viewHolder.content.text = "Section content"
                 viewHolder.card.setOnClickListener {
-                    // PageNavigation.moveLeftTo(section.id)
+                    PageNavigation.moveLeftTo(section.id)
                 }
             }
             isChapter -> {
@@ -66,7 +67,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
                 viewHolder.content.text = "Chapter content"
                 viewHolder.card.setOnClickListener {
-                    // PageNavigation.moveRightTo(chapter.id)
+                    PageNavigation.moveRightTo(chapter.id)
                 }
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")

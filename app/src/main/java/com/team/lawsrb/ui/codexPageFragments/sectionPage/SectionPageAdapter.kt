@@ -9,6 +9,7 @@ import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.codexObjects.Part
 import com.team.lawsrb.basic.codexObjects.Section
+import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
@@ -57,7 +58,7 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 (viewHolder as SectionViewHolder).title.text = section.title
                 viewHolder.content.text = "Section content"
                 viewHolder.card.setOnClickListener {
-                    // PageNavigation.moveRightTo(section.id)
+                    PageNavigation.moveRightTo(section.id)
                 }
             }
             isPart -> {
