@@ -1,5 +1,7 @@
 package com.team.lawsrb.basic.dataProviders
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.team.lawsrb.basic.codexObjects.*
 
 object CriminalCodexProvider: CodexProvider {
@@ -7,6 +9,10 @@ object CriminalCodexProvider: CodexProvider {
     private val sections = mutableListOf<Section>()
     private val chapters = mutableListOf<Chapter>()
     private val articles = mutableListOf<Article>()
+
+    private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
+    private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
+    private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
     init {
         for (id in 0..1) parts.add(Part("Part ${id+1}", id))
@@ -22,37 +28,35 @@ object CriminalCodexProvider: CodexProvider {
             article.items.add("5. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
             article.items.add("6. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
         }
-    }
 
-    /**
-     * some info
-     */
-    override fun getParts() = parts
-    override fun getSections() = sections
-    override fun getChapters() = chapters
-    override fun getArticles() = articles
-
-    override fun getSections(part: Part): MutableList<Section>{
-        val sections = mutableListOf<Section>()
-        for (section in this.sections){
-            if (section.parentId == part.id) sections.add(section)
+        val sectionItems = mutableListOf<Any>()
+        for (part in parts){
+            sectionItems.add(part)
+            sections.filter { it.parentId == part.id }
+                    .forEach { sectionItems.add(it) }
         }
-        return sections
+        sectionPageItems.value = sectionItems
+
+        val chapterItems = mutableListOf<Any>()
+        for (section in sections){
+            chapterItems.add(section)
+            chapters.filter { it.parentId == section.id }
+                    .forEach { chapterItems.add(it) }
+        }
+        chapterPageItems.value = chapterItems
+
+        val articleItems = mutableListOf<Any>()
+        for (chapter in chapters){
+            articleItems.add(chapter)
+            articles.filter { it.parentId == chapter.id }
+                    .forEach { articleItems.add(it) }
+        }
+        articlePageItems.value = articleItems
     }
 
-    override fun getChapters(section: Section): MutableList<Chapter>{
-        val chapters = mutableListOf<Chapter>()
-        for (chapter in this.chapters){
-            if (chapter.parentId == section.id) chapters.add(chapter)
-        }
-        return chapters
-    }
+    override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
 
-    override fun getArticles(chapter: Chapter): MutableList<Article>{
-        val articles = mutableListOf<Article>()
-        for (article in this.articles){
-            if (article.parentId == chapter.id) articles.add(article)
-        }
-        return articles
-    }
+    override fun getChapterPageItems() = chapterPageItems as LiveData<List<Any>>
+
+    override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
 }
