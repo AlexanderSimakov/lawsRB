@@ -60,6 +60,8 @@ object FavoritesProvider: CodexProvider {
         for (id in 0..5) sections.add(Section("Section ${id+1}", id, if (id > 3) 1 else 0))
         for (id in 0..13) chapters.add(Chapter("Chapter ${id+1}", id, (id-1)/2))
         for (id in 0..27) articles.add(Article("Article ${id+1}", id, (id-1)/2))
+
+        initLiveData()
     }
 
     private fun initLiveData(){
