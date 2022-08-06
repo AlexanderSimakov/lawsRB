@@ -23,19 +23,35 @@ object CriminalCodexProvider: CodexProvider {
     private fun updateItems(){
         // Example code
         if (searchQuery != ""){
+            val pattern = searchQuery.toRegex(RegexOption.IGNORE_CASE)
+
             val articleItems = mutableListOf<Any>()
-            for (chapter in chapters){
-                articleItems.add(chapter)
-                articles.filter { (it.parentId == chapter.id) && (it.id % 2 == 1)  }.forEach { articleItems.add(it) }
+            for (article in articles){
+                if (pattern.containsMatchIn(article.title) ||
+                    pattern.containsMatchIn(article.content)){
+                    articleItems.add(article)
+                }
             }
             articlePageItems.value = articleItems
+
+            val chapterItems = mutableListOf<Any>()
+            for (chapter in chapters){
+                if (pattern.containsMatchIn(chapter.title)){
+                    chapterItems.add(chapter)
+                }
+            }
+            chapterPageItems.value = chapterItems
+
+            val sectionItems = mutableListOf<Any>()
+            for (section in sections){
+                if (pattern.containsMatchIn(section.title)){
+                    sectionItems.add(section)
+                }
+            }
+            sectionPageItems.value = sectionItems
+
         }else{
-            val articleItems = mutableListOf<Any>()
-            for (chapter in chapters){
-                articleItems.add(chapter)
-                articles.filter { it.parentId == chapter.id  }.forEach { articleItems.add(it) }
-            }
-            articlePageItems.value = articleItems
+            initLiveData()
         }
     }
 
@@ -54,11 +70,15 @@ object CriminalCodexProvider: CodexProvider {
             article.items.add("6. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum mattis imperdiet. Sed pretium, leo in mollis sagittis, odio dolor accumsan risus, eu consequat velit elit non neque.")
         }
 
+        initLiveData()
+    }
+
+    private fun initLiveData(){
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
             sectionItems.add(part)
             sections.filter { it.parentId == part.id }
-                    .forEach { sectionItems.add(it) }
+                .forEach { sectionItems.add(it) }
         }
         sectionPageItems.value = sectionItems
 
@@ -66,7 +86,7 @@ object CriminalCodexProvider: CodexProvider {
         for (section in sections){
             chapterItems.add(section)
             chapters.filter { it.parentId == section.id }
-                    .forEach { chapterItems.add(it) }
+                .forEach { chapterItems.add(it) }
         }
         chapterPageItems.value = chapterItems
 
@@ -74,7 +94,7 @@ object CriminalCodexProvider: CodexProvider {
         for (chapter in chapters){
             articleItems.add(chapter)
             articles.filter { it.parentId == chapter.id }
-                    .forEach { articleItems.add(it) }
+                .forEach { articleItems.add(it) }
         }
         articlePageItems.value = articleItems
     }

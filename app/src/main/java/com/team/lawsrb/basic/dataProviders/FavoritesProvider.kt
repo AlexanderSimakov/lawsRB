@@ -21,21 +21,37 @@ object FavoritesProvider: CodexProvider {
         }
 
     private fun updateItems(){
-        // Exapmle code
+        // Example code
         if (searchQuery != ""){
+            val pattern = searchQuery.toRegex(RegexOption.IGNORE_CASE)
+
             val articleItems = mutableListOf<Any>()
-            for (chapter in chapters){
-                articleItems.add(chapter)
-                articles.filter { (it.parentId == chapter.id) && (it.id % 2 == 1)  }.forEach { articleItems.add(it) }
+            for (article in articles){
+                if (pattern.containsMatchIn(article.title) ||
+                    pattern.containsMatchIn(article.content)){
+                    articleItems.add(article)
+                }
             }
             articlePageItems.value = articleItems
+
+            val chapterItems = mutableListOf<Any>()
+            for (chapter in chapters){
+                if (pattern.containsMatchIn(chapter.title)){
+                    chapterItems.add(chapter)
+                }
+            }
+            chapterPageItems.value = chapterItems
+
+            val sectionItems = mutableListOf<Any>()
+            for (section in sections){
+                if (pattern.containsMatchIn(section.title)){
+                    sectionItems.add(section)
+                }
+            }
+            sectionPageItems.value = sectionItems
+
         }else{
-            val articleItems = mutableListOf<Any>()
-            for (chapter in chapters){
-                articleItems.add(chapter)
-                articles.filter { it.parentId == chapter.id  }.forEach { articleItems.add(it) }
-            }
-            articlePageItems.value = articleItems
+            initLiveData()
         }
     }
 
@@ -44,13 +60,14 @@ object FavoritesProvider: CodexProvider {
         for (id in 0..5) sections.add(Section("Section ${id+1}", id, if (id > 3) 1 else 0))
         for (id in 0..13) chapters.add(Chapter("Chapter ${id+1}", id, (id-1)/2))
         for (id in 0..27) articles.add(Article("Article ${id+1}", id, (id-1)/2))
+    }
 
-
+    private fun initLiveData(){
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
             sectionItems.add(part)
             sections.filter { it.parentId == part.id }
-                    .forEach { sectionItems.add(it) }
+                .forEach { sectionItems.add(it) }
         }
         sectionPageItems.value = sectionItems
 
@@ -58,7 +75,7 @@ object FavoritesProvider: CodexProvider {
         for (section in sections){
             chapterItems.add(section)
             chapters.filter { it.parentId == section.id }
-                    .forEach { chapterItems.add(it) }
+                .forEach { chapterItems.add(it) }
         }
         chapterPageItems.value = chapterItems
 
