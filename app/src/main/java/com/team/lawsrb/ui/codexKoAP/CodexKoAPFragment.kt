@@ -19,20 +19,17 @@ class CodexKoAPFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // TODO: Change layout to actual
-        return inflater.inflate(R.layout.fragment_codex_of_criminal_procedure, container, false)
+        return inflater.inflate(R.layout.fragment_koap, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         collectionAdapter = CollectionAdapter(this)
-        // TODO: Change viewPage id to actual
-        viewPager = view.findViewById(R.id.code_of_criminal_procedure_pager)
+        viewPager = view.findViewById(R.id.koap_pager)
         viewPager.adapter = collectionAdapter
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        // TODO: Change tabLayout id to actual
-        val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.code_of_criminal_procedure_tab_layout)
+        val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.koap_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)
