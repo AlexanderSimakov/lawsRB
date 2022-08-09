@@ -13,11 +13,11 @@
             android:icon="@drawable/ic_book"
             android:title="@string/menu_code_of_criminal_proсedure" />
         <item
-            android:id="@+id/nav_codex_of_administrative_offenses"
+            android:id="@+id/nav_koap"
             android:icon="@drawable/ic_book"
             android:title="@string/menu_KoAP" />
         <item
-            android:id="@+id/nav_PIKoAP"
+            android:id="@+id/nav_pikoap"
             android:icon="@drawable/ic_book"
             android:title="@string/menu_PIKoAP" />
         <item
