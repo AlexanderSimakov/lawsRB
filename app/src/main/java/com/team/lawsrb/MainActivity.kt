@@ -18,6 +18,8 @@ import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
 import com.team.lawsrb.basic.dataProviders.FavoritesProvider
 import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
+import com.team.lawsrb.basic.roomDatabase.PIKoAPDatabase
 import com.team.lawsrb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         //Initialize database
         CriminalCodexDatabase.getInstance(applicationContext)
         CodexOfCriminalProcedureDatabase.getInstance(applicationContext)
+        KoAPDatabase.getInstance(applicationContext)
+        PIKoAPDatabase.getInstance(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

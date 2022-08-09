@@ -2,8 +2,7 @@ package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.team.lawsrb.basic.roomDatabase.CodexDatabase
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object KoAPProvider: CodexProvider {
@@ -16,8 +15,7 @@ object KoAPProvider: CodexProvider {
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
-    // TODO add new database
-    override val database = CriminalCodexDatabase.getInstance()
+    override val database = KoAPDatabase.getInstance()
 
     var searchQuery: String = ""
         set(value: String) {

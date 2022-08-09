@@ -2,8 +2,8 @@ package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.PIKoAPDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object PIKoAPProvider: CodexProvider {
@@ -16,8 +16,7 @@ object PIKoAPProvider: CodexProvider {
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
-    // TODO add new database
-    override val database = CriminalCodexDatabase.getInstance()
+    override val database = PIKoAPDatabase.getInstance()
 
     var searchQuery: String = ""
         set(value: String) {
