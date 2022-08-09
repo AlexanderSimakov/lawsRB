@@ -12,6 +12,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_criminal_code">УК</string>
     <string name="menu_code_of_criminal_proсedure">УПК</string>
+    <!-- TODO: Rename menu_KoAP and menu_PIKoAP? -->
+    <string name="menu_KoAP">КоАП</string>
+    <string name="menu_PIKoAP">ПИКоАП</string>
     <string name="menu_favorites">Избранное</string>
     <string name="menu_settings">Настройки</string>
 
