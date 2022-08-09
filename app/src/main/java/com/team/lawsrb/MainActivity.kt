@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
 import com.team.lawsrb.basic.dataProviders.FavoritesProvider
+import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
+import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +47,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_favorites, R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //Initialize database
+        CriminalCodexDatabase.getInstance(applicationContext)
+        CodexOfCriminalProcedureDatabase.getInstance(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

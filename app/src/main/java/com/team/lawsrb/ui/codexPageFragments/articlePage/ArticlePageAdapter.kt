@@ -11,11 +11,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codexObjects.Article
-import com.team.lawsrb.basic.codexObjects.Chapter
+import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
+import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
-class ArticlePageAdapter (private val items: List<Any>, private val rvView: View) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticlePageAdapter (private val items: List<Any>,
+                          private val rvView: View,
+                          private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val isArticle = 1
     private val isChapter = 2
 
@@ -74,6 +79,12 @@ class ArticlePageAdapter (private val items: List<Any>, private val rvView: View
                     }else{
                         viewHolder.expandable.visibility = View.VISIBLE
                     }
+                }
+                viewHolder.checkBox.setOnClickListener {
+                    // TODO make it better
+                    val _article = Article(article.title, article.id, article.parentId, viewHolder.checkBox.isChecked)
+                    _article.content = article.content
+                    articlesDao.update(_article)
                 }
             }
             isChapter -> {

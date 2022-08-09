@@ -2,7 +2,9 @@ package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.team.lawsrb.basic.codexObjects.*
+import com.team.lawsrb.basic.roomDatabase.CodexDatabase
+import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object FavoritesProvider: CodexProvider {
     private val parts = mutableListOf<Part>()
@@ -13,6 +15,9 @@ object FavoritesProvider: CodexProvider {
     private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
+
+    // TODO Add other database
+    override val database = CriminalCodexDatabase.getInstance()
 
     var searchQuery: String = ""
         set(value: String) {
@@ -56,10 +61,10 @@ object FavoritesProvider: CodexProvider {
     }
 
     init {
-        for (id in 0..1) parts.add(Part("Part ${id+1}", id))
-        for (id in 0..5) sections.add(Section("Section ${id+1}", id, if (id > 3) 1 else 0))
-        for (id in 0..13) chapters.add(Chapter("Chapter ${id+1}", id, (id-1)/2))
-        for (id in 0..27) articles.add(Article("Article ${id+1}", id, (id-1)/2))
+        parts.addAll(database.partsDao().getAll())
+        sections.addAll(database.sectionsDao().getAll())
+        chapters.addAll(database.chaptersDao().getAll())
+        articles.addAll(database.articlesDao().getAll())
 
         initLiveData()
     }

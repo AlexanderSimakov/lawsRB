@@ -33,12 +33,12 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         val items = model.getItems().value as List<Any>
 
         val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
-        rvItems.adapter = ArticlePageAdapter(items, rvItems)
+        rvItems.adapter = ArticlePageAdapter(items, rvItems, codeProvider.database.articlesDao())
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 2)
 
         val itemsObserver = Observer<List<Any>> { newItems ->
-            rvItems.adapter = ArticlePageAdapter(newItems, rvItems)
+            rvItems.adapter = ArticlePageAdapter(newItems, rvItems, codeProvider.database.articlesDao())
             PageNavigation.addRecyclerView(rvItems, newItems, 2)
         }
 

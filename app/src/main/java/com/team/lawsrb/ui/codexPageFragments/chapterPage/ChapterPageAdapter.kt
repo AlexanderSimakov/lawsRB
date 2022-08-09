@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.codexObjects.Chapter
-import com.team.lawsrb.basic.codexObjects.Section
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
