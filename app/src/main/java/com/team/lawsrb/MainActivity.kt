@@ -1,7 +1,13 @@
 package com.team.lawsrb
 
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
+import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import com.google.android.material.snackbar.Snackbar
@@ -82,6 +88,17 @@ class MainActivity : AppCompatActivity() {
             CodexOfCriminalProcedureProvider.searchQuery = ""
             false
         }
+
+        // --- Favorites button ---
+        val favoritesItem = menu.findItem(R.id.action_favorites)
+        val favoritesCheckBox = favoritesItem.actionView as CheckBox
+
+        // TODO: add good drawable instead of this code
+        val drawable = applicationContext.resources.getDrawable(R.drawable.card_checkbox_selector)
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.DST_IN)
+        favoritesCheckBox.buttonDrawable = drawable
+        favoritesCheckBox.scaleX = 0.8F
+        favoritesCheckBox.scaleY = 0.8F
 
         return true
     }
