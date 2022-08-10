@@ -2,7 +2,7 @@ package com.team.lawsrb.basic.roomDatabase.codexObjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 
 /**
  * A *data class* that represents single codex Part.
@@ -13,7 +13,7 @@ import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
  * @property id Unique id.
  * @property isLiked Equals *true* if [Part] marked as favorite.
  */
-@Entity(tableName = CriminalCodexDatabase.PARTS_NAME)
+@Entity(tableName = CodexDatabase.PARTS_NAME)
 data class Part(
     val title: String,
     @PrimaryKey val id: Int,

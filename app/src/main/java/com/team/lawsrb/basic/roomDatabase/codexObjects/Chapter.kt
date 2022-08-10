@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 
 /**
  * A *data class* that represents single codex chapter.
@@ -17,7 +17,7 @@ import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
  * @property isLiked Equals *true* if [Chapter] marked as favorite.
  */
 @Entity(
-    tableName = CriminalCodexDatabase.CHAPTERS_NAME,
+    tableName = CodexDatabase.CHAPTERS_NAME,
     foreignKeys = [
         ForeignKey (
             entity = Section::class,

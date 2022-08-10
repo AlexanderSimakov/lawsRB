@@ -24,10 +24,6 @@ abstract class CriminalCodexDatabase: CodexDatabase() {
         private var INSTANCE: CriminalCodexDatabase? = null
         private const val DATABASE_NAME = "codex_database"
         private const val DATABASE_ASSETS_PATH = "database/codex_database"
-        const val PARTS_NAME = "PARTS"
-        const val SECTIONS_NAME = "SECTIONS"
-        const val CHAPTERS_NAME = "CHAPTERS"
-        const val ARTICLES_NAME = "ARTICLES"
 
         fun getInstance(context: Context? = null): CriminalCodexDatabase{
             val tempInstance = INSTANCE

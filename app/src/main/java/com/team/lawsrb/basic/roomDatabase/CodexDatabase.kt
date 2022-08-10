@@ -15,4 +15,10 @@ abstract class CodexDatabase : RoomDatabase(){
     abstract fun sectionsDao(): SectionsDao
     abstract fun chaptersDao(): ChaptersDao
     abstract fun articlesDao(): ArticlesDao
+    companion object {
+        const val PARTS_NAME = "PARTS"
+        const val SECTIONS_NAME = "SECTIONS"
+        const val CHAPTERS_NAME = "CHAPTERS"
+        const val ARTICLES_NAME = "ARTICLES"
+    }
 }

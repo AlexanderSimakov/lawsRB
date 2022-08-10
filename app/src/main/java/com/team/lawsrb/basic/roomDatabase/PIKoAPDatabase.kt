@@ -24,10 +24,6 @@ abstract class PIKoAPDatabase: CodexDatabase() {
         private var INSTANCE: PIKoAPDatabase? = null
         private const val DATABASE_NAME = "pikoap_database"
         private const val DATABASE_ASSETS_PATH = "database/codex_database"
-        const val PARTS_NAME = "PARTS"
-        const val SECTIONS_NAME = "SECTIONS"
-        const val CHAPTERS_NAME = "CHAPTERS"
-        const val ARTICLES_NAME = "ARTICLES"
 
         fun getInstance(context: Context? = null): PIKoAPDatabase{
             val tempInstance = INSTANCE

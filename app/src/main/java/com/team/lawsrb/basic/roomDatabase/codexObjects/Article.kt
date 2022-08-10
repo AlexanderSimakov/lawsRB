@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
+import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 
 /**
  * A *data class* that represents single codex article with items.
@@ -18,7 +18,7 @@ import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
  * @property content Contain an [Article] items as [String].
  */
 @Entity(
-    tableName = CriminalCodexDatabase.ARTICLES_NAME,
+    tableName = CodexDatabase.ARTICLES_NAME,
     foreignKeys = [
         ForeignKey (
             entity = Chapter::class,
