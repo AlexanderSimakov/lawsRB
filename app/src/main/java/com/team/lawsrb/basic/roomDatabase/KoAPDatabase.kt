@@ -23,6 +23,7 @@ abstract class KoAPDatabase: CodexDatabase() {
         @Volatile
         private var INSTANCE: KoAPDatabase? = null
         private const val DATABASE_NAME = "koap_database"
+        // TODO change DATABASE_ASSETS_PATH to actual
         private const val DATABASE_ASSETS_PATH = "database/codex_database"
 
         fun getInstance(context: Context? = null): KoAPDatabase{

@@ -23,6 +23,7 @@ abstract class PIKoAPDatabase: CodexDatabase() {
         @Volatile
         private var INSTANCE: PIKoAPDatabase? = null
         private const val DATABASE_NAME = "pikoap_database"
+        // TODO change DATABASE_ASSETS_PATH to actual
         private const val DATABASE_ASSETS_PATH = "database/codex_database"
 
         fun getInstance(context: Context? = null): PIKoAPDatabase{

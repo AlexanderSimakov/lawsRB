@@ -23,6 +23,7 @@ abstract class CriminalCodexDatabase: CodexDatabase() {
         @Volatile
         private var INSTANCE: CriminalCodexDatabase? = null
         private const val DATABASE_NAME = "codex_database"
+        // TODO change DATABASE_ASSETS_PATH to actual
         private const val DATABASE_ASSETS_PATH = "database/codex_database"
 
         fun getInstance(context: Context? = null): CriminalCodexDatabase{
