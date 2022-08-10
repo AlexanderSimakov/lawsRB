@@ -15,7 +15,6 @@
     <!-- TODO: Rename menu_KoAP and menu_PIKoAP? -->
     <string name="menu_KoAP">КоАП</string>
     <string name="menu_PIKoAP">ПИКоАП</string>
-    <string name="menu_favorites">Избранное</string>
     <string name="menu_settings">Настройки</string>
 
     <!-- Pager -->

@@ -15,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
-import com.team.lawsrb.basic.dataProviders.FavoritesProvider
 import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(setOf(
                 R.id.nav_criminal_code, R.id.nav_code_of_criminal_procedure,
                 R.id.nav_koap, R.id.nav_pikoap,
-                R.id.nav_favorites, R.id.nav_settings), drawerLayout)
+                R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(text: String): Boolean {
-                FavoritesProvider.searchQuery = text
                 CriminalCodexProvider.searchQuery = text
                 CodexOfCriminalProcedureProvider.searchQuery = text
                 return false
@@ -80,7 +78,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         searchView.setOnCloseListener {
-            FavoritesProvider.searchQuery = ""
             CriminalCodexProvider.searchQuery = ""
             CodexOfCriminalProcedureProvider.searchQuery = ""
             false
