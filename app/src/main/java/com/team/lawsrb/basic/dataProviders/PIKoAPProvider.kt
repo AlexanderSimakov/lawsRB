@@ -6,6 +6,8 @@ import com.team.lawsrb.basic.roomDatabase.PIKoAPDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object PIKoAPProvider: CodexProvider {
+    override val database = PIKoAPDatabase.getInstance()
+
     private var parts = mutableListOf<Part>()
     private var sections = mutableListOf<Section>()
     private var chapters = mutableListOf<Chapter>()
@@ -14,8 +16,6 @@ object PIKoAPProvider: CodexProvider {
     private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
-
-    override val database = PIKoAPDatabase.getInstance()
 
     var searchQuery: String = ""
         set(value) {
@@ -30,6 +30,12 @@ object PIKoAPProvider: CodexProvider {
             if (field) showFavorites()
             else initLiveData()
         }
+
+    init { initLiveData() }
+
+    override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
+    override fun getChapterPageItems() = chapterPageItems as LiveData<List<Any>>
+    override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
 
     private fun showFavorites(){
         articles = database.articlesDao().getFavorites() as MutableList<Article>
@@ -69,10 +75,6 @@ object PIKoAPProvider: CodexProvider {
         sectionPageItems.value = sectionItems
     }
 
-    init {
-        initLiveData()
-    }
-
     private fun initLiveData(clearPrevious: Boolean = true){
         if (clearPrevious) initCodexLists()
 
@@ -107,10 +109,4 @@ object PIKoAPProvider: CodexProvider {
         chapters = database.chaptersDao().getAll() as MutableList<Chapter>
         articles = database.articlesDao().getAll() as MutableList<Article>
     }
-
-    override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
-
-    override fun getChapterPageItems() = chapterPageItems as LiveData<List<Any>>
-
-    override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
 }

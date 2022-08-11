@@ -6,6 +6,8 @@ import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object CodexOfCriminalProcedureProvider : CodexProvider {
+    override val database = CodexOfCriminalProcedureDatabase.getInstance()
+
     private var parts = mutableListOf<Part>()
     private var sections = mutableListOf<Section>()
     private var chapters = mutableListOf<Chapter>()
@@ -14,8 +16,6 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
     private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
-
-    override val database = CodexOfCriminalProcedureDatabase.getInstance()
 
     var searchQuery: String = ""
         set(value) {
@@ -31,6 +31,12 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
             else initLiveData()
         }
 
+    init { initLiveData() }
+
+    override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
+    override fun getChapterPageItems() = chapterPageItems as LiveData<List<Any>>
+    override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
+
     private fun showFavorites(){
         articles = database.articlesDao().getFavorites() as MutableList<Article>
         chapters = database.chaptersDao().getByIds(articles.map { it.parentId }) as MutableList<Chapter>
@@ -38,7 +44,6 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
         parts = database.partsDao().getByIds(sections.map { it.parentId }) as MutableList<Part>
         initLiveData(false)
     }
-
 
     private fun updateItems(){
         // Example code
@@ -68,10 +73,6 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
             }
         }
         sectionPageItems.value = sectionItems
-    }
-
-    init {
-        initLiveData()
     }
 
     private fun initLiveData(clearPrevious: Boolean = true){
@@ -108,10 +109,4 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
         chapters = database.chaptersDao().getAll() as MutableList<Chapter>
         articles = database.articlesDao().getAll() as MutableList<Article>
     }
-
-    override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
-
-    override fun getChapterPageItems() = chapterPageItems as LiveData<List<Any>>
-
-    override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
 }
