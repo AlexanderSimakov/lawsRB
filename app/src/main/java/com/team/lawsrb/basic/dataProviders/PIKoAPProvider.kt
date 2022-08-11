@@ -26,11 +26,8 @@ object PIKoAPProvider: CodexProvider {
     var isFavorites: Boolean = false
         set(value) {
             field = value
-            if (field){
-                showFavorites()
-            }else{
-                initLiveData()
-            }
+            if (field) showFavorites()
+            else initLiveData()
         }
 
     private fun showFavorites(){
