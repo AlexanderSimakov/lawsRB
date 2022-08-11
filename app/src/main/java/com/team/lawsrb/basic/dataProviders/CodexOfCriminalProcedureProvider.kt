@@ -20,7 +20,8 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
     var searchQuery: String = ""
         set(value) {
             field = value
-            updateItems()
+            if (field != "") updateItems()
+            else initLiveData()
         }
 
     var isFavorites: Boolean = false
@@ -45,37 +46,32 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
 
     private fun updateItems(){
         // Example code
-        if (searchQuery != ""){
-            val pattern = searchQuery.toRegex(RegexOption.IGNORE_CASE)
+        val pattern = searchQuery.toRegex(RegexOption.IGNORE_CASE)
 
-            val articleItems = mutableListOf<Any>()
-            for (article in articles){
-                if (pattern.containsMatchIn(article.title) ||
-                    pattern.containsMatchIn(article.content)){
-                    articleItems.add(article)
-                }
+        val articleItems = mutableListOf<Any>()
+        for (article in articles){
+            if (pattern.containsMatchIn(article.title) ||
+                pattern.containsMatchIn(article.content)){
+                articleItems.add(article)
             }
-            articlePageItems.value = articleItems
-
-            val chapterItems = mutableListOf<Any>()
-            for (chapter in chapters){
-                if (pattern.containsMatchIn(chapter.title)){
-                    chapterItems.add(chapter)
-                }
-            }
-            chapterPageItems.value = chapterItems
-
-            val sectionItems = mutableListOf<Any>()
-            for (section in sections){
-                if (pattern.containsMatchIn(section.title)){
-                    sectionItems.add(section)
-                }
-            }
-            sectionPageItems.value = sectionItems
-
-        }else{
-            initLiveData()
         }
+        articlePageItems.value = articleItems
+
+        val chapterItems = mutableListOf<Any>()
+        for (chapter in chapters){
+            if (pattern.containsMatchIn(chapter.title)){
+                chapterItems.add(chapter)
+            }
+        }
+        chapterPageItems.value = chapterItems
+
+        val sectionItems = mutableListOf<Any>()
+        for (section in sections){
+            if (pattern.containsMatchIn(section.title)){
+                sectionItems.add(section)
+            }
+        }
+        sectionPageItems.value = sectionItems
     }
 
     init {
