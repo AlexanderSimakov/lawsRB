@@ -74,10 +74,7 @@ object CriminalCodexProvider: CodexProvider {
     }
 
     private fun initLiveData(clearPrevious: Boolean = true){
-        if (clearPrevious){
-            clearCodexLists()
-            initCodexLists()
-        }
+        if (clearPrevious) initCodexLists()
 
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
@@ -104,18 +101,11 @@ object CriminalCodexProvider: CodexProvider {
         articlePageItems.value = articleItems
     }
 
-    private fun clearCodexLists(){
-        parts.clear()
-        sections.clear()
-        chapters.clear()
-        articles.clear()
-    }
-
     private fun initCodexLists(){
-        parts.addAll(database.partsDao().getAll())
-        sections.addAll(database.sectionsDao().getAll())
-        chapters.addAll(database.chaptersDao().getAll())
-        articles.addAll(database.articlesDao().getAll())
+        parts = database.partsDao().getAll() as MutableList<Part>
+        sections = database.sectionsDao().getAll() as MutableList<Section>
+        chapters = database.chaptersDao().getAll() as MutableList<Chapter>
+        articles = database.articlesDao().getAll() as MutableList<Article>
     }
 
     override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
