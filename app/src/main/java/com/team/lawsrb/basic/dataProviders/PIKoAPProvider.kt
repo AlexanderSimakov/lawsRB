@@ -2,7 +2,6 @@ package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.basic.roomDatabase.PIKoAPDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
@@ -82,24 +81,12 @@ object PIKoAPProvider: CodexProvider {
     }
 
     init {
-        parts.addAll(database.partsDao().getAll())
-        sections.addAll(database.sectionsDao().getAll())
-        chapters.addAll(database.chaptersDao().getAll())
-        articles.addAll(database.articlesDao().getAll())
-
         initLiveData()
     }
 
     private fun initLiveData(){
-        parts.clear()
-        sections.clear()
-        chapters.clear()
-        articles.clear()
-
-        parts.addAll(database.partsDao().getAll())
-        sections.addAll(database.sectionsDao().getAll())
-        chapters.addAll(database.chaptersDao().getAll())
-        articles.addAll(database.articlesDao().getAll())
+        clearCodexLists()
+        initCodexLists()
 
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
@@ -124,6 +111,20 @@ object PIKoAPProvider: CodexProvider {
                 .forEach { articleItems.add(it) }
         }
         articlePageItems.value = articleItems
+    }
+
+    private fun clearCodexLists(){
+        parts.clear()
+        sections.clear()
+        chapters.clear()
+        articles.clear()
+    }
+
+    private fun initCodexLists(){
+        parts.addAll(database.partsDao().getAll())
+        sections.addAll(database.sectionsDao().getAll())
+        chapters.addAll(database.chaptersDao().getAll())
+        articles.addAll(database.articlesDao().getAll())
     }
 
     override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
