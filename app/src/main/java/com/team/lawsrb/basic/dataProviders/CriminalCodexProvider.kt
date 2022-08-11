@@ -18,7 +18,7 @@ object CriminalCodexProvider: CodexProvider {
     override val database = CriminalCodexDatabase.getInstance()
 
     var searchQuery: String = ""
-        set(value: String) {
+        set(value) {
             field = value
             updateItems()
         }

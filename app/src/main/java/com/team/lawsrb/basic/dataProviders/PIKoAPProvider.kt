@@ -18,7 +18,7 @@ object PIKoAPProvider: CodexProvider {
     override val database = PIKoAPDatabase.getInstance()
 
     var searchQuery: String = ""
-        set(value: String) {
+        set(value) {
             field = value
             updateItems()
         }

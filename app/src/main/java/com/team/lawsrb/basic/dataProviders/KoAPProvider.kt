@@ -18,7 +18,7 @@ object KoAPProvider: CodexProvider {
     override val database = KoAPDatabase.getInstance()
 
     var searchQuery: String = ""
-        set(value: String) {
+        set(value) {
             field = value
             updateItems()
         }
