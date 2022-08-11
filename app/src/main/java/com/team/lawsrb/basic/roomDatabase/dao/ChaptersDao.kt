@@ -18,7 +18,7 @@ interface ChaptersDao {
     fun getByIds(ids: List<Int>): List<Chapter>
 
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Article>
+    fun findAll(search: String): List<Chapter>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chapter: Chapter)

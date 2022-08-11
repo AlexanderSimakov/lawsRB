@@ -18,7 +18,7 @@ interface PartsDao {
     fun getByIds(ids: List<Int>): List<Part>
 
     @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Article>
+    fun findAll(search: String): List<Part>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(part: Part)

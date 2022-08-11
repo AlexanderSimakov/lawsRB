@@ -18,7 +18,7 @@ interface SectionsDao {
     fun getByIds(ids: List<Int>): List<Section>
 
     @Query("SELECT * FROM ${CodexDatabase.SECTIONS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Article>
+    fun findAll(search: String): List<Section>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(section: Section)
