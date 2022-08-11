@@ -13,6 +13,9 @@ interface PartsDao {
     @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} ORDER BY id ASC")
     fun getAll(): List<Part>
 
+    @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
+    fun getByIds(ids: List<Int>): List<Part>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(part: Part)
 

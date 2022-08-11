@@ -13,6 +13,9 @@ interface ChaptersDao {
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} ORDER BY id ASC")
     fun getAll(): List<Chapter>
 
+    @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
+    fun getByIds(ids: List<Int>): List<Chapter>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chapter: Chapter)
 }
