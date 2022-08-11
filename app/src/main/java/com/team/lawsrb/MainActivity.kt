@@ -21,6 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
+import com.team.lawsrb.basic.dataProviders.KoAPProvider
+import com.team.lawsrb.basic.dataProviders.PIKoAPProvider
 import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
@@ -99,6 +101,15 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.buttonDrawable = drawable
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
+
+        favoritesCheckBox.setOnClickListener {
+            val isChecked = (it as CheckBox).isChecked
+
+            CodexOfCriminalProcedureProvider.isFavorites = isChecked
+            CriminalCodexProvider.isFavorites = isChecked
+            KoAPProvider.isFavorites = isChecked
+            PIKoAPProvider.isFavorites = isChecked
+        }
 
         return true
     }
