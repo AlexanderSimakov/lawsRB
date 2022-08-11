@@ -6,10 +6,10 @@ import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.*
 
 object CodexOfCriminalProcedureProvider : CodexProvider {
-    private val parts = mutableListOf<Part>()
-    private val sections = mutableListOf<Section>()
-    private val chapters = mutableListOf<Chapter>()
-    private val articles = mutableListOf<Article>()
+    private var parts = mutableListOf<Part>()
+    private var sections = mutableListOf<Section>()
+    private var chapters = mutableListOf<Chapter>()
+    private var articles = mutableListOf<Article>()
 
     private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
     private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
@@ -32,15 +32,11 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
         }
 
     private fun showFavorites(){
-        // TODO change algorithm to work with navigation
-        val favorites = database.articlesDao().getAll()
-        val favoritesArticles = mutableListOf<Any>()
-        for (item: Any in favorites){
-            if (item::class == Article::class && (item as Article).isLiked){
-                favoritesArticles.add(item)
-            }
-        }
-        articlePageItems.value = favoritesArticles
+        articles = database.articlesDao().getFavorites() as MutableList<Article>
+        chapters = database.chaptersDao().getByIds(articles.map { it.parentId }) as MutableList<Chapter>
+        sections = database.sectionsDao().getByIds(chapters.map { it.parentId }) as MutableList<Section>
+        parts = database.partsDao().getByIds(sections.map { it.parentId }) as MutableList<Part>
+        initLiveData(false)
     }
 
 
@@ -78,9 +74,11 @@ object CodexOfCriminalProcedureProvider : CodexProvider {
         initLiveData()
     }
 
-    private fun initLiveData(){
-        clearCodexLists()
-        initCodexLists()
+    private fun initLiveData(clearPrevious: Boolean = true){
+        if (clearPrevious){
+            clearCodexLists()
+            initCodexLists()
+        }
 
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
