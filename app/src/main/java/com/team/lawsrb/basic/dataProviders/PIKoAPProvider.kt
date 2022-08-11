@@ -24,6 +24,28 @@ object PIKoAPProvider: CodexProvider {
             updateItems()
         }
 
+    var isFavorites: Boolean = false
+        set(value) {
+            field = value
+            if (field){
+                showFavorites()
+            }else{
+                initLiveData()
+            }
+        }
+
+    private fun showFavorites(){
+        // TODO change algorithm to work with navigation
+        val favorites = database.articlesDao().getAll()
+        val favoritesArticles = mutableListOf<Any>()
+        for (item: Any in favorites){
+            if (item::class == Article::class && (item as Article).isLiked){
+                favoritesArticles.add(item)
+            }
+        }
+        articlePageItems.value = favoritesArticles
+    }
+
     private fun updateItems(){
         // Example code
         if (searchQuery != ""){
@@ -69,6 +91,16 @@ object PIKoAPProvider: CodexProvider {
     }
 
     private fun initLiveData(){
+        parts.clear()
+        sections.clear()
+        chapters.clear()
+        articles.clear()
+
+        parts.addAll(database.partsDao().getAll())
+        sections.addAll(database.sectionsDao().getAll())
+        chapters.addAll(database.chaptersDao().getAll())
+        articles.addAll(database.articlesDao().getAll())
+
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
             sectionItems.add(part)
