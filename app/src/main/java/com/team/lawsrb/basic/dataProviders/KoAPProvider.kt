@@ -46,33 +46,9 @@ object KoAPProvider: CodexProvider {
     }
 
     private fun updateItems(){
-        // Example code
-        val pattern = searchQuery.toRegex(RegexOption.IGNORE_CASE)
-
-        val articleItems = mutableListOf<Any>()
-        for (article in articles){
-            if (pattern.containsMatchIn(article.title) ||
-                pattern.containsMatchIn(article.content)){
-                articleItems.add(article)
-            }
-        }
-        articlePageItems.value = articleItems
-
-        val chapterItems = mutableListOf<Any>()
-        for (chapter in chapters){
-            if (pattern.containsMatchIn(chapter.title)){
-                chapterItems.add(chapter)
-            }
-        }
-        chapterPageItems.value = chapterItems
-
-        val sectionItems = mutableListOf<Any>()
-        for (section in sections){
-            if (pattern.containsMatchIn(section.title)){
-                sectionItems.add(section)
-            }
-        }
-        sectionPageItems.value = sectionItems
+        articlePageItems.value = database.articlesDao().findAll("%${searchQuery}%")
+        chapterPageItems.value = database.chaptersDao().findAll("%${searchQuery}%")
+        sectionPageItems.value = database.sectionsDao().findAll("%${searchQuery}%")
     }
 
     private fun initLiveData(clearPrevious: Boolean = true){
