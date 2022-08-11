@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 
 @Dao
@@ -15,6 +16,9 @@ interface ChaptersDao {
 
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
     fun getByIds(ids: List<Int>): List<Chapter>
+
+    @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE title LIKE :search ORDER BY id ASC")
+    fun findAll(search: String): List<Article>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chapter: Chapter)
