@@ -81,24 +81,21 @@ object CriminalCodexProvider: CodexProvider {
         val sectionItems = mutableListOf<Any>()
         for (part in parts){
             sectionItems.add(part)
-            sections.filter { it.parentId == part.id }
-                .forEach { sectionItems.add(it) }
+            sectionItems.addAll(sections.filter { it.parentId == part.id })
         }
         sectionPageItems.value = sectionItems
 
         val chapterItems = mutableListOf<Any>()
         for (section in sections){
             chapterItems.add(section)
-            chapters.filter { it.parentId == section.id }
-                .forEach { chapterItems.add(it) }
+            chapterItems.addAll(chapters.filter { it.parentId == section.id })
         }
         chapterPageItems.value = chapterItems
 
         val articleItems = mutableListOf<Any>()
         for (chapter in chapters){
             articleItems.add(chapter)
-            articles.filter { it.parentId == chapter.id }
-                .forEach { articleItems.add(it) }
+            articleItems.addAll(articles.filter { it.parentId == chapter.id })
         }
         articlePageItems.value = articleItems
     }
