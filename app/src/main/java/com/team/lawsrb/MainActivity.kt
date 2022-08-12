@@ -19,10 +19,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
-import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
-import com.team.lawsrb.basic.dataProviders.KoAPProvider
-import com.team.lawsrb.basic.dataProviders.PIKoAPProvider
+import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
 import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
@@ -79,15 +76,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(text: String): Boolean {
-                CriminalCodexProvider.searchQuery = text
-                CodexOfCriminalProcedureProvider.searchQuery = text
+                BaseCodexProvider.sentQuery(text)
                 return false
             }
         })
 
         searchView.setOnCloseListener {
-            CriminalCodexProvider.searchQuery = ""
-            CodexOfCriminalProcedureProvider.searchQuery = ""
+            BaseCodexProvider.sentQuery("")
             false
         }
 
@@ -104,11 +99,7 @@ class MainActivity : AppCompatActivity() {
 
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
-
-            CodexOfCriminalProcedureProvider.isFavorites = isChecked
-            CriminalCodexProvider.isFavorites = isChecked
-            KoAPProvider.isFavorites = isChecked
-            PIKoAPProvider.isFavorites = isChecked
+            BaseCodexProvider.setFavorite(isChecked)
         }
 
         return true

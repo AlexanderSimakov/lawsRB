@@ -3,6 +3,7 @@ package com.team.lawsrb.ui.criminalCodex
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.dataProviders.CriminalCodexProvider
 import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
@@ -15,9 +16,9 @@ class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionPageFragment(CriminalCodexProvider)
-            1 -> ChapterPageFragment(CriminalCodexProvider)
-            2 -> ArticlePageFragment(CriminalCodexProvider)
+            0 -> SectionPageFragment(BaseCodexProvider.UK)
+            1 -> ChapterPageFragment(BaseCodexProvider.UK)
+            2 -> ArticlePageFragment(BaseCodexProvider.UK)
             else -> throw IllegalArgumentException("Position was $position, expected from 0 to ${itemCount - 1}")
         }
     }

@@ -2,6 +2,7 @@ package com.team.lawsrb.ui.codexPIKoAP
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.dataProviders.PIKoAPProvider
 import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
@@ -14,9 +15,9 @@ class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SectionPageFragment(PIKoAPProvider)
-            1 -> ChapterPageFragment(PIKoAPProvider)
-            2 -> ArticlePageFragment(PIKoAPProvider)
+            0 -> SectionPageFragment(BaseCodexProvider.PIKoAP)
+            1 -> ChapterPageFragment(BaseCodexProvider.PIKoAP)
+            2 -> ArticlePageFragment(BaseCodexProvider.PIKoAP)
             else -> throw IllegalArgumentException("Position was $position, expected from 0 to ${itemCount - 1}")
         }
     }
