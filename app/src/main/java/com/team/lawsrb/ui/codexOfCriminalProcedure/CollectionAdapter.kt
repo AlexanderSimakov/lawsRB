@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
-import com.team.lawsrb.basic.dataProviders.CodexOfCriminalProcedureProvider
 import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
 import com.team.lawsrb.ui.codexPageFragments.sectionPage.SectionPageFragment
