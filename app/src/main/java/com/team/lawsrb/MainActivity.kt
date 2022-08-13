@@ -54,10 +54,6 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
-        //CriminalCodexDatabase.getInstance(applicationContext)
-        //CodexOfCriminalProcedureDatabase.getInstance(applicationContext)
-        //KoAPDatabase.getInstance(applicationContext)
-        //PIKoAPDatabase.getInstance(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
