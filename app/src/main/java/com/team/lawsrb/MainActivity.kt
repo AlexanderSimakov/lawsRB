@@ -20,10 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.team.lawsrb.basic.dataProviders.*
-import com.team.lawsrb.basic.roomDatabase.CodexOfCriminalProcedureDatabase
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
-import com.team.lawsrb.basic.roomDatabase.KoAPDatabase
-import com.team.lawsrb.basic.roomDatabase.PIKoAPDatabase
+import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -56,10 +53,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         //Initialize database
-        CriminalCodexDatabase.getInstance(applicationContext)
-        CodexOfCriminalProcedureDatabase.getInstance(applicationContext)
-        KoAPDatabase.getInstance(applicationContext)
-        PIKoAPDatabase.getInstance(applicationContext)
+        BaseCodexDatabase.init(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
-import com.team.lawsrb.basic.roomDatabase.CriminalCodexDatabase
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
