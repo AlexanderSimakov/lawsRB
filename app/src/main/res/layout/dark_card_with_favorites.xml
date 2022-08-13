@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dark_card_with_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/card_background_dark"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="8dp">
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/dark_card_with_favorites_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/card_default_title"
+                android:layout_marginEnd="35dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"/>
+
+            <TextView
+                android:id="@+id/dark_card_with_favorites_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/card_default_content"
+                android:layout_marginEnd="35dp"
+                android:textAppearance="?attr/textAppearanceBody1"/>
+
+            <!-- Expandable part -->
+            <LinearLayout
+                android:id="@+id/dark_card_with_favorites_expandable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:id="@+id/dark_card_with_favorites_expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_default_expandable_text"
+                    android:textAppearance="?attr/textAppearanceBody1"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:gravity="right">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/dark_card_with_favorites_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/card_checkbox_selector"
+                app:useMaterialThemeColors="false"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

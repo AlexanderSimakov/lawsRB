@@ -6,28 +6,28 @@
     app:startDestination="@+id/nav_criminal_code">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.team.lawsrb.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
         android:id="@+id/nav_criminal_code"
-        android:name="com.team.lawsrb.ui.criminalcode.CriminalCodeFragment"
+        android:name="com.team.lawsrb.ui.criminalCodex.CriminalCodexFragment"
         android:label="@string/menu_criminal_code"
-        tools:layout="@layout/fragment_criminal_code" />
+        tools:layout="@layout/fragment_criminal_codex" />
 
     <fragment
         android:id="@+id/nav_code_of_criminal_procedure"
-        android:name="com.team.lawsrb.ui.codeOfCriminalProcedure.CodeOfCriminalProcedureFragment"
+        android:name="com.team.lawsrb.ui.codexOfCriminalProcedure.CodexOfCriminalProcedureFragment"
         android:label="@string/menu_code_of_criminal_proсedure"
-        tools:layout="@layout/fragment_code_of_criminal_procedure" />
+        tools:layout="@layout/fragment_codex_of_criminal_procedure" />
 
     <fragment
-        android:id="@+id/nav_favorites"
-        android:name="com.team.lawsrb.ui.favorites.FavoritesFragment"
-        android:label="@string/menu_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        android:id="@+id/nav_koap"
+        android:name="com.team.lawsrb.ui.codexKoAP.CodexKoAPFragment"
+        android:label="@string/menu_KoAP"
+        tools:layout="@layout/fragment_koap" />
+
+    <fragment
+        android:id="@+id/nav_pikoap"
+        android:name="com.team.lawsrb.ui.codexPIKoAP.CodexPIKoAPFragment"
+        android:label="@string/menu_PIKoAP"
+        tools:layout="@layout/fragment_pikoap" />
 
     <fragment
         android:id="@+id/nav_settings"

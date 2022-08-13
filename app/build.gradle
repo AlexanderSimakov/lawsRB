@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -48,4 +51,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Room components
+    implementation "androidx.room:room-runtime:2.4.2"
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    kapt "androidx.room:room-compiler:2.5.0-alpha02"
+    implementation "androidx.room:room-ktx:2.5.0-alpha02"
+    implementation 'com.google.dagger:dagger:2.28.3'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.27"
+    androidTestImplementation "androidx.room:room-testing:2.4.2"
+
+    // Kotlin components
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    //Jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
 }

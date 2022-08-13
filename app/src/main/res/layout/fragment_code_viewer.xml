@@ -5,17 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:id="@+id/code_viewer_fragment_scroll_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/code_viewer_fragment_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/code_viewer_fragment_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-
-    </ScrollView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
