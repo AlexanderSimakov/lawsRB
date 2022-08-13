@@ -10,7 +10,7 @@ object BaseCodexDatabase {
             if (UKInstance != null){
                 return UKInstance as CodexDatabase
             }else{
-                throw IllegalAccessException("Fuck u")
+                throw IllegalAccessException("Cannot access to UK database because class was not initialized")
             }
         }
 
@@ -19,7 +19,7 @@ object BaseCodexDatabase {
             if (UPKInstance != null){
                 return UPKInstance as CodexDatabase
             }else{
-                throw IllegalAccessException("Fuck u")
+                throw IllegalAccessException("Cannot access to UPK database because class was not initialized")
             }
         }
 
@@ -28,7 +28,7 @@ object BaseCodexDatabase {
             if (KoAPInstance != null){
                 return KoAPInstance as CodexDatabase
             }else{
-                throw IllegalAccessException("Fuck u")
+                throw IllegalAccessException("Cannot access to KoAP database because class was not initialized")
             }
         }
 
@@ -37,7 +37,7 @@ object BaseCodexDatabase {
             if (PIKoAPInstance != null){
                 return PIKoAPInstance as CodexDatabase
             }else{
-                throw IllegalAccessException("Fuck u")
+                throw IllegalAccessException("Cannot access to PIKoAP database because class was not initialized")
             }
         }
 
