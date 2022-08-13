@@ -5,6 +5,9 @@ import android.content.Context
 object BaseCodexDatabase {
     private enum class Codex { UK, UPK, KoAP, PIKoAP }
 
+    private val databaseNames: MutableMap<Codex, String> = mutableMapOf()
+    private val assetPaths: MutableMap<Codex, String> = mutableMapOf()
+
     val UK: CodexDatabase
         get() {
             if (UKInstance != null){
@@ -46,6 +49,13 @@ object BaseCodexDatabase {
     private var KoAPInstance: CodexDatabase? = null
     private var PIKoAPInstance: CodexDatabase? = null
 
+    init {
+        for (codex in Codex.values()){
+            databaseNames[codex] = "${codex.name}_database.db"
+            assetPaths[codex] = "database/codex_database"
+        }
+    }
+
     fun init(context: Context){
         if (UKInstance == null) UKInstance = getCodexDatabase(context, Codex.UK)
         if (UPKInstance == null) UPKInstance = getCodexDatabase(context, Codex.UPK)
@@ -54,26 +64,12 @@ object BaseCodexDatabase {
     }
 
     private fun getCodexDatabase(context: Context, codex: Codex): CodexDatabase{
-        val databaseName = when (codex){
-            Codex.UK -> "UK_database.db"
-            Codex.UPK -> "UPK_database.db"
-            Codex.KoAP -> "KoAP_database.db"
-            Codex.PIKoAP -> "PIKoAP_database.db"
-        }
-
-        val assetsPath = when (codex){
-            Codex.UK -> "database/codex_database"
-            Codex.UPK -> "database/codex_database"
-            Codex.KoAP -> "database/codex_database"
-            Codex.PIKoAP -> "database/codex_database"
-        }
-
         synchronized(this) {
             return androidx.room.Room.databaseBuilder(
                 context.applicationContext,
                 CodexDatabase::class.java,
-                databaseName
-            ).createFromAsset(assetsPath)
+                databaseNames[codex]!!
+            ).createFromAsset(assetPaths[codex]!!)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build()
