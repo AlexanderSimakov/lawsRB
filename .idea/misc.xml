@@ -33,8 +33,10 @@
         <entry key="app/src/main/res/layout/light_card.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/light_card_view_favorites.xml" value="0.5810546875" />
         <entry key="app/src/main/res/layout/light_card_with_favorites.xml" value="0.5737704918032787" />
+        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.5979899497487438" />
         <entry key="app/src/main/res/layout/sample_article_view.xml" value="0.3411458333333333" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.67" />
+        <entry key="app/src/main/res/menu/main.xml" value="0.14920906370243694" />
       </map>
     </option>
   </component>
