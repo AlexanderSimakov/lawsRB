@@ -26,4 +26,11 @@
         android:text="Кнопка обновления кодексов"
         />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/dark_theme_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="Темная тема"/>
+
 </LinearLayout>
