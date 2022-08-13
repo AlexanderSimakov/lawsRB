@@ -8,53 +8,42 @@ object BaseCodexDatabase {
     private val databaseNames: MutableMap<Codex, String> = mutableMapOf()
     private val assetPaths: MutableMap<Codex, String> = mutableMapOf()
 
-    val UK: CodexDatabase
-        get() {
-            if (UKInstance != null){
-                return UKInstance as CodexDatabase
-            }else{
-                throw IllegalAccessException("Cannot access to UK database because class was not initialized")
-            }
-        }
-
-    val UPK: CodexDatabase
-        get() {
-            if (UPKInstance != null){
-                return UPKInstance as CodexDatabase
-            }else{
-                throw IllegalAccessException("Cannot access to UPK database because class was not initialized")
-            }
-        }
-
-    val KoAP: CodexDatabase
-        get() {
-            if (KoAPInstance != null){
-                return KoAPInstance as CodexDatabase
-            }else{
-                throw IllegalAccessException("Cannot access to KoAP database because class was not initialized")
-            }
-        }
-
-    val PIKoAP: CodexDatabase
-        get() {
-            if (PIKoAPInstance != null){
-                return PIKoAPInstance as CodexDatabase
-            }else{
-                throw IllegalAccessException("Cannot access to PIKoAP database because class was not initialized")
-            }
-        }
-
     private var UKInstance: CodexDatabase? = null
     private var UPKInstance: CodexDatabase? = null
     private var KoAPInstance: CodexDatabase? = null
     private var PIKoAPInstance: CodexDatabase? = null
 
     init {
+        // TODO: change assetPaths to actual
         for (codex in Codex.values()){
             databaseNames[codex] = "${codex.name}_database.db"
             assetPaths[codex] = "database/codex_database"
         }
     }
+
+    val UK: CodexDatabase
+        get() {
+            if (UKInstance != null) return UKInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to UK database because class was not initialized")
+        }
+
+    val UPK: CodexDatabase
+        get() {
+            if (UPKInstance != null) return UPKInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to UPK database because class was not initialized")
+        }
+
+    val KoAP: CodexDatabase
+        get() {
+            if (KoAPInstance != null) return KoAPInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to KoAP database because class was not initialized")
+        }
+
+    val PIKoAP: CodexDatabase
+        get() {
+            if (PIKoAPInstance != null) return PIKoAPInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to PIKoAP database because class was not initialized")
+        }
 
     fun init(context: Context){
         if (UKInstance == null) UKInstance = getCodexDatabase(context, Codex.UK)
