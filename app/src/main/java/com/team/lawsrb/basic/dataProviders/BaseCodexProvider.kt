@@ -21,10 +21,10 @@ object BaseCodexProvider {
     val PIKoAP: CodexProvider
         get() = _PIKoAP
 
-    private val _UK = getCodex(CriminalCodexDatabase.getInstance())
-    private val _UPK = getCodex(CodexOfCriminalProcedureDatabase.getInstance())
-    private val _KoAP = getCodex(KoAPDatabase.getInstance())
-    private val _PIKoAP = getCodex(PIKoAPDatabase.getInstance())
+    private val _UK = getCodex(BaseCodexDatabase.UK)
+    private val _UPK = getCodex(BaseCodexDatabase.UPK)
+    private val _KoAP = getCodex(BaseCodexDatabase.KoAP)
+    private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP)
 
     private fun getCodex(_database: CodexDatabase) = object: CodexProvider  {
         override val database = _database
