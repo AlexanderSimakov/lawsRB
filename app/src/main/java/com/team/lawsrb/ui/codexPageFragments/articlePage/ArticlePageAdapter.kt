@@ -24,18 +24,18 @@ class ArticlePageAdapter (private val items: List<Any>,
     private val isChapter = 2
 
     inner class ArticleViewHolder(articleCardView: View) : RecyclerView.ViewHolder(articleCardView) {
-        val card: MaterialCardView = articleCardView.findViewById(R.id.dark_card_with_favorites)
-        val title: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_title)
-        val content: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_content)
-        val checkBox: CheckBox = articleCardView.findViewById(R.id.dark_card_with_favorites_checkbox)
-        val expandable: LinearLayout = articleCardView.findViewById(R.id.dark_card_with_favorites_expandable)
-        val expandableText: TextView = articleCardView.findViewById(R.id.dark_card_with_favorites_expandable_text)
+        val card: MaterialCardView = articleCardView.findViewById(R.id.article_card)
+        val title: TextView = articleCardView.findViewById(R.id.article_card_title)
+        val content: TextView = articleCardView.findViewById(R.id.article_card_subtitle)
+        val checkBox: CheckBox = articleCardView.findViewById(R.id.article_card_checkbox)
+        val expandable: LinearLayout = articleCardView.findViewById(R.id.article_card_expandable_layout)
+        val expandableText: TextView = articleCardView.findViewById(R.id.article_card_content)
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
-        val card: MaterialCardView = chapterCardView.findViewById(R.id.light_card)
-        val title: TextView = chapterCardView.findViewById(R.id.light_card_title)
-        val content: TextView = chapterCardView.findViewById(R.id.light_card_content)
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.title_card)
+        val title: TextView = chapterCardView.findViewById(R.id.title_card_title)
+        val content: TextView = chapterCardView.findViewById(R.id.title_card_subtitle)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -52,11 +52,11 @@ class ArticlePageAdapter (private val items: List<Any>,
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             isArticle -> {
-                val lightCardView = inflater.inflate(R.layout.dark_card_with_favorites, parent, false)
+                val lightCardView = inflater.inflate(R.layout.article_card, parent, false)
                 ArticleViewHolder(lightCardView)
             }
             isChapter -> {
-                val lightCardView = inflater.inflate(R.layout.light_card, parent, false)
+                val lightCardView = inflater.inflate(R.layout.title_card, parent, false)
                 ChapterViewHolder(lightCardView)
             }
             else -> throw IllegalArgumentException("viewType was $viewType, expected $isArticle or $isChapter")

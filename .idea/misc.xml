@@ -13,12 +13,13 @@
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.3185" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/article_card.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/card.xml" value="0.5" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.31204379562043794" />
         <entry key="app/src/main/res/layout/custom_card_views.xml" value="0.5" />
         <entry key="app/src/main/res/layout/custom_dark_card.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/custom_light_card.xml" value="0.5345454545454545" />
-        <entry key="app/src/main/res/layout/dark_card.xml" value="0.5766634522661523" />
+        <entry key="app/src/main/res/layout/dark_card.xml" value="0.4866220735785953" />
         <entry key="app/src/main/res/layout/dark_card_with_favorites.xml" value="0.29157759726378796" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_article_content.xml" value="0.33" />
@@ -35,6 +36,7 @@
         <entry key="app/src/main/res/layout/light_card_with_favorites.xml" value="0.5737704918032787" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.5979899497487438" />
         <entry key="app/src/main/res/layout/sample_article_view.xml" value="0.3411458333333333" />
+        <entry key="app/src/main/res/layout/title_card.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.67" />
         <entry key="app/src/main/res/menu/main.xml" value="0.14920906370243694" />
       </map>

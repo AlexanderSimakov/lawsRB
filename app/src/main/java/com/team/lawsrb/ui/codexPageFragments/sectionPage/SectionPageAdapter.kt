@@ -16,14 +16,14 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     private val isPart = 2
 
     inner class PartViewHolder(partCardView: View) : RecyclerView.ViewHolder(partCardView) {
-        val title: TextView = partCardView.findViewById(R.id.light_card_title)
-        val content: TextView = partCardView.findViewById(R.id.light_card_content)
+        val title: TextView = partCardView.findViewById(R.id.title_card_title)
+        val content: TextView = partCardView.findViewById(R.id.title_card_subtitle)
     }
 
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
-        val card: MaterialCardView = sectionCardView.findViewById(R.id.dark_card)
-        val title: TextView = sectionCardView.findViewById(R.id.dark_card_title)
-        val content: TextView = sectionCardView.findViewById(R.id.dark_card_content)
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.item_card)
+        val title: TextView = sectionCardView.findViewById(R.id.item_card_title)
+        val content: TextView = sectionCardView.findViewById(R.id.item_card_subtitle)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -40,11 +40,11 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             isSection -> {
-                val lightCardView = inflater.inflate(R.layout.dark_card, parent, false)
+                val lightCardView = inflater.inflate(R.layout.item_card, parent, false)
                 SectionViewHolder(lightCardView)
             }
             isPart -> {
-                val lightCardView = inflater.inflate(R.layout.light_card, parent, false)
+                val lightCardView = inflater.inflate(R.layout.title_card, parent, false)
                 PartViewHolder(lightCardView)
             }
             else -> throw IllegalArgumentException("viewType was $viewType, expected $isSection or $isPart")

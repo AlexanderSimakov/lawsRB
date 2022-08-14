@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/dark_card"
+        android:id="@+id/item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -24,14 +24,14 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/dark_card_title"
+                android:id="@+id/item_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/card_default_title"
                 android:textAppearance="?attr/textAppearanceHeadline6"/>
 
             <TextView
-                android:id="@+id/dark_card_content"
+                android:id="@+id/item_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/card_default_content"

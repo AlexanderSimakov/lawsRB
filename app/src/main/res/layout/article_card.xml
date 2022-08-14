@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/dark_card_with_favorites"
+        android:id="@+id/article_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -24,7 +24,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/dark_card_with_favorites_title"
+                android:id="@+id/article_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/card_default_title"
@@ -32,7 +32,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"/>
 
             <TextView
-                android:id="@+id/dark_card_with_favorites_content"
+                android:id="@+id/article_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/card_default_content"
@@ -41,7 +41,7 @@
 
             <!-- Expandable part -->
             <LinearLayout
-                android:id="@+id/dark_card_with_favorites_expandable"
+                android:id="@+id/article_card_expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -49,7 +49,7 @@
                 android:paddingTop="15dp">
 
                 <TextView
-                    android:id="@+id/dark_card_with_favorites_expandable_text"
+                    android:id="@+id/article_card_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/card_default_expandable_text"
@@ -67,7 +67,7 @@
             android:gravity="right">
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/dark_card_with_favorites_checkbox"
+                android:id="@+id/article_card_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/card_checkbox_selector"
