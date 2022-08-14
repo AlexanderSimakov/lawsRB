@@ -9,12 +9,7 @@
         android:id="@+id/article_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/card_background_dark"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="8dp">
+        style="@style/CardView.Colored">
 
         <!-- Text -->
         <LinearLayout
@@ -27,17 +22,15 @@
                 android:id="@+id/article_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/card_default_title"
                 android:layout_marginEnd="35dp"
-                android:textAppearance="?attr/textAppearanceHeadline6"/>
+                style="@style/Widget.AppCompat.TextView.CardTitle"/>
 
             <TextView
                 android:id="@+id/article_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/card_default_content"
                 android:layout_marginEnd="35dp"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                style="@style/Widget.AppCompat.TextView.CardSubtitle"/>
 
             <!-- Expandable part -->
             <LinearLayout
@@ -52,8 +45,7 @@
                     android:id="@+id/article_card_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/card_default_expandable_text"
-                    android:textAppearance="?attr/textAppearanceBody1"/>
+                    style="@style/Widget.AppCompat.TextView.CardContent"/>
             </LinearLayout>
 
         </LinearLayout>
