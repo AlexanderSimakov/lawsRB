@@ -19,17 +19,17 @@ class CriminalCodexFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_criminal_codex, container, false)
+        return inflater.inflate(R.layout.fragment_uk, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         collectionAdapter = CollectionAdapter(this)
-        viewPager = view.findViewById(R.id.criminal_code_pager)
+        viewPager = view.findViewById(R.id.uk_pager)
         viewPager.adapter = collectionAdapter
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.criminal_code_tab_layout)
+        val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.uk_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)

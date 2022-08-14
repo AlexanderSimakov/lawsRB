@@ -25,13 +25,13 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         model = ViewModelProvider(this, SectionViewModelFactory(codeProvider))
             .get(SectionPageViewModel::class.java)
 
-        return inflater.inflate(R.layout.fragment_code_viewer, container, false)
+        return inflater.inflate(R.layout.fragment_codex_viewer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val items = model.getItems().value as List<Any>
 
-        val rvItems = view.findViewById<View>(R.id.code_viewer_fragment_recycler_view) as RecyclerView
+        val rvItems = view.findViewById<View>(R.id.codex_fragment_recycler_view) as RecyclerView
         rvItems.adapter = SectionPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 0)
