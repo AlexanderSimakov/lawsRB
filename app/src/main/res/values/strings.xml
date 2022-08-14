@@ -2,7 +2,7 @@
     <string name="app_name">lawsRB</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Законы РБ</string>
+    <string name="nav_header_title">Кодексы РБ</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Поиск</string>
     <string name="action_favorites">Избранное</string>
