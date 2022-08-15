@@ -8,6 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="orange">#FFB947</color>
+    <color name="orange_light">#ffd95a</color>
+    <color name="orange_dark">#c17900</color>
+
+    <color name="light_grey">#CFCFCF</color>
+    
+    <color name="steel_blue">#4C86A8</color>
+    <color name="teal_blue">#477890</color>
+    <color name="light_lemon">#E1D38F</color>
+
     <!-- Card -->
     <color name="card_background_dark">#FFBB86FC</color>
 

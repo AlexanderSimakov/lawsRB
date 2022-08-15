@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/NavHeader.LinearLayout">
+<LinearLayout style="@style/Theme.LawsRB.NavHeader">
 
-    <TextView style="@style/NavHeader.Title"/>
+    <TextView style="@style/Theme.LawsRB.NavHeader.Title"/>
 
 </LinearLayout>

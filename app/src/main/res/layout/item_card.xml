@@ -9,7 +9,7 @@
         android:id="@+id/item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/CardView.Colored">
+        style="@style/Theme.LawsRB.CardView.Item.Light">
 
         <!-- Text -->
         <LinearLayout
@@ -22,13 +22,13 @@
                 android:id="@+id/item_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.TextView.CardTitle"/>
+                style="@style/Theme.LawsRB.CardView.Title.Dark"/>
 
             <TextView
                 android:id="@+id/item_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.TextView.CardSubtitle"/>
+                style="@style/Theme.LawsRB.CardView.Subtitle.Dark"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
