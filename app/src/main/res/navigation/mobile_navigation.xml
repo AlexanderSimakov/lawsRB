@@ -9,13 +9,13 @@
         android:id="@+id/nav_criminal_code"
         android:name="com.team.lawsrb.ui.criminalCodex.CriminalCodexFragment"
         android:label="@string/menu_criminal_code"
-        tools:layout="@layout/fragment_criminal_codex" />
+        tools:layout="@layout/fragment_uk" />
 
     <fragment
         android:id="@+id/nav_code_of_criminal_procedure"
         android:name="com.team.lawsrb.ui.codexOfCriminalProcedure.CodexOfCriminalProcedureFragment"
         android:label="@string/menu_code_of_criminal_proсedure"
-        tools:layout="@layout/fragment_codex_of_criminal_procedure" />
+        tools:layout="@layout/fragment_upk" />
 
     <fragment
         android:id="@+id/nav_koap"

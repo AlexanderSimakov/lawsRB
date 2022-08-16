@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.codexOfCriminalProcedure.CodexOfCriminalProcedureFragment"
+    tools:context=".ui.criminalCodex.CriminalCodexFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/code_of_criminal_procedure_tab_layout"
+        android:id="@+id/uk_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        style="@style/Theme.LawsRB.TabLayout.Light"/>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/code_of_criminal_procedure_pager"
+        android:id="@+id/uk_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

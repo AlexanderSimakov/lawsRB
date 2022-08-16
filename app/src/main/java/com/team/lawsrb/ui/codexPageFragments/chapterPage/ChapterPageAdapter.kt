@@ -16,15 +16,15 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     private val isChapter = 2
 
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
-        val card: MaterialCardView = sectionCardView.findViewById(R.id.light_card)
-        val title: TextView = sectionCardView.findViewById(R.id.light_card_title)
-        val content: TextView = sectionCardView.findViewById(R.id.light_card_content)
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.title_card)
+        val title: TextView = sectionCardView.findViewById(R.id.title_card_title)
+        val content: TextView = sectionCardView.findViewById(R.id.title_card_subtitle)
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
-        val card: MaterialCardView = chapterCardView.findViewById(R.id.dark_card)
-        val title: TextView = chapterCardView.findViewById(R.id.dark_card_title)
-        val content: TextView = chapterCardView.findViewById(R.id.dark_card_content)
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.item_card)
+        val title: TextView = chapterCardView.findViewById(R.id.item_card_title)
+        val content: TextView = chapterCardView.findViewById(R.id.item_card_subtitle)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -41,11 +41,11 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             isSection -> {
-                val lightCardView = inflater.inflate(R.layout.light_card, parent, false)
+                val lightCardView = inflater.inflate(R.layout.title_card, parent, false)
                 SectionViewHolder(lightCardView)
             }
             isChapter -> {
-                val lightCardView = inflater.inflate(R.layout.dark_card, parent, false)
+                val lightCardView = inflater.inflate(R.layout.item_card, parent, false)
                 ChapterViewHolder(lightCardView)
             }
             else -> throw IllegalArgumentException("viewType was $viewType, expected $isSection or $isChapter")
