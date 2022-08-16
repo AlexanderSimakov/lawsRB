@@ -10,6 +10,7 @@ import android.view.Menu
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
+import android.widget.ToggleButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -19,6 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
@@ -94,6 +96,15 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.setFavorite(isChecked)
+        }
+
+        val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
+        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
 
         return true
