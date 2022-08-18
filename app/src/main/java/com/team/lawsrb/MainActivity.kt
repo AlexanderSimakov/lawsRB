@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.CheckBox
 import android.widget.SearchView
@@ -113,16 +114,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
+        Log.i("F", "Initial state ${themeSwitcher.isChecked}")
         themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
+        Log.i("F", "After update state ${themeSwitcher.isChecked}")
+        val editor = sharedPref.edit()
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
+                Log.i("F", "Make dark")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                sharedPref.edit().putBoolean("isDarkModeOn", true)
+                editor.putBoolean("isDarkModeOn", true)
             } else {
+                Log.i("F", "Make light")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                sharedPref.edit().putBoolean("isDarkModeOn", false)
+                editor.putBoolean("isDarkModeOn", false)
             }
-            sharedPref.edit().apply()
+            editor.apply()
         }
 
         return true
