@@ -1,5 +1,7 @@
 package com.team.lawsrb
 
+import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +57,21 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Saving state of app
+        // using SharedPreferences
+        sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        if (sharedPref.getBoolean("isDarkModeOn", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -99,12 +113,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
-        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked){
+        themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
+        themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
+            if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                sharedPref.edit().putBoolean("isDarkModeOn", true)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                sharedPref.edit().putBoolean("isDarkModeOn", false)
             }
+            sharedPref.edit().apply()
         }
 
         return true
