@@ -22,13 +22,13 @@
                 android:id="@+id/title_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Theme.LawsRB.CardView.Title.Dark"/>
+                style="@style/Theme.LawsRB.CardView.Title"/>
 
             <TextView
                 android:id="@+id/title_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Theme.LawsRB.CardView.Subtitle.Dark"/>
+                style="@style/Theme.LawsRB.CardView.Subtitle"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
