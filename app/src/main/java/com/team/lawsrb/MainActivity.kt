@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         BaseCodexDatabase.init(applicationContext)
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("CommitPrefEdits", "UseCompatLoadingForDrawables")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -101,10 +101,7 @@ class MainActivity : AppCompatActivity() {
         val favoritesItem = menu.findItem(R.id.action_favorites)
         val favoritesCheckBox = favoritesItem.actionView as CheckBox
 
-        // TODO: add good drawable instead of this code
-        val drawable = applicationContext.resources.getDrawable(R.drawable.card_checkbox_selector)
-        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.DST_IN)
-        favoritesCheckBox.buttonDrawable = drawable
+        favoritesCheckBox.buttonDrawable = applicationContext.getDrawable(R.drawable.card_checkbox_selector)
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
@@ -113,6 +110,7 @@ class MainActivity : AppCompatActivity() {
             BaseCodexProvider.setFavorite(isChecked)
         }
 
+        // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
         Log.i("F", "Initial state ${themeSwitcher.isChecked}")
         themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
