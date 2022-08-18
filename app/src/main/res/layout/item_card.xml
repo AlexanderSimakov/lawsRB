@@ -18,13 +18,13 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Theme.LawsRB.CardView.Title"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_card_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
