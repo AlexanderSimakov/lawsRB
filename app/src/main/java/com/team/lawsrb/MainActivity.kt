@@ -112,17 +112,13 @@ class MainActivity : AppCompatActivity() {
 
         // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
-        Log.i("F", "Initial state ${themeSwitcher.isChecked}")
         themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
-        Log.i("F", "After update state ${themeSwitcher.isChecked}")
         val editor = sharedPref.edit()
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
-                Log.i("F", "Make dark")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 editor.putBoolean("isDarkModeOn", true)
             } else {
-                Log.i("F", "Make light")
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editor.putBoolean("isDarkModeOn", false)
             }
