@@ -1,15 +1,19 @@
 package com.team.lawsrb
 
+import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
+import android.widget.ToggleButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -19,6 +23,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +58,21 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Saving state of app
+        // using SharedPreferences
+        sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        if (sharedPref.getBoolean("isDarkModeOn", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
     }
 
+    @SuppressLint("CommitPrefEdits", "UseCompatLoadingForDrawables")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -84,16 +101,28 @@ class MainActivity : AppCompatActivity() {
         val favoritesItem = menu.findItem(R.id.action_favorites)
         val favoritesCheckBox = favoritesItem.actionView as CheckBox
 
-        // TODO: add good drawable instead of this code
-        val drawable = applicationContext.resources.getDrawable(R.drawable.card_checkbox_selector)
-        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.DST_IN)
-        favoritesCheckBox.buttonDrawable = drawable
+        favoritesCheckBox.buttonDrawable = applicationContext.getDrawable(R.drawable.card_checkbox_selector)
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.setFavorite(isChecked)
+        }
+
+        // --- Theme switcher ---
+        val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
+        themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
+        val editor = sharedPref.edit()
+        themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
+            if (isDarkMode){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("isDarkModeOn", true)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putBoolean("isDarkModeOn", false)
+            }
+            editor.apply()
         }
 
         return true

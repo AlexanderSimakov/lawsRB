@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() {
+    constructor() : this(BaseCodexProvider.UK)
+
     private lateinit var model: SectionPageViewModel
 
     override fun onCreateView(
