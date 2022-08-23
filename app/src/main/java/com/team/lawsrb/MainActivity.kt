@@ -92,6 +92,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        searchView.setOnSearchClickListener {
+            searchFab.hide()
+        }
+
         searchView.setOnCloseListener {
             searchFab.show()
             BaseCodexProvider.sentQuery("")
