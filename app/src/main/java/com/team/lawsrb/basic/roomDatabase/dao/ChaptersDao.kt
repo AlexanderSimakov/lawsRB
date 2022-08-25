@@ -22,6 +22,9 @@ interface ChaptersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(chapter: Chapter)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(chapters: List<Chapter>)
+
     @Query("DELETE FROM ${CodexDatabase.CHAPTERS_NAME}")
     fun clearAll()
 
