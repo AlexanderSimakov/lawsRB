@@ -21,4 +21,8 @@ interface ArticlesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(article: Article)
+
+    @Query("DELETE FROM ${CodexDatabase.ARTICLES_NAME}")
+    fun clearAll()
+
 }

@@ -22,4 +22,7 @@ interface PartsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(part: Part)
 
+    @Query("DELETE FROM ${CodexDatabase.PARTS_NAME}")
+    fun clearAll()
+
 }
