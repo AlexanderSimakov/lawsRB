@@ -141,6 +141,10 @@ object Parser
                 {
                     if (element.text().contains("Статья"))
                     {
+                        if (element.text().contains("в действие настоящего Кодекса")
+                            && !element.previousElementSibling().text().contains("ГЛАВА")){
+                            parentId++
+                        }
                         val article = CodexContent(parentId, element.text())
                         articlesList.add(article)
                     }
