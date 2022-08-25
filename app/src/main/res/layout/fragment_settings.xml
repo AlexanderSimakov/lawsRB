@@ -28,4 +28,12 @@
     <include layout="@layout/update_codex_button"
         android:id="@+id/update_pikoap"/>
 
+    <!-- Debug button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/debug_clear_all_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Очистить базы данных"
+        android:layout_margin="8dp"/>
+
 </LinearLayout>
