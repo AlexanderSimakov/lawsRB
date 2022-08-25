@@ -1,6 +1,7 @@
 package com.team.lawsrb.ui.settings
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +9,19 @@ import android.view.ViewGroup
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.Parser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.update_codex_button.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
+    private val TAG = "SettingsFragment"
 
     private var _binding: FragmentSettingsBinding? = null
 
@@ -56,53 +60,90 @@ class SettingsFragment : Fragment() {
     private fun setOnClickListenerForUpdateButtons(){
         binding.settingsFragment.update_uk.findViewById<MaterialCardView>(R.id.update_codex_button)
             .setOnClickListener {
-                GlobalScope.launch {
-                    val codexLists = Parser.get(Codex.UK)
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление УК", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse UK")
+                    val codexLists = Parser().get(Codex.UK)
+                    Log.d(TAG, "End parse UK and start insert")
+
                     BaseCodexDatabase.UK.partsDao().insert(codexLists.parts)
                     BaseCodexDatabase.UK.sectionsDao().insert(codexLists.sections)
                     BaseCodexDatabase.UK.chaptersDao().insert(codexLists.chapters)
                     BaseCodexDatabase.UK.articlesDao().insert(codexLists.articles)
+                    Log.d(TAG, "End UK insert")
 
-                    Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (UK)")
+
+                    // Bug: then click button and change page to UK (or others),
+                    // after parsing app crash, because cannot find view(below)
+                    //Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
         binding.settingsFragment.update_upk.findViewById<MaterialCardView>(R.id.update_codex_button)
             .setOnClickListener {
-                GlobalScope.launch {
-                    val codexLists = Parser.get(Codex.UPK)
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление УПК ", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse UPK")
+                    val codexLists = Parser().get(Codex.UPK)
+                    Log.d(TAG, "End parse UPK and start insert")
+
                     BaseCodexDatabase.UPK.partsDao().insert(codexLists.parts)
                     BaseCodexDatabase.UPK.sectionsDao().insert(codexLists.sections)
                     BaseCodexDatabase.UPK.chaptersDao().insert(codexLists.chapters)
                     BaseCodexDatabase.UPK.articlesDao().insert(codexLists.articles)
+                    Log.d(TAG, "End UPK insert")
 
-                    Snackbar.make(requireView(), "УПК обновлен", Snackbar.LENGTH_SHORT).show()
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (UPK)")
+
+                    // See first
+                    //Snackbar.make(requireView(), "УПК обновлен", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
         binding.settingsFragment.update_koap.findViewById<MaterialCardView>(R.id.update_codex_button)
             .setOnClickListener {
-                GlobalScope.launch {
-                    val codexLists = Parser.get(Codex.KoAP)
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление КоАП", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse KoAP")
+                    val codexLists = Parser().get(Codex.KoAP)
+                    Log.d(TAG, "End parse KoAP and start insert")
+
                     BaseCodexDatabase.KoAP.partsDao().insert(codexLists.parts)
                     BaseCodexDatabase.KoAP.sectionsDao().insert(codexLists.sections)
                     BaseCodexDatabase.KoAP.chaptersDao().insert(codexLists.chapters)
                     BaseCodexDatabase.KoAP.articlesDao().insert(codexLists.articles)
+                    Log.d(TAG, "End KoAP insert")
 
-                    Snackbar.make(requireView(), "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (KoAP)")
+
+                    // See first
+                    //Snackbar.make(requireView(), "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
         binding.settingsFragment.update_pikoap.findViewById<MaterialCardView>(R.id.update_codex_button)
             .setOnClickListener {
-                GlobalScope.launch {
-                    val codexLists = Parser.get(Codex.PIKoAP)
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление ПИКоАП", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse PIKoAP")
+                    val codexLists = Parser().get(Codex.PIKoAP)
+                    Log.d(TAG, "End parse PIKoAP and start insert")
+
                     BaseCodexDatabase.PIKoAP.partsDao().insert(codexLists.parts)
                     BaseCodexDatabase.PIKoAP.sectionsDao().insert(codexLists.sections)
                     BaseCodexDatabase.PIKoAP.chaptersDao().insert(codexLists.chapters)
                     BaseCodexDatabase.PIKoAP.articlesDao().insert(codexLists.articles)
+                    Log.d(TAG, "End PIKoAP insert")
 
-                    Snackbar.make(requireView(), "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (PIKoAP)")
+
+                    // See first
+                    //Snackbar.make(requireView(), "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
                 }
             }
     }
@@ -130,7 +171,9 @@ class SettingsFragment : Fragment() {
             BaseCodexDatabase.PIKoAP.sectionsDao().clearAll()
             BaseCodexDatabase.PIKoAP.partsDao().clearAll()
 
-            Snackbar.make(requireView(), "Базы данных очищены, перезагрузите приложение", Snackbar.LENGTH_SHORT).show()
+            BaseCodexProvider.update()
+
+            Snackbar.make(requireView(), "Базы данных очищены", Snackbar.LENGTH_SHORT).show()
         }
     }
 
