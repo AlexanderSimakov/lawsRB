@@ -26,6 +26,13 @@ object BaseCodexProvider {
     private val _KoAP = getCodex(BaseCodexDatabase.KoAP)
     private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP)
 
+    fun update(){
+        _UK.updateAll()
+        _UPK.updateAll()
+        _KoAP.updateAll()
+        _PIKoAP.updateAll()
+    }
+
     private fun getCodex(_database: CodexDatabase) = object: CodexProvider  {
         override val database = _database
 
@@ -53,6 +60,11 @@ object BaseCodexProvider {
         init {
             loadAll()
             updatePageItems()
+        }
+
+        fun updateAll(){
+            loadAll()
+            updatePageItemsAsync()
         }
 
         override fun getSectionPageItems() = sectionPageItems as LiveData<List<Any>>
@@ -125,6 +137,30 @@ object BaseCodexProvider {
                 articleItems.addAll(articles.filter { it.parentId == chapter.id })
             }
             articlePageItems.value = articleItems
+        }
+
+        private fun updatePageItemsAsync(){
+            // TODO: refactor same code
+            val sectionItems = mutableListOf<Any>()
+            for (part in parts){
+                sectionItems.add(part)
+                sectionItems.addAll(sections.filter { it.parentId == part.id })
+            }
+            sectionPageItems.postValue(sectionItems)
+
+            val chapterItems = mutableListOf<Any>()
+            for (section in sections){
+                chapterItems.add(section)
+                chapterItems.addAll(chapters.filter { it.parentId == section.id })
+            }
+            chapterPageItems.postValue(chapterItems)
+
+            val articleItems = mutableListOf<Any>()
+            for (chapter in chapters){
+                articleItems.add(chapter)
+                articleItems.addAll(articles.filter { it.parentId == chapter.id })
+            }
+            articlePageItems.postValue(articleItems)
         }
     }
 
