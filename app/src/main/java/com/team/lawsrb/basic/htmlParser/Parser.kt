@@ -15,12 +15,16 @@ object Parser
     private var articlesList = mutableListOf<CodexContent>()
     private var document: Document? = null
 
-    fun get(codex: Codex): CodexLists? {
+    fun get(codex: Codex): CodexLists {
         try {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
         } catch (e: Exception) {
             Log.d("Error", "${e.message}")
         }
+
+        codexLists.clear()
+        contentList.clear()
+        articlesList.clear()
 
         parsePartsTitles(codex)
         parseSectionsTitles(codex)

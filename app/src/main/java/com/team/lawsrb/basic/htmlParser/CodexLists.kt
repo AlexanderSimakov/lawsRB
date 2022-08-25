@@ -10,7 +10,14 @@ data class CodexLists (
     var sections: MutableList<Section> = mutableListOf(),
     var chapters: MutableList<Chapter> = mutableListOf(),
     var articles: MutableList<Article> = mutableListOf()
-)
+){
+    fun clear(){
+        parts.clear()
+        sections.clear()
+        chapters.clear()
+        articles.clear()
+    }
+}
 
 
 
