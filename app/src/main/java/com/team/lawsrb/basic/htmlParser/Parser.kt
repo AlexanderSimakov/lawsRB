@@ -15,24 +15,28 @@ object Parser
     private var articlesList = mutableListOf<CodexContent>()
     private var document: Document? = null
 
-    fun get(codex: Codex): CodexLists? {
-        try {
+    fun get(codex: Codex): CodexLists?
+    {
+        try
+        {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
-        } catch (e: Exception) {
+        }
+        catch (e: Exception)
+        {
             Log.d("Error", "${e.message}")
         }
 
-        parsePartsTitles(codex)
-        parseSectionsTitles(codex)
-        parseChaptersTitles(codex)
-        parseArticlesTitles(codex)
-        parseContent(codex)
+        parsePartsTitles()
+        parseSectionsTitles()
+        parseChaptersTitles()
+        parseArticlesTitles()
+        parseContent()
         articlesWithContent()
 
         return codexLists
     }
 
-    private fun parsePartsTitles(codex: Codex)
+    private fun parsePartsTitles()
     {
         try
         {
@@ -58,7 +62,7 @@ object Parser
         }
     }
 
-    private fun parseSectionsTitles(codex: Codex)
+    private fun parseSectionsTitles()
     {
         try
         {
@@ -88,7 +92,7 @@ object Parser
         }
     }
 
-    private fun parseChaptersTitles(codex: Codex)
+    private fun parseChaptersTitles()
     {
         try
         {
@@ -108,14 +112,16 @@ object Parser
                     }
                     else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ"))
                     {
-                        if(!element.nextElementSibling().text().contains("ГЛАВА")){
+                        if(!element.nextElementSibling().text().contains("ГЛАВА"))
+                        {
                             parentId++
                             chapterId++
                             val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
                             codexLists.chapters.add(chapter)
                         }
                     }
-                    else if (element.text().contains("РАЗДЕЛ")) {
+                    else if (element.text().contains("РАЗДЕЛ"))
+                    {
                         parentId++
                     }
                 }
@@ -127,7 +133,7 @@ object Parser
         }
     }
 
-    private fun parseArticlesTitles(codex: Codex)
+    private fun parseArticlesTitles()
     {
         try
         {
@@ -141,12 +147,32 @@ object Parser
                 {
                     if (element.text().contains("Статья"))
                     {
-                        if (element.text().contains("в действие настоящего Кодекса")
-                            && !element.previousElementSibling().text().contains("ГЛАВА")){
-                            parentId++
+                        if (element.attr("id").contains("/"))
+                        {
+                            var str = element.text()
+                            for (i in 0..str.length)
+                            {
+                                if (str[i] in '1'..'9' && str[i + 1] !in '1'..'9')
+                                {
+                                    str = str.replace("${str[i]}", "/${str[i]}")
+                                    break
+                                }
+                            }
+                            val article = CodexContent(parentId, str)
+                            articlesList.add(article)
                         }
-                        val article = CodexContent(parentId, element.text())
-                        articlesList.add(article)
+                        if (element.text().contains("в действие настоящего Кодекса")
+                            && !element.previousElementSibling().text().contains("ГЛАВА"))
+                        {
+                            parentId++
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
+                        else if (!element.attr("id").contains("/"))
+                        {
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
                     }
                     else if (element.text().contains("ГЛАВА")){
                         parentId++
@@ -160,7 +186,7 @@ object Parser
         }
     }
 
-    private fun parseContent(codex: Codex)
+    private fun parseContent()
     {
         try
         {
