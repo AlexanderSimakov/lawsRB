@@ -149,16 +149,16 @@ object Parser
                     {
                         if (element.attr("id").contains("/"))
                         {
-                            var str = element.text()
-                            for (i in 0..str.length)
+                            var title = element.text()
+                            for (i in 0..title.length)
                             {
-                                if (str[i] in '1'..'9' && str[i + 1] !in '1'..'9')
+                                if (title[i] in '1'..'9' && title[i + 1] !in '1'..'9')
                                 {
-                                    str = str.replace("${str[i]}", "/${str[i]}")
+                                    title = title.replace("${title[i]}", "/${title[i]}")
                                     break
                                 }
                             }
-                            val article = CodexContent(parentId, str)
+                            val article = CodexContent(parentId, title)
                             articlesList.add(article)
                         }
                         if (element.text().contains("в действие настоящего Кодекса")
@@ -247,8 +247,34 @@ object Parser
                     && !element.attr("class").equals("part")
                     && element.text() != "")
                 {
-                    val codexContent = CodexContent(currentId, element.text())
-                    contentList.add(codexContent)
+                    if (element.children().attr("href").contains("Article"))
+                    {
+                        for (i in 1..9)
+                        {
+                            if (element.children().attr("href").contains("/$i"))
+                            {
+                                var content = element.toString()
+                                content = content.replace("<sup>$i</sup>", "/$i")
+                                content = content.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+                                content = content.replace("&nbsp;", " ")
+                                content = content.replace("  ", " ")
+                                content = content.replace(" ,", ",")
+                                content = content.replace(" )", ")")
+                                val codexContent = CodexContent(currentId, content)
+                                contentList.add(codexContent)
+                            }
+                            else if (!element.children().attr("href").contains("/$i"))
+                            {
+                                val codexContent = CodexContent(currentId, element.text())
+                                contentList.add(codexContent)
+                            }
+                        }
+                    }
+                    else
+                    {
+                        val codexContent = CodexContent(currentId, element.text())
+                        contentList.add(codexContent)
+                    }
                 }
             }
         }
