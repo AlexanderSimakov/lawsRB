@@ -15,24 +15,28 @@ object Parser
     private var articlesList = mutableListOf<CodexContent>()
     private var document: Document? = null
 
-    fun get(codex: Codex): CodexLists? {
-        try {
+    fun get(codex: Codex): CodexLists?
+    {
+        try
+        {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
-        } catch (e: Exception) {
+        }
+        catch (e: Exception)
+        {
             Log.d("Error", "${e.message}")
         }
 
-        parsePartsTitles(codex)
-        parseSectionsTitles(codex)
-        parseChaptersTitles(codex)
-        parseArticlesTitles(codex)
-        parseContent(codex)
+        parsePartsTitles()
+        parseSectionsTitles()
+        parseChaptersTitles()
+        parseArticlesTitles()
+        parseContent()
         articlesWithContent()
 
         return codexLists
     }
 
-    private fun parsePartsTitles(codex: Codex)
+    private fun parsePartsTitles()
     {
         try
         {
@@ -58,7 +62,7 @@ object Parser
         }
     }
 
-    private fun parseSectionsTitles(codex: Codex)
+    private fun parseSectionsTitles()
     {
         try
         {
@@ -88,7 +92,7 @@ object Parser
         }
     }
 
-    private fun parseChaptersTitles(codex: Codex)
+    private fun parseChaptersTitles()
     {
         try
         {
@@ -108,14 +112,16 @@ object Parser
                     }
                     else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ"))
                     {
-                        if(!element.nextElementSibling().text().contains("ГЛАВА")){
+                        if(!element.nextElementSibling().text().contains("ГЛАВА"))
+                        {
                             parentId++
                             chapterId++
                             val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
                             codexLists.chapters.add(chapter)
                         }
                     }
-                    else if (element.text().contains("РАЗДЕЛ")) {
+                    else if (element.text().contains("РАЗДЕЛ"))
+                    {
                         parentId++
                     }
                 }
@@ -127,7 +133,7 @@ object Parser
         }
     }
 
-    private fun parseArticlesTitles(codex: Codex)
+    private fun parseArticlesTitles()
     {
         try
         {
@@ -141,8 +147,32 @@ object Parser
                 {
                     if (element.text().contains("Статья"))
                     {
-                        val article = CodexContent(parentId, element.text())
-                        articlesList.add(article)
+                        if (element.attr("id").contains("/"))
+                        {
+                            var title = element.text()
+                            for (i in 0..title.length)
+                            {
+                                if (title[i] in '1'..'9' && title[i + 1] !in '1'..'9')
+                                {
+                                    title = title.replace("${title[i]}", "/${title[i]}")
+                                    break
+                                }
+                            }
+                            val article = CodexContent(parentId, title)
+                            articlesList.add(article)
+                        }
+                        if (element.text().contains("в действие настоящего Кодекса")
+                            && !element.previousElementSibling().text().contains("ГЛАВА"))
+                        {
+                            parentId++
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
+                        else if (!element.attr("id").contains("/"))
+                        {
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
                     }
                     else if (element.text().contains("ГЛАВА")){
                         parentId++
@@ -156,7 +186,7 @@ object Parser
         }
     }
 
-    private fun parseContent(codex: Codex)
+    private fun parseContent()
     {
         try
         {
@@ -217,8 +247,34 @@ object Parser
                     && !element.attr("class").equals("part")
                     && element.text() != "")
                 {
-                    val codexContent = CodexContent(currentId, element.text())
-                    contentList.add(codexContent)
+                    if (element.children().attr("href").contains("Article"))
+                    {
+                        for (i in 1..9)
+                        {
+                            if (element.children().attr("href").contains("/$i"))
+                            {
+                                var content = element.toString()
+                                content = content.replace("<sup>$i</sup>", "/$i")
+                                content = content.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+                                content = content.replace("&nbsp;", " ")
+                                content = content.replace("  ", " ")
+                                content = content.replace(" ,", ",")
+                                content = content.replace(" )", ")")
+                                val codexContent = CodexContent(currentId, content)
+                                contentList.add(codexContent)
+                            }
+                            else if (!element.children().attr("href").contains("/$i"))
+                            {
+                                val codexContent = CodexContent(currentId, element.text())
+                                contentList.add(codexContent)
+                            }
+                        }
+                    }
+                    else
+                    {
+                        val codexContent = CodexContent(currentId, element.text())
+                        contentList.add(codexContent)
+                    }
                 }
             }
         }
