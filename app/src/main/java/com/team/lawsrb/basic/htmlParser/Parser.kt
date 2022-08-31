@@ -249,25 +249,17 @@ object Parser
                 {
                     if (element.children().attr("href").contains("Article"))
                     {
-                        for (i in 1..9)
+                        var content = element.toString()
+                        if (content.contains("<sup>"))
                         {
-                            if (element.children().attr("href").contains("/$i"))
-                            {
-                                var content = element.toString()
-                                content = content.replace("<sup>$i</sup>", "/$i")
-                                content = content.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
-                                content = content.replace("&nbsp;", " ")
-                                content = content.replace("  ", " ")
-                                content = content.replace(" ,", ",")
-                                content = content.replace(" )", ")")
-                                val codexContent = CodexContent(currentId, content)
-                                contentList.add(codexContent)
-                            }
-                            else if (!element.children().attr("href").contains("/$i"))
-                            {
-                                val codexContent = CodexContent(currentId, element.text())
-                                contentList.add(codexContent)
-                            }
+                            content = formatText(content)
+                            val codexContent = CodexContent(currentId, content)
+                            contentList.add(codexContent)
+                        }
+                        else if (!content.contains("<sup>"))
+                        {
+                            val codexContent = CodexContent(currentId, element.text())
+                            contentList.add(codexContent)
                         }
                     }
                     else
@@ -300,5 +292,21 @@ object Parser
             codexLists.articles.add(article)
             contentText = ""
         }
+    }
+
+    private fun formatText(content: String): String
+    {
+        var text = content
+
+        text = text.replace("<sup>", "/")
+        text = text.replace("</sup>", "")
+        text = text.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+        text = text.replace("&nbsp;", " ")
+        text = text.replace("  ", " ")
+        text = text.replace(" ,", ",")
+        text = text.replace(" )", ")")
+        text = text.replace("( ", "(")
+
+        return text
     }
 }
