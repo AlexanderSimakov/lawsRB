@@ -8,7 +8,7 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-object Parser
+object CodexParser
 {
     private var codexLists = CodexLists()
     private var contentList = mutableListOf<CodexContent>()
