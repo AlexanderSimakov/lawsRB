@@ -1,6 +1,7 @@
 package com.team.lawsrb.ui.codexPageFragments.chapterPage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.dataProviders.CodexProvider
@@ -33,7 +36,19 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val items = model.getItems().value as List<Any>
 
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+
         val rvItems = view.findViewById<View>(R.id.codex_fragment_recycler_view) as RecyclerView
+        rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !fab.isShown){ // scroll up
+                    fab.show()
+                }else if (dy > 0 && fab.isShown){ // scroll down
+                    fab.hide()
+                }
+            }
+        })
+
         rvItems.adapter = ChapterPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 1)

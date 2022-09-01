@@ -26,17 +26,16 @@ class Parser
         contentList.clear()
         articlesList.clear()
 
-        parsePartsTitles(codex)
-        parseSectionsTitles(codex)
-        parseChaptersTitles(codex)
-        parseArticlesTitles(codex)
-        parseContent(codex)
+        parseSectionsTitles()
+        parseChaptersTitles()
+        parseArticlesTitles()
+        parseContent()
         articlesWithContent()
 
         return codexLists
     }
 
-    private fun parsePartsTitles(codex: Codex)
+    private fun parsePartsTitles()
     {
         try
         {
@@ -62,7 +61,7 @@ class Parser
         }
     }
 
-    private fun parseSectionsTitles(codex: Codex)
+    private fun parseSectionsTitles()
     {
         try
         {
@@ -92,7 +91,7 @@ class Parser
         }
     }
 
-    private fun parseChaptersTitles(codex: Codex)
+    private fun parseChaptersTitles()
     {
         try
         {
@@ -112,14 +111,16 @@ class Parser
                     }
                     else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ"))
                     {
-                        if(!element.nextElementSibling().text().contains("ГЛАВА")){
+                        if(!element.nextElementSibling().text().contains("ГЛАВА"))
+                        {
                             parentId++
                             chapterId++
                             val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
                             codexLists.chapters.add(chapter)
                         }
                     }
-                    else if (element.text().contains("РАЗДЕЛ")) {
+                    else if (element.text().contains("РАЗДЕЛ"))
+                    {
                         parentId++
                     }
                 }
@@ -131,7 +132,7 @@ class Parser
         }
     }
 
-    private fun parseArticlesTitles(codex: Codex)
+    private fun parseArticlesTitles()
     {
         try
         {
@@ -145,8 +146,25 @@ class Parser
                 {
                     if (element.text().contains("Статья"))
                     {
-                        val article = CodexContent(parentId, element.text())
-                        articlesList.add(article)
+                        if (element.attr("id").contains("/"))
+                        {
+                            var title = element.toString()
+                            title = formatText(title)
+                            val article = CodexContent(parentId, title)
+                            articlesList.add(article)
+                        }
+                        if (element.text().contains("в действие настоящего Кодекса")
+                            && !element.previousElementSibling().text().contains("ГЛАВА"))
+                        {
+                            parentId++
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
+                        else if (!element.attr("id").contains("/"))
+                        {
+                            val article = CodexContent(parentId, element.text())
+                            articlesList.add(article)
+                        }
                     }
                     else if (element.text().contains("ГЛАВА")){
                         parentId++
@@ -160,7 +178,7 @@ class Parser
         }
     }
 
-    private fun parseContent(codex: Codex)
+    private fun parseContent()
     {
         try
         {
@@ -221,8 +239,26 @@ class Parser
                     && !element.attr("class").equals("part")
                     && element.text() != "")
                 {
-                    val codexContent = CodexContent(currentId, element.text())
-                    contentList.add(codexContent)
+                    if (element.children().attr("href").contains("Article"))
+                    {
+                        var content = element.toString()
+                        if (content.contains("<sup>"))
+                        {
+                            content = formatText(content)
+                            val codexContent = CodexContent(currentId, content)
+                            contentList.add(codexContent)
+                        }
+                        else if (!content.contains("<sup>"))
+                        {
+                            val codexContent = CodexContent(currentId, element.text())
+                            contentList.add(codexContent)
+                        }
+                    }
+                    else
+                    {
+                        val codexContent = CodexContent(currentId, element.text())
+                        contentList.add(codexContent)
+                    }
                 }
             }
         }
@@ -248,5 +284,23 @@ class Parser
             codexLists.articles.add(article)
             contentText = ""
         }
+    }
+
+    private fun formatText(content: String): String
+    {
+        var text = content
+
+        text = text.replace("<sup>", "/")
+        text = text.replace("</sup>", "")
+        text = text.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+        text = text.replace("&nbsp;", " ")
+        text = text.replace("  ", " ")
+        text = text.replace(" ,", ",")
+        text = text.replace(" )", ")")
+        text = text.replace("( ", "(")
+        text = text.replace(" . ", ". ")
+        text = text.replace(" /", "/")
+
+        return text
     }
 }

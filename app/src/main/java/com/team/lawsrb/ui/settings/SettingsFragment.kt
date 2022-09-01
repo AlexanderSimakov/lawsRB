@@ -13,6 +13,10 @@ import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.Parser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
+import android.widget.CheckBox
+import android.widget.SearchView
+import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.update_codex_button.view.*
@@ -41,6 +45,13 @@ class SettingsFragment : Fragment() {
         setUpUpdateButtons()
         setOnClickListenerForUpdateButtons()
         setUpClearAllButton()
+
+        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
+        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = false
+        actionSearch.isVisible = false
+        actionsFavorites.isVisible = false
 
         return root
     }
@@ -178,6 +189,13 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
+        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = true
+        actionSearch.isVisible = true
+        actionsFavorites.isVisible = true
+
         super.onDestroyView()
         _binding = null
     }
