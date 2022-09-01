@@ -26,7 +26,6 @@ class ArticlePageAdapter (private val items: List<Any>,
     inner class ArticleViewHolder(articleCardView: View) : RecyclerView.ViewHolder(articleCardView) {
         val card: MaterialCardView = articleCardView.findViewById(R.id.article_card)
         val title: TextView = articleCardView.findViewById(R.id.article_card_title)
-        val content: TextView = articleCardView.findViewById(R.id.article_card_subtitle)
         val checkBox: CheckBox = articleCardView.findViewById(R.id.article_card_checkbox)
         val expandable: LinearLayout = articleCardView.findViewById(R.id.article_card_expandable_layout)
         val expandableText: TextView = articleCardView.findViewById(R.id.article_card_content)
@@ -35,7 +34,6 @@ class ArticlePageAdapter (private val items: List<Any>,
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
         val card: MaterialCardView = chapterCardView.findViewById(R.id.title_card)
         val title: TextView = chapterCardView.findViewById(R.id.title_card_title)
-        val content: TextView = chapterCardView.findViewById(R.id.title_card_subtitle)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -68,7 +66,6 @@ class ArticlePageAdapter (private val items: List<Any>,
             isArticle -> {
                 val article: Article = items[position] as Article
                 (viewHolder as ArticleViewHolder).title.text = article.title
-                viewHolder.content.text = "Article content"
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
                 viewHolder.card.setOnClickListener {
@@ -89,7 +86,6 @@ class ArticlePageAdapter (private val items: List<Any>,
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.content.text = "Chapter content"
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveLeftTo(chapter)
                 }

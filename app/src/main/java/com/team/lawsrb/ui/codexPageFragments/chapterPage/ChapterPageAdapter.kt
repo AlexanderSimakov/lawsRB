@@ -18,13 +18,11 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
         val card: MaterialCardView = sectionCardView.findViewById(R.id.title_card)
         val title: TextView = sectionCardView.findViewById(R.id.title_card_title)
-        val content: TextView = sectionCardView.findViewById(R.id.title_card_subtitle)
     }
 
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
         val card: MaterialCardView = chapterCardView.findViewById(R.id.item_card)
         val title: TextView = chapterCardView.findViewById(R.id.item_card_title)
-        val content: TextView = chapterCardView.findViewById(R.id.item_card_subtitle)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -57,7 +55,6 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
             isSection -> {
                 val section: Section = items[position] as Section
                 (viewHolder as SectionViewHolder).title.text = section.title
-                viewHolder.content.text = "Section content"
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveLeftTo(section)
                 }
@@ -65,7 +62,6 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
                 (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.content.text = "Chapter content"
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveRightTo(chapter)
                 }

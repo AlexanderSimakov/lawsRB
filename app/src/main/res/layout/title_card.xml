@@ -24,11 +24,6 @@
                 android:layout_height="wrap_content"
                 style="@style/Theme.LawsRB.CardView.Title"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/title_card_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Theme.LawsRB.CardView.Subtitle"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
