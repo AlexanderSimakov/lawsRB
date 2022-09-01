@@ -24,6 +24,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
@@ -42,10 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -76,6 +74,8 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
 
+        val searchFab = findViewById<FloatingActionButton>(R.id.fab)
+
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.action_search)
@@ -91,7 +91,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        searchView.setOnSearchClickListener {
+            searchFab.hide()
+        }
+
         searchView.setOnCloseListener {
+            searchFab.show()
             BaseCodexProvider.sentQuery("")
             false
         }
@@ -107,6 +112,12 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.setFavorite(isChecked)
+        }
+
+        // --- Search button ---
+        searchFab.setOnClickListener {
+            searchView.isIconified = false
+            searchFab.hide()
         }
 
         // --- Theme switcher ---
