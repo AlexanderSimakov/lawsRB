@@ -149,15 +149,8 @@ object Parser
                     {
                         if (element.attr("id").contains("/"))
                         {
-                            var title = element.text()
-                            for (i in 0..title.length)
-                            {
-                                if (title[i] in '1'..'9' && title[i + 1] !in '1'..'9')
-                                {
-                                    title = title.replace("${title[i]}", "/${title[i]}")
-                                    break
-                                }
-                            }
+                            var title = element.toString()
+                            title = formatText(title)
                             val article = CodexContent(parentId, title)
                             articlesList.add(article)
                         }
@@ -306,6 +299,8 @@ object Parser
         text = text.replace(" ,", ",")
         text = text.replace(" )", ")")
         text = text.replace("( ", "(")
+        text = text.replace(" . ", ". ")
+        text = text.replace(" /", "/")
 
         return text
     }
