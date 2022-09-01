@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.R
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 
@@ -39,6 +40,8 @@ class SettingsFragment : Fragment() {
 
         val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
         val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = false
         actionSearch.isVisible = false
         actionsFavorites.isVisible = false
 
@@ -48,6 +51,8 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
         val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = true
         actionSearch.isVisible = true
         actionsFavorites.isVisible = true
 
