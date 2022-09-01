@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
-import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 
 @Dao
