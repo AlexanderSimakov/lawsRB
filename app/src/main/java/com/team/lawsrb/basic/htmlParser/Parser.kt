@@ -26,6 +26,7 @@ class Parser
         contentList.clear()
         articlesList.clear()
 
+        parsePartsTitles()
         parseSectionsTitles()
         parseChaptersTitles()
         parseArticlesTitles()
