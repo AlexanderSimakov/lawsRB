@@ -36,7 +36,6 @@ class CenterLayoutManager : LinearLayoutManager {
                     10_000 -> 100
                     else -> 300
                 }
-            }
         }
     }
 
