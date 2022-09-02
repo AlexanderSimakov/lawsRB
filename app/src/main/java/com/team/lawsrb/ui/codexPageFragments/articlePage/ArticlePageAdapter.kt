@@ -80,10 +80,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                     }
                 }
                 viewHolder.checkBox.setOnClickListener {
-                    // TODO make it better
-                    val _article = Article(article.title, article.id, article.parentId, viewHolder.checkBox.isChecked)
-                    _article.content = article.content
-                    articlesDao.update(_article)
+                    article.isLiked = viewHolder.checkBox.isChecked
+                    articlesDao.update(article)
                 }
             }
             isChapter -> {
