@@ -28,15 +28,14 @@ class CenterLayoutManager : LinearLayoutManager {
 
     companion object{
         class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
-            private val millisecondsPerInch = 40F // default is 25 (bigger = slower)
 
             override fun getVerticalSnapPreference() = SNAP_TO_START
 
-            override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
-                if (displayMetrics != null) {
-                    return millisecondsPerInch / displayMetrics.densityDpi
+            override fun calculateTimeForScrolling(dx: Int) =
+                when (dx){
+                    10_000 -> 100
+                    else -> 300
                 }
-                return 4F
             }
         }
     }
