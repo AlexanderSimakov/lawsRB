@@ -8,8 +8,10 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
@@ -24,17 +26,26 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
+import com.team.lawsrb.basic.htmlParser.Codex
+import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var sharedPrefCodexVersions: SharedPreferences
+    private lateinit var appFirstRun: SharedPreferences
+    companion object {
+        lateinit var mSettingCodexVersions: SharedPreferences
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +76,9 @@ class MainActivity : AppCompatActivity() {
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+        appFirstRun = getSharedPreferences("com.team.lawsrb", MODE_PRIVATE)
+        sharedPrefCodexVersions = getSharedPreferences("codex_versions", MODE_PRIVATE)
+        mSettingCodexVersions = sharedPrefCodexVersions
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
@@ -137,6 +151,22 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (appFirstRun.getBoolean("firstrun", true)){
+            toSharedPreference("UK", 82)
+            toSharedPreference("UPK", 61)
+            toSharedPreference("KoAP", 1)
+            toSharedPreference("PIKoAP", 1)
+            appFirstRun.edit().putBoolean("firstrun", false).commit()
+        }
+    }
+
+    private fun toSharedPreference(codex: String, codexVersion: Int){
+        sharedPrefCodexVersions.edit().putInt(codex, codexVersion).apply()
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
