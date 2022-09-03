@@ -2,15 +2,9 @@ package com.team.lawsrb.ui.settings
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.SearchView
 import android.widget.TextView
-import androidx.core.view.isVisible
-import com.team.lawsrb.R
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -37,20 +31,10 @@ class SettingsFragment : Fragment() {
             textView.text = it
         }
 
-        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
-        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
-        actionSearch.isVisible = false
-        actionsFavorites.isVisible = false
-
         return root
     }
 
     override fun onDestroyView() {
-        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
-        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
-        actionSearch.isVisible = true
-        actionsFavorites.isVisible = true
-
         super.onDestroyView()
         _binding = null
     }
