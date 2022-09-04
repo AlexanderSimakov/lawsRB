@@ -135,6 +135,8 @@ object BaseCodexProvider {
         _PIKoAP.searchQuery = search
     }
 
+    fun getQuery() = _UK.searchQuery
+
     fun setFavorite(isFavorite: Boolean){
         _UK.isFavorites = isFavorite
         _UPK.isFavorites = isFavorite
