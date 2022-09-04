@@ -8,6 +8,8 @@ import org.jsoup.nodes.Document
 object CodexVersionParser {
 
     private var document: Document? = null
+    private const val TEST_LOG = "TestLog"
+    private const val ERROR_LOG = "Error"
 
     fun get(codex: Codex): Boolean{
         try
@@ -16,7 +18,7 @@ object CodexVersionParser {
         }
         catch (e: Exception)
         {
-            Log.e("Error", "Failed getting document")
+            Log.e(ERROR_LOG, "Failed getting document")
         }
 
         val countOfElements = getQuantityOfElementsWithChanges()
@@ -27,7 +29,7 @@ object CodexVersionParser {
             oldCountOfElements = sharedPrefCodexVersions.getInt(codex.name, countOfElements)
         }
 
-        Log.d("TestLog", "$oldCountOfElements")
+        Log.d(TEST_LOG, "$oldCountOfElements")
         if (countOfElements != oldCountOfElements)
         {
             sharedPrefCodexVersions.edit().remove(codex.name).apply()
