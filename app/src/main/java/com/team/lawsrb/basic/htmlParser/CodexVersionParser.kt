@@ -21,7 +21,7 @@ object CodexVersionParser {
             Log.e(ERROR_LOG, "Failed getting document")
         }
 
-        val countOfElements = getQuantityOfElementsWithChanges()
+        val countOfElements = getCountOfElementsWithChanges()
         val sharedPrefCodexVersions = MainActivity.mSettingCodexVersions
         var oldCountOfElements = 0
         if (sharedPrefCodexVersions.contains(codex.name))
@@ -40,7 +40,7 @@ object CodexVersionParser {
         return false
     }
 
-    private fun getQuantityOfElementsWithChanges(): Int
+    private fun getCountOfElementsWithChanges(): Int
     {
         var quantityOfElements = 0
         val mainTable = document!!.select("main")
