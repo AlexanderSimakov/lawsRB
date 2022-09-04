@@ -11,7 +11,7 @@ object CodexVersionParser {
     private const val TEST_LOG = "TestLog"
     private const val ERROR_LOG = "Error"
 
-    fun get(codex: Codex): Boolean{
+    fun verifyForChanges(codex: Codex): Boolean{
         try
         {
             document = Jsoup.connect(codex.URL).get()
