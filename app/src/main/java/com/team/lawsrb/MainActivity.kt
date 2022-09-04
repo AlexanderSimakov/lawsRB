@@ -29,12 +29,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
-import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -151,16 +147,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (sharedPref.getBoolean("firstrun", true)){
-            toSharedPreference(Codex.UK, 82)
-            toSharedPreference(Codex.UPK, 61)
-            toSharedPreference(Codex.KoAP, 1)
-            toSharedPreference(Codex.PIKoAP, 1)
+            toSharedPreference(Codex.UK, 82, "18.05.2022")
+            toSharedPreference(Codex.UPK, 61, "26.07.2022")
+            toSharedPreference(Codex.KoAP, 1, "11.01.2022")
+            toSharedPreference(Codex.PIKoAP, 1, "11.01.2022")
             sharedPref.edit().putBoolean("firstrun", false).apply()
         }
     }
 
-    private fun toSharedPreference(codex: Codex, codexVersion: Int){
+    private fun toSharedPreference(codex: Codex, codexVersion: Int, dateOfLastChange: String){
         sharedPrefCodexVersions.edit().putInt(codex.name, codexVersion).apply()
+        sharedPrefCodexVersions.edit().putString("date_${codex.name}", dateOfLastChange).apply()
     }
 
 

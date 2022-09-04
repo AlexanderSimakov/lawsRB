@@ -10,6 +10,7 @@ object CodexVersionParser {
     private var document: Document? = null
     private const val TEST_LOG = "TestLog"
     private const val ERROR_LOG = "Error"
+    private const val DATE_KEY = "date_"
 
     fun verifyForChanges(codex: Codex): Boolean{
         try
@@ -22,6 +23,7 @@ object CodexVersionParser {
         }
 
         val countOfElements = getCountOfElementsWithChanges()
+        val dateOfLastChange = getLastChangeDate()
         val sharedPrefCodexVersions = MainActivity.sharedPrefCodexVersions
         var oldCountOfElements = 0
         if (sharedPrefCodexVersions.contains(codex.name))
@@ -29,7 +31,14 @@ object CodexVersionParser {
             oldCountOfElements = sharedPrefCodexVersions.getInt(codex.name, countOfElements)
         }
 
+        var oldDateOfLastChange: String? = ""
+        if (sharedPrefCodexVersions.contains("$DATE_KEY${codex.name}"))
+        {
+            oldDateOfLastChange = sharedPrefCodexVersions.getString("$DATE_KEY${codex.name}", dateOfLastChange)
+        }
+
         Log.d(TEST_LOG, "$oldCountOfElements")
+        Log.d(TEST_LOG, oldDateOfLastChange!!)
         if (countOfElements != oldCountOfElements)
         {
             sharedPrefCodexVersions.edit().remove(codex.name).apply()
@@ -54,5 +63,34 @@ object CodexVersionParser {
             }
         }
         return quantityOfElements
+    }
+
+    private fun getLastChangeDate(): String
+    {
+        var dateOfLastChange = ""
+        val mainTable = document!!.select("main")
+        val elements = mainTable.select("p")
+
+        for (element in elements)
+        {
+            if (element.attr("class").equals("changeadd")
+                && !element.nextElementSibling().attr("class").equals("changeadd"))
+            {
+                dateOfLastChange = element.text()
+                dateOfLastChange = leaveDateOnly(dateOfLastChange)
+            }
+        }
+        return dateOfLastChange
+    }
+
+    private fun leaveDateOnly(line: String): String
+    {
+        var toDate = line
+
+        toDate = toDate.substring(toDate.indexOf('('), toDate.indexOf(')'))
+        toDate = toDate.substring(toDate.indexOf(','), toDate.lastIndexOf(','))
+        toDate = toDate.replace(", ", "")
+
+        return toDate
     }
 }
