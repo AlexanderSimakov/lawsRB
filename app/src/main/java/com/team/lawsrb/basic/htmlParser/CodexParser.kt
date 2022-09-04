@@ -14,8 +14,7 @@ object CodexParser
     private var contentList = mutableListOf<CodexContent>()
     private var articlesList = mutableListOf<CodexContent>()
     private var document: Document? = null
-    private const val TEST_LOG = "TestLog"
-    private const val ERROR_LOG = "Error"
+    private const val LOG_TAG = "CodexParser"
 
     fun get(codex: Codex): CodexLists?
     {
@@ -25,7 +24,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "${e.message}")
+            Log.e(LOG_TAG, "${e.message}")
         }
 
         parsePartsTitles()
@@ -60,7 +59,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "Error : ${e.message}");
+            Log.e(LOG_TAG, "Error : ${e.message}");
         }
     }
 
@@ -90,7 +89,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "Error : ${e.message}");
+            Log.e(LOG_TAG, "Error : ${e.message}");
         }
     }
 
@@ -131,7 +130,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "Error : ${e.message}");
+            Log.e(LOG_TAG, "Error : ${e.message}");
         }
     }
 
@@ -177,7 +176,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "Error : ${e.message}");
+            Log.e(LOG_TAG, "Error : ${e.message}");
         }
     }
 
@@ -247,13 +246,13 @@ object CodexParser
                     {
                         content = formatText(content)
                         val codexContent = CodexContent(currentId, content)
-                        Log.d(TEST_LOG, content)
+                        Log.d(LOG_TAG, content)
                         contentList.add(codexContent)
                     }
                     else
                     {
                         val codexContent = CodexContent(currentId, element.text())
-                        Log.d(TEST_LOG, element.text())
+                        Log.d(LOG_TAG, element.text())
                         contentList.add(codexContent)
                     }
                 }
@@ -261,7 +260,7 @@ object CodexParser
         }
         catch (e: Exception)
         {
-            Log.d(ERROR_LOG, "Error : ${e.message}");
+            Log.e(LOG_TAG, "Error : ${e.message}");
         }
     }
 
