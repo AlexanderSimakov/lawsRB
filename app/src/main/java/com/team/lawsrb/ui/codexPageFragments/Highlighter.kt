@@ -7,7 +7,14 @@ import android.text.style.BackgroundColorSpan
 import android.widget.TextView
 
 object Highlighter {
-    private var color: Int = Color.YELLOW
+    private val color: Int
+        get() {
+            // TODO: adjust colors
+            return if (isDarkMode) Color.GRAY
+                   else Color.YELLOW
+        }
+
+    var isDarkMode = false
 
     fun applyTo(textView: TextView, textToHighlight: String){
         if (textToHighlight.isEmpty()) return

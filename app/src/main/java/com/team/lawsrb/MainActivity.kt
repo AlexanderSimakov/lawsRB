@@ -29,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
+import com.team.lawsrb.ui.codexPageFragments.Highlighter
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,9 +62,11 @@ class MainActivity : AppCompatActivity() {
         sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
         if (sharedPref.getBoolean("isDarkModeOn", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            Highlighter.isDarkMode = true
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Highlighter.isDarkMode = false
         }
 
         //Initialize database
@@ -128,9 +131,11 @@ class MainActivity : AppCompatActivity() {
             if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 editor.putBoolean("isDarkModeOn", true)
+                Highlighter.isDarkMode = true
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editor.putBoolean("isDarkModeOn", false)
+                Highlighter.isDarkMode = false
             }
             editor.apply()
         }
