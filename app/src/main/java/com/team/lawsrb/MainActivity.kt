@@ -155,16 +155,16 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (appFirstRun.getBoolean("firstrun", true)){
-            toSharedPreference("UK", 82)
-            toSharedPreference("UPK", 61)
-            toSharedPreference("KoAP", 1)
-            toSharedPreference("PIKoAP", 1)
-            appFirstRun.edit().putBoolean("firstrun", false).commit()
+            toSharedPreference(Codex.UK, 82)
+            toSharedPreference(Codex.UPK, 61)
+            toSharedPreference(Codex.KoAP, 1)
+            toSharedPreference(Codex.PIKoAP, 1)
+            appFirstRun.edit().putBoolean("firstrun", false).apply()
         }
     }
 
-    private fun toSharedPreference(codex: String, codexVersion: Int){
-        sharedPrefCodexVersions.edit().putInt(codex, codexVersion).apply()
+    private fun toSharedPreference(codex: Codex, codexVersion: Int){
+        sharedPrefCodexVersions.edit().putInt(codex.name, codexVersion).apply()
     }
 
 
