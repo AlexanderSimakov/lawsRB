@@ -41,10 +41,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPreferences
-    private lateinit var sharedPrefCodexVersions: SharedPreferences
-    private lateinit var appFirstRun: SharedPreferences
     companion object {
-        lateinit var mSettingCodexVersions: SharedPreferences
+        lateinit var sharedPrefCodexVersions: SharedPreferences
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,15 +68,13 @@ class MainActivity : AppCompatActivity() {
         // Saving state of app
         // using SharedPreferences
         sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        sharedPrefCodexVersions = sharedPref
         if (sharedPref.getBoolean("isDarkModeOn", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        appFirstRun = getSharedPreferences("com.team.lawsrb", MODE_PRIVATE)
-        sharedPrefCodexVersions = getSharedPreferences("codex_versions", MODE_PRIVATE)
-        mSettingCodexVersions = sharedPrefCodexVersions
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
@@ -137,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
         themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
-        val editor = sharedPref.edit()
+        var editor = sharedPref.edit()
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -154,12 +150,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (appFirstRun.getBoolean("firstrun", true)){
+        if (sharedPref.getBoolean("firstrun", true)){
             toSharedPreference(Codex.UK, 82)
             toSharedPreference(Codex.UPK, 61)
             toSharedPreference(Codex.KoAP, 1)
             toSharedPreference(Codex.PIKoAP, 1)
-            appFirstRun.edit().putBoolean("firstrun", false).apply()
+            sharedPref.edit().putBoolean("firstrun", false).apply()
         }
     }
 

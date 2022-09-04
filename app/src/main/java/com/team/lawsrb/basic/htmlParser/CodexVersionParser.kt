@@ -22,7 +22,7 @@ object CodexVersionParser {
         }
 
         val countOfElements = getCountOfElementsWithChanges()
-        val sharedPrefCodexVersions = MainActivity.mSettingCodexVersions
+        val sharedPrefCodexVersions = MainActivity.sharedPrefCodexVersions
         var oldCountOfElements = 0
         if (sharedPrefCodexVersions.contains(codex.name))
         {
