@@ -11,9 +11,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
+import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ArticlePageAdapter (private val items: List<Any>,
@@ -83,6 +85,9 @@ class ArticlePageAdapter (private val items: List<Any>,
                     article.isLiked = viewHolder.checkBox.isChecked
                     articlesDao.update(article)
                 }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.getQuery())
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
@@ -91,6 +96,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveLeftTo(chapter)
                 }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }
