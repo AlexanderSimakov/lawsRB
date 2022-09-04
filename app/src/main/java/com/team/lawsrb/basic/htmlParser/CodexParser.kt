@@ -240,20 +240,13 @@ object CodexParser
                     && !element.attr("class").equals("part")
                     && element.text() != "")
                 {
-                    if (element.children().attr("href").contains("Article"))
+                    var content = element.toString()
+                    if (content.contains("<sup>"))
                     {
-                        var content = element.toString()
-                        if (content.contains("<sup>"))
-                        {
-                            content = formatText(content)
-                            val codexContent = CodexContent(currentId, content)
-                            contentList.add(codexContent)
-                        }
-                        else if (!content.contains("<sup>"))
-                        {
-                            val codexContent = CodexContent(currentId, element.text())
-                            contentList.add(codexContent)
-                        }
+                        content = formatText(content)
+                        val codexContent = CodexContent(currentId, content)
+                        Log.d("TestLog", content)
+                        contentList.add(codexContent)
                     }
                     else
                     {
