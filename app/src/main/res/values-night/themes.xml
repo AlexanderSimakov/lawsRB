@@ -16,8 +16,12 @@
 
         <!-- Surface color -->
         <item name="colorOnSurface">@color/white</item>
-        <item name="colorSurface">#2B2B2B</item>
-        <item name="colorSurfaceVariant">?attr/backgroundColor</item>
+
+        <!-- Item and Article color -->
+        <item name="colorSurface">#0F0F0F</item>
+
+        <!-- Title color -->
+        <item name="colorSurfaceVariant">#2B2B2B</item>
 
         <!-- Background color -->
         <item name="backgroundColor">#1E1E1E</item>

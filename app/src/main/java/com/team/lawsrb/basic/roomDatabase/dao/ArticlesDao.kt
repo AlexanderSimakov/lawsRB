@@ -16,6 +16,12 @@ interface ArticlesDao {
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE title LIKE :search OR content LIKE :search ORDER BY id ASC")
     fun findAll(search: String): List<Article>
 
+    @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE title LIKE :search ORDER BY id ASC")
+    fun findByTitle(search: String): List<Article>
+
+    @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE content LIKE :search ORDER BY id ASC")
+    fun findByContent(search: String): List<Article>
+
     @Update
     fun update(article: Article)
 
