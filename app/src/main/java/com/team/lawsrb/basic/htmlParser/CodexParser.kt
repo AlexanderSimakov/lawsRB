@@ -8,12 +8,13 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-object Parser
+object CodexParser
 {
     private var codexLists = CodexLists()
     private var contentList = mutableListOf<CodexContent>()
     private var articlesList = mutableListOf<CodexContent>()
     private var document: Document? = null
+    private const val TAG = "CodexParser"
 
     fun get(codex: Codex): CodexLists?
     {
@@ -23,7 +24,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Error", "${e.message}")
+            Log.e(TAG, "${e.message}")
         }
 
         parsePartsTitles()
@@ -58,7 +59,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Log", "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}");
         }
     }
 
@@ -88,7 +89,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Log", "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}");
         }
     }
 
@@ -129,7 +130,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Log", "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}");
         }
     }
 
@@ -175,7 +176,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Log", "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}");
         }
     }
 
@@ -240,24 +241,18 @@ object Parser
                     && !element.attr("class").equals("part")
                     && element.text() != "")
                 {
-                    if (element.children().attr("href").contains("Article"))
+                    var content = element.toString()
+                    if (content.contains("<sup>"))
                     {
-                        var content = element.toString()
-                        if (content.contains("<sup>"))
-                        {
-                            content = formatText(content)
-                            val codexContent = CodexContent(currentId, content)
-                            contentList.add(codexContent)
-                        }
-                        else if (!content.contains("<sup>"))
-                        {
-                            val codexContent = CodexContent(currentId, element.text())
-                            contentList.add(codexContent)
-                        }
+                        content = formatText(content)
+                        val codexContent = CodexContent(currentId, content)
+                        Log.d(TAG, content)
+                        contentList.add(codexContent)
                     }
                     else
                     {
                         val codexContent = CodexContent(currentId, element.text())
+                        Log.d(TAG, element.text())
                         contentList.add(codexContent)
                     }
                 }
@@ -265,7 +260,7 @@ object Parser
         }
         catch (e: Exception)
         {
-            Log.d("Log", "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}");
         }
     }
 

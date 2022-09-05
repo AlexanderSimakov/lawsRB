@@ -8,8 +8,10 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
@@ -24,9 +26,9 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
+import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPreferences
+    companion object {
+        lateinit var sharedPrefCodexVersions: SharedPreferences
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         // Saving state of app
         // using SharedPreferences
         sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        sharedPrefCodexVersions = sharedPref
         if (sharedPref.getBoolean("isDarkModeOn", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
@@ -123,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
         themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
-        val editor = sharedPref.edit()
+        var editor = sharedPref.edit()
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -137,6 +143,23 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (sharedPref.getBoolean("firstrun", true)){
+            toSharedPreference(Codex.UK, 82, "От 13 мая 2022")
+            toSharedPreference(Codex.UPK, 61, "От 20 июля 2022")
+            toSharedPreference(Codex.KoAP, 1, "От 4 января 2022")
+            toSharedPreference(Codex.PIKoAP, 1, "От 4 января 2022")
+            sharedPref.edit().putBoolean("firstrun", false).apply()
+        }
+    }
+
+    private fun toSharedPreference(codex: Codex, codexVersion: Int, dateOfLastChange: String){
+        sharedPrefCodexVersions.edit().putInt(codex.name, codexVersion).apply()
+        sharedPrefCodexVersions.edit().putString("date_${codex.name}", dateOfLastChange).apply()
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

@@ -2,6 +2,7 @@ package com.team.lawsrb.ui.settings
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +45,7 @@ class SettingsFragment : Fragment() {
         fab.isVisible = false
         actionSearch.isVisible = false
         actionsFavorites.isVisible = false
-
+        
         return root
     }
 
