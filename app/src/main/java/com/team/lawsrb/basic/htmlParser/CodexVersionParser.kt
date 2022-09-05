@@ -77,6 +77,7 @@ object CodexVersionParser {
             {
                 dateOfLastChange = element.text()
                 dateOfLastChange = leaveDateOnly(dateOfLastChange)
+                Log.d(LOG_TAG, dateOfLastChange)
             }
         }
         return dateOfLastChange
@@ -86,9 +87,9 @@ object CodexVersionParser {
     {
         var toDate = line
 
-        toDate = toDate.substring(toDate.indexOf('('), toDate.indexOf(')'))
-        toDate = toDate.substring(toDate.indexOf(','), toDate.lastIndexOf(','))
-        toDate = toDate.replace(", ", "")
+        toDate = toDate.substring(toDate.indexOf("от"), toDate.indexOf("г."))
+        toDate = toDate.replace("от", "От")
+        toDate = toDate.substring(0, toDate.length - 1)
 
         return toDate
     }

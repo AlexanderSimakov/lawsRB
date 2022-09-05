@@ -147,10 +147,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (sharedPref.getBoolean("firstrun", true)){
-            toSharedPreference(Codex.UK, 82, "18.05.2022")
-            toSharedPreference(Codex.UPK, 61, "26.07.2022")
-            toSharedPreference(Codex.KoAP, 1, "11.01.2022")
-            toSharedPreference(Codex.PIKoAP, 1, "11.01.2022")
+            toSharedPreference(Codex.UK, 82, "От 13 мая 2022")
+            toSharedPreference(Codex.UPK, 61, "От 20 июля 2022")
+            toSharedPreference(Codex.KoAP, 1, "От 4 января 2022")
+            toSharedPreference(Codex.PIKoAP, 1, "От 4 января 2022")
             sharedPref.edit().putBoolean("firstrun", false).apply()
         }
     }
