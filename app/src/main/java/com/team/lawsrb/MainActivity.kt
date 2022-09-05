@@ -1,6 +1,7 @@
 package com.team.lawsrb
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.ColorFilter
@@ -26,6 +27,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.TaskStackBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
@@ -139,6 +141,10 @@ class MainActivity : AppCompatActivity() {
                 editor.putBoolean("isDarkModeOn", false)
             }
             editor.apply()
+            TaskStackBuilder.create(applicationContext)
+                .addNextIntent(Intent(applicationContext, MainActivity::class.java))
+                .addNextIntent(intent)
+                .startActivities()
         }
 
         return true
