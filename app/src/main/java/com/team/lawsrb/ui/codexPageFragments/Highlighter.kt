@@ -10,8 +10,8 @@ object Highlighter {
     private val color: Int
         get() {
             // TODO: adjust colors
-            return if (isDarkMode) Color.GRAY
-                   else Color.YELLOW
+            return if (isDarkMode) Color.parseColor("#413F42")
+                   else Color.parseColor("#EBD671")
         }
 
     var isDarkMode = false
