@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document
 object CodexVersionParser {
 
     private var document: Document? = null
-    private const val LOG_TAG = "CodexVersionParser"
+    private const val TAG = "CodexVersionParser"
     private const val DATE_KEY = "date_"
 
     fun verifyForChanges(codex: Codex): Boolean{
@@ -18,7 +18,7 @@ object CodexVersionParser {
         }
         catch (e: Exception)
         {
-            Log.e(LOG_TAG, "Failed getting document")
+            Log.e(TAG, "Failed getting document")
         }
 
         val countOfElements = getCountOfElementsWithChanges()
@@ -36,8 +36,8 @@ object CodexVersionParser {
             oldDateOfLastChange = sharedPrefCodexVersions.getString("$DATE_KEY${codex.name}", dateOfLastChange)
         }
 
-        Log.d(LOG_TAG, "$oldCountOfElements")
-        Log.d(LOG_TAG, oldDateOfLastChange!!)
+        Log.d(TAG, "$oldCountOfElements")
+        Log.d(TAG, oldDateOfLastChange!!)
         if (countOfElements != oldCountOfElements)
         {
             sharedPrefCodexVersions.edit().remove(codex.name).apply()
@@ -77,7 +77,7 @@ object CodexVersionParser {
             {
                 dateOfLastChange = element.text()
                 dateOfLastChange = leaveDateOnly(dateOfLastChange)
-                Log.d(LOG_TAG, dateOfLastChange)
+                Log.d(TAG, dateOfLastChange)
             }
         }
         return dateOfLastChange
