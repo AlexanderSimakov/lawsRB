@@ -2,6 +2,7 @@ package com.team.lawsrb.basic.htmlParser
 
 import android.util.Log
 import com.team.lawsrb.MainActivity
+import com.team.lawsrb.basic.Preferences
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -9,7 +10,6 @@ object CodexVersionParser {
 
     private var document: Document? = null
     private const val TAG = "CodexVersionParser"
-    private const val DATE_KEY = "date_"
 
     fun verifyForChanges(codex: Codex): Boolean{
         try
@@ -23,25 +23,16 @@ object CodexVersionParser {
 
         val countOfElements = getCountOfElementsWithChanges()
         val dateOfLastChange = getLastChangeDate()
-        val sharedPrefCodexVersions = MainActivity.sharedPrefCodexVersions
-        var oldCountOfElements = 0
-        if (sharedPrefCodexVersions.contains(codex.name))
-        {
-            oldCountOfElements = sharedPrefCodexVersions.getInt(codex.name, countOfElements)
-        }
 
-        var oldDateOfLastChange: String? = ""
-        if (sharedPrefCodexVersions.contains("$DATE_KEY${codex.name}"))
-        {
-            oldDateOfLastChange = sharedPrefCodexVersions.getString("$DATE_KEY${codex.name}", dateOfLastChange)
-        }
+        val oldCountOfElements = Preferences.getCodexVersion(codex)
+        val oldDateOfLastChange: String = Preferences.getCodexUpdateDate(codex)
 
         Log.d(TAG, "$oldCountOfElements")
-        Log.d(TAG, oldDateOfLastChange!!)
+        Log.d(TAG, oldDateOfLastChange)
         if (countOfElements != oldCountOfElements)
         {
-            sharedPrefCodexVersions.edit().remove(codex.name).apply()
-            sharedPrefCodexVersions.edit().putInt(codex.name, countOfElements).apply()
+            //sharedPrefCodexVersions.edit().remove(codex.name).apply()
+            //sharedPrefCodexVersions.edit().putInt(codex.name, countOfElements).apply()
             return true
         }
 

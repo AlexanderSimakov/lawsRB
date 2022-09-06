@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.TaskStackBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.roomDatabase.*
@@ -39,10 +40,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPref: SharedPreferences
-    companion object {
-        lateinit var sharedPrefCodexVersions: SharedPreferences
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,15 +63,25 @@ class MainActivity : AppCompatActivity() {
 
         // Saving state of app
         // using SharedPreferences
-        sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
-        sharedPrefCodexVersions = sharedPref
-        if (sharedPref.getBoolean("isDarkModeOn", false)) {
+        Preferences.update(applicationContext)
+        if (Preferences.isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             Highlighter.isDarkMode = true
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             Highlighter.isDarkMode = false
+        }
+
+        // init codex info
+        Preferences.apply {
+            if (isRunFirst){
+                setCodexInfo(Codex.UK, 82, "От 13 мая 2022")
+                setCodexInfo(Codex.UPK, 61, "От 20 июля 2022")
+                setCodexInfo(Codex.KoAP, 1, "От 4 января 2022")
+                setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
+                isRunFirst = false
+            }
         }
 
         //Initialize database
@@ -133,19 +140,17 @@ class MainActivity : AppCompatActivity() {
 
         // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
-        themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
-        var editor = sharedPref.edit()
+        themeSwitcher.isChecked = Preferences.isDarkTheme
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editor.putBoolean("isDarkModeOn", true)
+                Preferences.isDarkTheme = true
                 Highlighter.isDarkMode = true
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editor.putBoolean("isDarkModeOn", false)
+                Preferences.isDarkTheme = false
                 Highlighter.isDarkMode = false
             }
-            editor.apply()
             TaskStackBuilder.create(applicationContext)
                 .addNextIntent(Intent(applicationContext, MainActivity::class.java))
                 .addNextIntent(intent)
@@ -154,23 +159,6 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (sharedPref.getBoolean("firstrun", true)){
-            toSharedPreference(Codex.UK, 82, "От 13 мая 2022")
-            toSharedPreference(Codex.UPK, 61, "От 20 июля 2022")
-            toSharedPreference(Codex.KoAP, 1, "От 4 января 2022")
-            toSharedPreference(Codex.PIKoAP, 1, "От 4 января 2022")
-            sharedPref.edit().putBoolean("firstrun", false).apply()
-        }
-    }
-
-    private fun toSharedPreference(codex: Codex, codexVersion: Int, dateOfLastChange: String){
-        sharedPrefCodexVersions.edit().putInt(codex.name, codexVersion).apply()
-        sharedPrefCodexVersions.edit().putString("date_${codex.name}", dateOfLastChange).apply()
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
