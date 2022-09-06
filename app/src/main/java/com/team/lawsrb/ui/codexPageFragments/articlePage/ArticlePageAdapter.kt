@@ -22,6 +22,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val openedArticleIds = mutableSetOf<Int>()
+
     private val isArticle = 1
     private val isChapter = 2
 
@@ -77,13 +79,21 @@ class ArticlePageAdapter (private val items: List<Any>,
                     TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
                     if (viewHolder.expandable.visibility == View.VISIBLE){
                         viewHolder.expandable.visibility = View.GONE
+                        openedArticleIds.remove(article.id)
                     }else{
                         viewHolder.expandable.visibility = View.VISIBLE
+                        openedArticleIds.add(article.id)
                     }
                 }
                 viewHolder.checkBox.setOnClickListener {
                     article.isLiked = viewHolder.checkBox.isChecked
                     articlesDao.update(article)
+                }
+
+                if (article.id in openedArticleIds){
+                    viewHolder.expandable.visibility = View.VISIBLE
+                }else{
+                    viewHolder.expandable.visibility = View.GONE
                 }
 
                 Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
