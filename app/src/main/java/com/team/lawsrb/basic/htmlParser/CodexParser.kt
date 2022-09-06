@@ -8,12 +8,13 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-object CodexParser
-{
+object CodexParser {
     private var codexLists = CodexLists()
     private var contentList = mutableListOf<CodexContent>()
     private var articlesList = mutableListOf<CodexContent>()
+
     private var document: Document? = null
+
     private const val TAG = "CodexParser"
 
     fun get(codex: Codex): CodexLists? {
@@ -21,7 +22,7 @@ object CodexParser
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
         }
         catch (e: Exception) {
-            Log.e(TAG, "${e.message}")
+            Log.e(TAG, "${e.message}: Getting document's error")
         }
 
         parsePartsTitles()
@@ -51,7 +52,7 @@ object CodexParser
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}: Error parsing parts titles");
         }
     }
 
@@ -75,7 +76,7 @@ object CodexParser
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}: Error parsing sections titles");
         }
     }
 
@@ -107,7 +108,7 @@ object CodexParser
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}: Error parsing chapters titles");
         }
     }
 
@@ -144,7 +145,7 @@ object CodexParser
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}: Error parsing articles titles");
         }
     }
 
@@ -214,7 +215,7 @@ object CodexParser
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}");
+            Log.e(TAG, "Error : ${e.message}: Error parsing article's contents");
         }
     }
 
