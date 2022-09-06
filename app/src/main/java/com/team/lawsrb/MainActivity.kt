@@ -73,6 +73,17 @@ class MainActivity : AppCompatActivity() {
             Highlighter.isDarkMode = false
         }
 
+        // init codex info
+        Preferences.apply {
+            if (isRunFirst){
+                setCodexInfo(Codex.UK, 82, "От 13 мая 2022")
+                setCodexInfo(Codex.UPK, 61, "От 20 июля 2022")
+                setCodexInfo(Codex.KoAP, 1, "От 4 января 2022")
+                setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
+                isRunFirst = false
+            }
+        }
+
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
     }
@@ -147,19 +158,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Preferences.apply {
-            if (isRunFirst){
-                setCodexInfo(Codex.UK, 82, "От 13 мая 2022")
-                setCodexInfo(Codex.UPK, 61, "От 20 июля 2022")
-                setCodexInfo(Codex.KoAP, 1, "От 4 января 2022")
-                setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
-                isRunFirst = false
-            }
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
