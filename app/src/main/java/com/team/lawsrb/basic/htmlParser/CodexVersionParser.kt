@@ -53,14 +53,14 @@ object CodexVersionParser {
                 Log.d(TAG, "${changesCount[Codex.UPK]}")
             }
 
-            launch (handler){
+            launch (handler) {
                 documentKoAP = Jsoup.connect(Codex.KoAP.URL).get()
                 changesCount[Codex.KoAP] = getCountOfElementsWithChangesFromHtmlPage(documentKoAP!!)
                 lastChangesDate[Codex.KoAP] = getLastChangeDateFromHtmlPage(documentKoAP!!)
                 Log.d(TAG, "${changesCount[Codex.KoAP]}")
             }
             
-            launch (handler){
+            launch (handler) {
                 documentPIKoAP = Jsoup.connect(Codex.PIKoAP.URL).get()
                 changesCount[Codex.PIKoAP] = getCountOfElementsWithChangesFromHtmlPage(documentPIKoAP!!)
                 lastChangesDate[Codex.PIKoAP] = getLastChangeDateFromHtmlPage(documentPIKoAP!!)
@@ -83,43 +83,38 @@ object CodexVersionParser {
         return@async lastChangesDate[codex]!!
     }.await()
 
-    private fun getCountOfElementsWithChangesFromHtmlPage(document: Document): Int
-    {
+    private fun getCountOfElementsWithChangesFromHtmlPage(document: Document): Int {
         var quantityOfElements = 0
         val mainTable = document.select("main")
         val elements = mainTable.select("p")
 
-        for (element in elements)
-        {
-            if (element.attr("class").equals("changeadd"))
-            {
+        for (element in elements) {
+            if (element.attr("class").equals("changeadd")) {
                 quantityOfElements++
             }
         }
+
         return quantityOfElements
     }
 
-    private fun getLastChangeDateFromHtmlPage(document: Document): String
-    {
+    private fun getLastChangeDateFromHtmlPage(document: Document): String {
         var dateOfLastChange = ""
         val mainTable = document.select("main")
         val elements = mainTable.select("p")
 
-        for (element in elements)
-        {
+        for (element in elements) {
             if (element.attr("class").equals("changeadd")
-                && !element.nextElementSibling().attr("class").equals("changeadd"))
-            {
+                && !element.nextElementSibling().attr("class").equals("changeadd")) {
                 dateOfLastChange = element.text()
                 dateOfLastChange = leaveDateOnly(dateOfLastChange)
                 Log.d(TAG, dateOfLastChange)
             }
         }
+
         return dateOfLastChange
     }
 
-    private fun leaveDateOnly(line: String): String
-    {
+    private fun leaveDateOnly(line: String): String {
         var toDate = line
 
         toDate = toDate.substring(toDate.indexOf("от"), toDate.indexOf("г."))
