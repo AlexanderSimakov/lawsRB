@@ -32,7 +32,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
-import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
@@ -76,8 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
-
-        CodexVersionParser.verifyForChanges(Codex.UK)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
