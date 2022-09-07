@@ -1,7 +1,6 @@
 package com.team.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.dataProviders.CodexProvider
+import com.team.lawsrb.databinding.FragmentCodexViewerBinding
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() {
+
     constructor() : this(BaseCodexProvider.UK)
 
     private lateinit var model: ArticlePageViewModel
+    private var _binding: FragmentCodexViewerBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,25 +36,27 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         model = ViewModelProvider(this, ArticleViewModelFactory(codeProvider))
             .get(ArticlePageViewModel::class.java)
 
-        return inflater.inflate(R.layout.fragment_codex_viewer, container, false)
+        _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val items = model.getItems().value as List<Any>
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
+        val rvItems = binding.codexFragmentRecyclerView
 
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-
-        val rvItems = view.findViewById<View>(R.id.codex_fragment_recycler_view) as RecyclerView
         rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !fab.isShown){ // scroll up
-                    fab.show()
-                }else if (dy > 0 && fab.isShown){ // scroll down
-                    fab.hide()
+                fab?.apply {
+                    if (dy < 0 && !isShown){ // scroll up
+                        show()
+                    }else if (dy > 0 && isShown){ // scroll down
+                        hide()
+                    }
                 }
             }
         })
 
+        val items = model.getItems().value as List<Any>
         rvItems.adapter = ArticlePageAdapter(items, rvItems, codeProvider.database.articlesDao())
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 2)
