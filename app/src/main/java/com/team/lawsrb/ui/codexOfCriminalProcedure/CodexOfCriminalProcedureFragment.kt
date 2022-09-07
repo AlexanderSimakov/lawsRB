@@ -8,28 +8,38 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.databinding.FragmentUpkBinding
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class CodexOfCriminalProcedureFragment : Fragment() {
+
     private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
+
+    private var _binding: FragmentUpkBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_upk, container, false)
+    ): View {
+
+        _binding = FragmentUpkBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         collectionAdapter = CollectionAdapter(this)
-        viewPager = view.findViewById(R.id.upk_pager)
+        viewPager = binding.upkPager
         viewPager.adapter = collectionAdapter
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        val tabLayout = view.findViewById<com.google.android.material.tabs.TabLayout>(R.id.upk_tab_layout)
+        val tabLayout = binding.upkTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)
