@@ -1,5 +1,6 @@
 package com.team.lawsrb.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -50,7 +51,7 @@ class SettingsFragment : Fragment() {
 
         model = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
 
-        setUpUpdateButtons()
+        setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
         setUpClearAllButton()
 
@@ -64,17 +65,31 @@ class SettingsFragment : Fragment() {
         return root
     }
 
-    private fun setUpUpdateButtons(){
+    private fun setUpRefreshButtons(){
         binding.settingsFragment.apply {
             update_uk.title.text = getString(R.string.menu_criminal_code)
             update_upk.title.text = getString(R.string.menu_code_of_criminal_proсedure)
             update_koap.title.text = getString(R.string.menu_KoAP)
             update_pikoap.title.text = getString(R.string.menu_PIKoAP)
 
-            update_uk.subtitle.text = Preferences.getCodexUpdateDate(Codex.UK)
-            update_upk.subtitle.text = Preferences.getCodexUpdateDate(Codex.UPK)
-            update_koap.subtitle.text = Preferences.getCodexUpdateDate(Codex.KoAP)
-            update_pikoap.subtitle.text = Preferences.getCodexUpdateDate(Codex.PIKoAP)
+            updateRefreshButton(update_uk, Codex.UK)
+            updateRefreshButton(update_upk, Codex.UPK)
+            updateRefreshButton(update_koap, Codex.KoAP)
+            updateRefreshButton(update_pikoap, Codex.PIKoAP)
+        }
+    }
+
+    private fun updateRefreshButton(button: View, codex: Codex){
+        if (CodexVersionParser.isHaveChanges(codex)){
+            button.update_codex_button.setCardBackgroundColor(Color.parseColor("#FFB947"))
+            button.image.setColorFilter(Color.DKGRAY)
+            button.subtitle.text = "Доступно обновление"
+            button.update_codex_button.isEnabled = true
+        }else{
+            button.update_codex_button.setCardBackgroundColor(Color.WHITE)
+            button.image.setColorFilter(Color.GRAY)
+            button.subtitle.text = Preferences.getCodexUpdateDate(codex)
+            button.update_codex_button.isEnabled = false
         }
     }
 
@@ -103,6 +118,8 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangesCount(Codex.UK),
                             CodexVersionParser.getChangeDate(Codex.UK)
                         )
+
+                        updateRefreshButton(binding.settingsFragment.update_uk, Codex.UK)
 
                         // Bug: then click button and change page to UK (or others),
                         // after parsing app crash, because cannot find view(below)
@@ -137,6 +154,8 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.UPK)
                         )
 
+                        updateRefreshButton(binding.settingsFragment.update_upk, Codex.UPK)
+
                         model.isUPKParserWorked = false
 
                         // See first
@@ -169,6 +188,8 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangesCount(Codex.KoAP),
                             CodexVersionParser.getChangeDate(Codex.KoAP)
                         )
+
+                        updateRefreshButton(binding.settingsFragment.update_koap, Codex.KoAP)
 
                         model.isKoAPParserWorked = false
 
@@ -203,6 +224,8 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.PIKoAP)
                         )
 
+                        updateRefreshButton(binding.settingsFragment.update_pikoap, Codex.PIKoAP)
+
                         model.isPIKoAPParserWorked = false
 
                         // See first
@@ -229,6 +252,12 @@ class SettingsFragment : Fragment() {
             clearDatabase(BaseCodexDatabase.PIKoAP)
 
             BaseCodexProvider.update()
+            Preferences.setCodexVersion(Codex.UK, -1)
+            Preferences.setCodexVersion(Codex.UPK, -1)
+            Preferences.setCodexVersion(Codex.KoAP, -1)
+            Preferences.setCodexVersion(Codex.PIKoAP, -1)
+
+            setUpRefreshButtons()
 
             Snackbar.make(requireView(), "Базы данных очищены", Snackbar.LENGTH_SHORT).show()
         }
