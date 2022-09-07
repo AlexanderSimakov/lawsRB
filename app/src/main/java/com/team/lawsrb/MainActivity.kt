@@ -21,6 +21,7 @@ import androidx.core.app.TaskStackBuilder
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
+import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        CodexVersionParser.update()
 
         // Saving state of app
         // using SharedPreferences
