@@ -17,6 +17,7 @@ import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexParser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import androidx.lifecycle.ViewModelProviders
+import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentSettingsBinding
@@ -69,10 +70,10 @@ class SettingsFragment : Fragment() {
             update_koap.title.text = getString(R.string.menu_KoAP)
             update_pikoap.title.text = getString(R.string.menu_PIKoAP)
 
-            update_uk.subtitle.text = "От 31.12.1979"
-            update_upk.subtitle.text = "От 31.12.1979"
-            update_koap.subtitle.text = "От 31.12.1979"
-            update_pikoap.subtitle.text = "От 31.12.1979"
+            update_uk.subtitle.text = Preferences.getCodexUpdateDate(Codex.UK)
+            update_upk.subtitle.text = Preferences.getCodexUpdateDate(Codex.UPK)
+            update_koap.subtitle.text = Preferences.getCodexUpdateDate(Codex.KoAP)
+            update_pikoap.subtitle.text = Preferences.getCodexUpdateDate(Codex.PIKoAP)
         }
     }
 
