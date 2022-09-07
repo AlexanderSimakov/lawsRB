@@ -93,13 +93,12 @@ object CodexParser {
                         val chapter = Chapter(element.text(), chapterId, parentId, false)
                         codexLists.chapters.add(chapter)
                     }
-                    else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")) {
-                        if(!element.nextElementSibling().text().contains("ГЛАВА")) {
-                            parentId++
-                            chapterId++
-                            val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
-                            codexLists.chapters.add(chapter)
-                        }
+                    else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
+                        && !element.nextElementSibling().text().contains("ГЛАВА")) {
+                        parentId++
+                        chapterId++
+                        val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
+                        codexLists.chapters.add(chapter)
                     }
                     else if (element.text().contains("РАЗДЕЛ")) {
                         parentId++
@@ -181,16 +180,15 @@ object CodexParser {
                     currentId++
                 }
 
-                if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")) {
-                    if (!element.previousElementSibling().attr("class").equals("article")) {
-                        parentId++
-                        currentId++
-                        val articlesTitle = CodexContent(parentId, "Статья. Заключительные положения")
-                        articlesList.add(articlesTitle)
-                        val codexContent = CodexContent(currentId, element.text())
-                        contentList.add(codexContent)
-                        break
-                    }
+                if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
+                    && !element.previousElementSibling().attr("class").equals("article")) {
+                    parentId++
+                    currentId++
+                    val articlesTitle = CodexContent(parentId, "Статья. Заключительные положения")
+                    articlesList.add(articlesTitle)
+                    val codexContent = CodexContent(currentId, element.text())
+                    contentList.add(codexContent)
+                    break
                 }
 
                 if (!element.attr("class").equals("article")
