@@ -24,7 +24,7 @@ object CodexVersionParser {
             Codex.PIKoAP to 1
         )
 
-    private var lastChangesDate: MutableMap<Codex, String> =
+    private var lastChangeDate: MutableMap<Codex, String> =
         mutableMapOf(
             Codex.UK to "От 13 мая 2022",
             Codex.UPK to "От 20 июля 2022",
@@ -41,73 +41,73 @@ object CodexVersionParser {
         supervisorScope {
             launch(handler) {
                 documentUK = Jsoup.connect(Codex.UK.URL).get()
-                changesCount[Codex.UK] = getCountOfElementsWithChangesFromHtmlPage(documentUK!!)
-                lastChangesDate[Codex.UK] = getLastChangeDateFromHtmlPage(documentUK!!)
+                changesCount[Codex.UK] = getChangesCountFromHtmlPage(documentUK!!)
+                lastChangeDate[Codex.UK] = getLastChangeDateFromHtmlPage(documentUK!!)
                 Log.d(TAG, "${changesCount[Codex.UK]}")
             }
             
             launch(handler) {
                 documentUPK = Jsoup.connect(Codex.UPK.URL).get()
-                changesCount[Codex.UPK] = getCountOfElementsWithChangesFromHtmlPage(documentUPK!!)
-                lastChangesDate[Codex.UPK] = getLastChangeDateFromHtmlPage(documentUPK!!)
+                changesCount[Codex.UPK] = getChangesCountFromHtmlPage(documentUPK!!)
+                lastChangeDate[Codex.UPK] = getLastChangeDateFromHtmlPage(documentUPK!!)
                 Log.d(TAG, "${changesCount[Codex.UPK]}")
             }
 
             launch (handler) {
                 documentKoAP = Jsoup.connect(Codex.KoAP.URL).get()
-                changesCount[Codex.KoAP] = getCountOfElementsWithChangesFromHtmlPage(documentKoAP!!)
-                lastChangesDate[Codex.KoAP] = getLastChangeDateFromHtmlPage(documentKoAP!!)
+                changesCount[Codex.KoAP] = getChangesCountFromHtmlPage(documentKoAP!!)
+                lastChangeDate[Codex.KoAP] = getLastChangeDateFromHtmlPage(documentKoAP!!)
                 Log.d(TAG, "${changesCount[Codex.KoAP]}")
             }
             
             launch (handler) {
                 documentPIKoAP = Jsoup.connect(Codex.PIKoAP.URL).get()
-                changesCount[Codex.PIKoAP] = getCountOfElementsWithChangesFromHtmlPage(documentPIKoAP!!)
-                lastChangesDate[Codex.PIKoAP] = getLastChangeDateFromHtmlPage(documentPIKoAP!!)
+                changesCount[Codex.PIKoAP] = getChangesCountFromHtmlPage(documentPIKoAP!!)
+                lastChangeDate[Codex.PIKoAP] = getLastChangeDateFromHtmlPage(documentPIKoAP!!)
                 Log.d(TAG, "${changesCount[Codex.PIKoAP]}")
             }
         }
     }
 
     fun isHaveChanges(codex: Codex): Boolean {
-        val oldCountOfElements = Preferences.getCodexVersion(codex)
-        Log.d(TAG, "$oldCountOfElements")
-        return changesCount[codex] != oldCountOfElements
+        val oldCountOfChanges = Preferences.getCodexVersion(codex)
+        Log.d(TAG, "$oldCountOfChanges")
+        return changesCount[codex] != oldCountOfChanges
     }
 
-    fun getChanges(codex: Codex): Int = changesCount[codex]!!
+    fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
 
-    fun getChangeDate(codex: Codex): String = lastChangesDate[codex]!!
+    fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!
 
-    private fun getCountOfElementsWithChangesFromHtmlPage(document: Document): Int {
-        var quantityOfElements = 0
+    private fun getChangesCountFromHtmlPage(document: Document): Int {
+        var changesCount = 0
         val mainTable = document.select("main")
         val elements = mainTable.select("p")
 
         for (element in elements) {
             if (element.attr("class").equals("changeadd")) {
-                quantityOfElements++
+                changesCount++
             }
         }
 
-        return quantityOfElements
+        return changesCount
     }
 
     private fun getLastChangeDateFromHtmlPage(document: Document): String {
-        var dateOfLastChange = ""
+        var lastChangeDate = ""
         val mainTable = document.select("main")
         val elements = mainTable.select("p")
 
         for (element in elements) {
             if (element.attr("class").equals("changeadd")
                 && !element.nextElementSibling().attr("class").equals("changeadd")) {
-                dateOfLastChange = element.text()
-                dateOfLastChange = leaveDateOnly(dateOfLastChange)
-                Log.d(TAG, dateOfLastChange)
+                lastChangeDate = element.text()
+                lastChangeDate = leaveDateOnly(lastChangeDate)
+                Log.d(TAG, lastChangeDate)
             }
         }
 
-        return dateOfLastChange
+        return lastChangeDate
     }
 
     private fun leaveDateOnly(line: String): String {
