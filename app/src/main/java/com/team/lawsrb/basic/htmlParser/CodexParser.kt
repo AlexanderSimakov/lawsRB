@@ -122,7 +122,7 @@ object CodexParser {
                     if (element.text().contains("Статья")) {
                         if (element.attr("id").contains("/")) {
                             var title = element.toString()
-                            title = formatText(title)
+                            title = toTextFormat(title)
                             val article = CodexContent(parentId, title)
                             articlesList.add(article)
                         }
@@ -199,14 +199,13 @@ object CodexParser {
                     && element.text() != "") {
                     var content = element.toString()
                     if (content.contains("<sup>")) {
-                        content = formatText(content)
+                        content = toTextFormat(content)
                         val codexContent = CodexContent(currentId, content)
                         Log.d(TAG, content)
                         contentList.add(codexContent)
                     }
                     else {
                         val codexContent = CodexContent(currentId, element.text())
-                        Log.d(TAG, element.text())
                         contentList.add(codexContent)
                     }
                 }
@@ -231,20 +230,22 @@ object CodexParser {
         }
     }
 
-    private fun formatText(content: String): String {
-        var text = content
+    private fun toTextFormat(content: String): String {
+        var textFormat = content
 
-        text = text.replace("<sup>", "/")
-        text = text.replace("</sup>", "")
-        text = text.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
-        text = text.replace("&nbsp;", " ")
-        text = text.replace("  ", " ")
-        text = text.replace(" ,", ",")
-        text = text.replace(" )", ")")
-        text = text.replace("( ", "(")
-        text = text.replace(" . ", ". ")
-        text = text.replace(" /", "/")
+        if (textFormat.contains("<sup></sup>"))
+            textFormat = textFormat.replace("<sup></sup>", "")
 
-        return text
+        textFormat = textFormat.replace("<sup>", "/")
+        textFormat = textFormat.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+        textFormat = textFormat.replace("&nbsp;", " ")
+        textFormat = textFormat.replace("  ", " ")
+        textFormat = textFormat.replace(" ,", ",")
+        textFormat = textFormat.replace(" )", ")")
+        textFormat = textFormat.replace("( ", "(")
+        textFormat = textFormat.replace(" . ", ". ")
+        textFormat = textFormat.replace(" /", "/")
+
+        return textFormat
     }
 }
