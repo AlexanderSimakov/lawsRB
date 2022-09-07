@@ -19,6 +19,7 @@ import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import androidx.lifecycle.ViewModelProviders
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.htmlParser.CodexLists
+import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 import kotlinx.android.synthetic.main.fragment_settings.view.*
@@ -97,6 +98,12 @@ class SettingsFragment : Fragment() {
                         BaseCodexProvider.update()
                         Log.d(TAG, "Update CodexProvider (UK)")
 
+                        Preferences.setCodexInfo(
+                            Codex.UK,
+                            CodexVersionParser.getChangesCount(Codex.UK),
+                            CodexVersionParser.getChangeDate(Codex.UK)
+                        )
+
                         // Bug: then click button and change page to UK (or others),
                         // after parsing app crash, because cannot find view(below)
                         //Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
@@ -123,6 +130,12 @@ class SettingsFragment : Fragment() {
 
                         BaseCodexProvider.update()
                         Log.d(TAG, "Update CodexProvider (UPK)")
+
+                        Preferences.setCodexInfo(
+                            Codex.UPK,
+                            CodexVersionParser.getChangesCount(Codex.UPK),
+                            CodexVersionParser.getChangeDate(Codex.UPK)
+                        )
 
                         model.isUPKParserWorked = false
 
@@ -151,6 +164,12 @@ class SettingsFragment : Fragment() {
                         BaseCodexProvider.update()
                         Log.d(TAG, "Update CodexProvider (KoAP)")
 
+                        Preferences.setCodexInfo(
+                            Codex.KoAP,
+                            CodexVersionParser.getChangesCount(Codex.KoAP),
+                            CodexVersionParser.getChangeDate(Codex.KoAP)
+                        )
+
                         model.isKoAPParserWorked = false
 
                         // See first
@@ -177,6 +196,12 @@ class SettingsFragment : Fragment() {
 
                         BaseCodexProvider.update()
                         Log.d(TAG, "Update CodexProvider (PIKoAP)")
+
+                        Preferences.setCodexInfo(
+                            Codex.PIKoAP,
+                            CodexVersionParser.getChangesCount(Codex.PIKoAP),
+                            CodexVersionParser.getChangeDate(Codex.PIKoAP)
+                        )
 
                         model.isPIKoAPParserWorked = false
 
