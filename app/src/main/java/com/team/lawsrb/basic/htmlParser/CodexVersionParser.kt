@@ -69,19 +69,15 @@ object CodexVersionParser {
         }
     }
 
-    suspend fun isHaveChanges(codex: Codex): Boolean = scope.async {
+    fun isHaveChanges(codex: Codex): Boolean {
         val oldCountOfElements = Preferences.getCodexVersion(codex)
         Log.d(TAG, "$oldCountOfElements")
-        return@async changesCount[codex] != oldCountOfElements
-    }.await()
+        return changesCount[codex] != oldCountOfElements
+    }
 
-    suspend fun getChanges(codex: Codex): Int = scope.async {
-        return@async changesCount[codex]!!
-    }.await()
+    fun getChanges(codex: Codex): Int = changesCount[codex]!!
 
-    suspend fun getChangeDate(codex: Codex): String = scope.async {
-        return@async lastChangesDate[codex]!!
-    }.await()
+    fun getChangeDate(codex: Codex): String = lastChangesDate[codex]!!
 
     private fun getCountOfElementsWithChangesFromHtmlPage(document: Document): Int {
         var quantityOfElements = 0
