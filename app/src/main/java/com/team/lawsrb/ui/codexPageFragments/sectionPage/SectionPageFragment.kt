@@ -41,11 +41,9 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val items = model.getItems().value as List<Any>
-
         val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-
         val rvItems = binding.codexFragmentRecyclerView
+
         rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0 && !fab.isShown){ // scroll up
@@ -56,6 +54,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
             }
         })
 
+        val items = model.getItems().value as List<Any>
         rvItems.adapter = SectionPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 0)
