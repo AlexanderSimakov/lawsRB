@@ -74,7 +74,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setOnClickListenerForUpdateButtons(){
-        binding.settingsFragment.update_uk.findViewById<MaterialCardView>(R.id.update_codex_button)
+        binding.settingsFragment.update_uk.update_codex_button
             .setOnClickListener {
                 if (model.isUKParserWorked){
                     Snackbar.make(requireView(), "УК уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -104,7 +104,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_upk.findViewById<MaterialCardView>(R.id.update_codex_button)
+        binding.settingsFragment.update_upk.update_codex_button
             .setOnClickListener {
                 if (model.isUPKParserWorked){
                     Snackbar.make(requireView(), "УПК уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -134,7 +134,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_koap.findViewById<MaterialCardView>(R.id.update_codex_button)
+        binding.settingsFragment.update_koap.update_codex_button
             .setOnClickListener {
                 if (model.isKoAPParserWorked){
                     Snackbar.make(requireView(), "КоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -164,7 +164,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_pikoap.findViewById<MaterialCardView>(R.id.update_codex_button)
+        binding.settingsFragment.update_pikoap.update_codex_button
             .setOnClickListener {
                 if (model.isPIKoAPParserWorked){
                     Snackbar.make(requireView(), "ПИКоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
