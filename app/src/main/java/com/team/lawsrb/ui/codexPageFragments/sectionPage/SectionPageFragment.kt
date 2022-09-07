@@ -41,15 +41,17 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
         val rvItems = binding.codexFragmentRecyclerView
 
         rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !fab.isShown){ // scroll up
-                    fab.show()
-                }else if (dy > 0 && fab.isShown){ // scroll down
-                    fab.hide()
+                fab?.apply {
+                    if (dy < 0 && !isShown){ // scroll up
+                        show()
+                    }else if (dy > 0 && isShown){ // scroll down
+                        hide()
+                    }
                 }
             }
         })
