@@ -18,6 +18,7 @@ import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentSettingsBinding
 import kotlinx.android.synthetic.main.fragment_settings.view.*
@@ -90,10 +91,7 @@ class SettingsFragment : Fragment() {
                         val codexLists = Parser().get(Codex.UK)
                         Log.d(TAG, "End parse UK and start insert")
 
-                        BaseCodexDatabase.UK.partsDao().insert(codexLists.parts)
-                        BaseCodexDatabase.UK.sectionsDao().insert(codexLists.sections)
-                        BaseCodexDatabase.UK.chaptersDao().insert(codexLists.chapters)
-                        BaseCodexDatabase.UK.articlesDao().insert(codexLists.articles)
+                        insertCodexLists(BaseCodexDatabase.UK, codexLists)
                         Log.d(TAG, "End UK insert")
 
                         BaseCodexProvider.update()
@@ -120,10 +118,7 @@ class SettingsFragment : Fragment() {
                         val codexLists = Parser().get(Codex.UPK)
                         Log.d(TAG, "End parse UPK and start insert")
 
-                        BaseCodexDatabase.UPK.partsDao().insert(codexLists.parts)
-                        BaseCodexDatabase.UPK.sectionsDao().insert(codexLists.sections)
-                        BaseCodexDatabase.UPK.chaptersDao().insert(codexLists.chapters)
-                        BaseCodexDatabase.UPK.articlesDao().insert(codexLists.articles)
+                        insertCodexLists(BaseCodexDatabase.UPK, codexLists)
                         Log.d(TAG, "End UPK insert")
 
                         BaseCodexProvider.update()
@@ -150,10 +145,7 @@ class SettingsFragment : Fragment() {
                         val codexLists = Parser().get(Codex.KoAP)
                         Log.d(TAG, "End parse KoAP and start insert")
 
-                        BaseCodexDatabase.KoAP.partsDao().insert(codexLists.parts)
-                        BaseCodexDatabase.KoAP.sectionsDao().insert(codexLists.sections)
-                        BaseCodexDatabase.KoAP.chaptersDao().insert(codexLists.chapters)
-                        BaseCodexDatabase.KoAP.articlesDao().insert(codexLists.articles)
+                        insertCodexLists(BaseCodexDatabase.KoAP, codexLists)
                         Log.d(TAG, "End KoAP insert")
 
                         BaseCodexProvider.update()
@@ -180,10 +172,7 @@ class SettingsFragment : Fragment() {
                         val codexLists = Parser().get(Codex.PIKoAP)
                         Log.d(TAG, "End parse PIKoAP and start insert")
 
-                        BaseCodexDatabase.PIKoAP.partsDao().insert(codexLists.parts)
-                        BaseCodexDatabase.PIKoAP.sectionsDao().insert(codexLists.sections)
-                        BaseCodexDatabase.PIKoAP.chaptersDao().insert(codexLists.chapters)
-                        BaseCodexDatabase.PIKoAP.articlesDao().insert(codexLists.articles)
+                        insertCodexLists(BaseCodexDatabase.PIKoAP, codexLists)
                         Log.d(TAG, "End PIKoAP insert")
 
                         BaseCodexProvider.update()
@@ -196,6 +185,14 @@ class SettingsFragment : Fragment() {
                     }
                 }
             }
+    }
+
+    // TODO move to BaseCodexDatabase?
+    private fun insertCodexLists(database: CodexDatabase, codexLists: CodexLists){
+        database.partsDao().insert(codexLists.parts)
+        database.sectionsDao().insert(codexLists.sections)
+        database.chaptersDao().insert(codexLists.chapters)
+        database.articlesDao().insert(codexLists.articles)
     }
 
     // debug function
@@ -213,6 +210,7 @@ class SettingsFragment : Fragment() {
     }
 
     // debug function
+    // TODO move to BaseCodexDatabase?
     private fun clearDatabase(database: CodexDatabase){
         database.articlesDao().clearAll()
         database.chaptersDao().clearAll()
