@@ -7,8 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
+import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -58,6 +60,8 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveLeftTo(section)
                 }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
@@ -65,6 +69,8 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveRightTo(chapter)
                 }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
         }

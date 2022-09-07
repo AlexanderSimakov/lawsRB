@@ -1,20 +1,12 @@
 package com.team.lawsrb
 
-import android.annotation.SuppressLint
-import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.drawable.Drawable
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import android.widget.ToggleButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,22 +16,19 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.app.TaskStackBuilder
+import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
-import com.team.lawsrb.basic.htmlParser.CodexLists
-import com.team.lawsrb.basic.htmlParser.Parser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.team.lawsrb.ui.codexPageFragments.Highlighter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +52,25 @@ class MainActivity : AppCompatActivity() {
 
         // Saving state of app
         // using SharedPreferences
-        sharedPref = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
-        if (sharedPref.getBoolean("isDarkModeOn", false)) {
+        Preferences.update(applicationContext)
+        if (Preferences.isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            Highlighter.isDarkMode = true
         }
         else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Highlighter.isDarkMode = false
+        }
+
+        // init codex info
+        Preferences.apply {
+            if (isRunFirst){
+                setCodexInfo(Codex.UK, 82, "От 13 мая 2022")
+                setCodexInfo(Codex.UPK, 61, "От 20 июля 2022")
+                setCodexInfo(Codex.KoAP, 1, "От 4 января 2022")
+                setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
+                isRunFirst = false
+            }
         }
 
         //Initialize database
@@ -127,17 +129,21 @@ class MainActivity : AppCompatActivity() {
 
         // --- Theme switcher ---
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
-        themeSwitcher.isChecked = sharedPref.getBoolean("isDarkModeOn", false)
-        val editor = sharedPref.edit()
+        themeSwitcher.isChecked = Preferences.isDarkTheme
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
             if (isDarkMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editor.putBoolean("isDarkModeOn", true)
+                Preferences.isDarkTheme = true
+                Highlighter.isDarkMode = true
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editor.putBoolean("isDarkModeOn", false)
+                Preferences.isDarkTheme = false
+                Highlighter.isDarkMode = false
             }
-            editor.apply()
+            TaskStackBuilder.create(applicationContext)
+                .addNextIntent(Intent(applicationContext, MainActivity::class.java))
+                .addNextIntent(intent)
+                .startActivities()
         }
 
         return true

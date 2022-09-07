@@ -11,14 +11,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
+import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val openedArticleIds = mutableSetOf<Int>()
 
     private val isArticle = 1
     private val isChapter = 2
@@ -72,16 +76,25 @@ class ArticlePageAdapter (private val items: List<Any>,
                     TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
                     if (viewHolder.expandable.visibility == View.VISIBLE){
                         viewHolder.expandable.visibility = View.GONE
+                        openedArticleIds.remove(article.id)
                     }else{
                         viewHolder.expandable.visibility = View.VISIBLE
+                        openedArticleIds.add(article.id)
                     }
                 }
                 viewHolder.checkBox.setOnClickListener {
-                    // TODO make it better
-                    val _article = Article(article.title, article.id, article.parentId, viewHolder.checkBox.isChecked)
-                    _article.content = article.content
-                    articlesDao.update(_article)
+                    article.isLiked = viewHolder.checkBox.isChecked
+                    articlesDao.update(article)
                 }
+
+                if (article.id in openedArticleIds){
+                    viewHolder.expandable.visibility = View.VISIBLE
+                }else{
+                    viewHolder.expandable.visibility = View.GONE
+                }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.getQuery())
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
@@ -89,6 +102,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                 viewHolder.card.setOnClickListener {
                     PageNavigation.moveLeftTo(chapter)
                 }
+
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }

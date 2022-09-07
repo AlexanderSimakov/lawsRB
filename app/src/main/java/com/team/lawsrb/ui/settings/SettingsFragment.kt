@@ -6,18 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.snackbar.Snackbar
-import com.team.lawsrb.R
-import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
-import com.team.lawsrb.basic.htmlParser.Codex
-import com.team.lawsrb.basic.htmlParser.Parser
-import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import android.widget.CheckBox
 import android.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.team.lawsrb.R
+import com.google.android.material.snackbar.Snackbar
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
+import com.team.lawsrb.basic.htmlParser.Codex
+import com.team.lawsrb.basic.htmlParser.CodexParser
+import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
+import androidx.lifecycle.ViewModelProviders
 import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentSettingsBinding
@@ -88,7 +87,7 @@ class SettingsFragment : Fragment() {
 
                         Snackbar.make(requireView(), "Обновление УК", Snackbar.LENGTH_SHORT).show()
                         Log.i(TAG, "Start parse UK")
-                        val codexLists = Parser().get(Codex.UK)
+                        val codexLists = CodexParser().get(Codex.UK)
                         Log.d(TAG, "End parse UK and start insert")
 
                         insertCodexLists(BaseCodexDatabase.UK, codexLists)
@@ -115,7 +114,7 @@ class SettingsFragment : Fragment() {
 
                         Snackbar.make(requireView(), "Обновление УПК ", Snackbar.LENGTH_SHORT).show()
                         Log.i(TAG, "Start parse UPK")
-                        val codexLists = Parser().get(Codex.UPK)
+                        val codexLists = CodexParser().get(Codex.UPK)
                         Log.d(TAG, "End parse UPK and start insert")
 
                         insertCodexLists(BaseCodexDatabase.UPK, codexLists)
@@ -142,7 +141,7 @@ class SettingsFragment : Fragment() {
 
                         Snackbar.make(requireView(), "Обновление КоАП", Snackbar.LENGTH_SHORT).show()
                         Log.i(TAG, "Start parse KoAP")
-                        val codexLists = Parser().get(Codex.KoAP)
+                        val codexLists = CodexParser().get(Codex.KoAP)
                         Log.d(TAG, "End parse KoAP and start insert")
 
                         insertCodexLists(BaseCodexDatabase.KoAP, codexLists)
@@ -169,7 +168,7 @@ class SettingsFragment : Fragment() {
 
                         Snackbar.make(requireView(), "Обновление ПИКоАП", Snackbar.LENGTH_SHORT).show()
                         Log.i(TAG, "Start parse PIKoAP")
-                        val codexLists = Parser().get(Codex.PIKoAP)
+                        val codexLists = CodexParser().get(Codex.PIKoAP)
                         Log.d(TAG, "End parse PIKoAP and start insert")
 
                         insertCodexLists(BaseCodexDatabase.PIKoAP, codexLists)

@@ -96,7 +96,14 @@ object BaseCodexProvider {
         }
 
         private fun loadPageItemsBySearchQuery(){
-            articlePageItems.value = database.articlesDao().findAll("%${searchQuery}%")
+            val articlesByTitle = database.articlesDao().findByTitle("%${searchQuery}%")
+            val articlesByContent = database.articlesDao().findByContent("%${searchQuery}%")
+            val articles = articlesByTitle.toMutableList()
+            articles.addAll(articlesByContent.filter {
+                it.id !in articlesByTitle.map { article -> article.id }
+            })
+
+            articlePageItems.value = articles
             chapterPageItems.value = database.chaptersDao().findAll("%${searchQuery}%")
             sectionPageItems.value = database.sectionsDao().findAll("%${searchQuery}%")
         }
@@ -170,6 +177,8 @@ object BaseCodexProvider {
         _KoAP.searchQuery = search
         _PIKoAP.searchQuery = search
     }
+
+    fun getQuery() = _UK.searchQuery
 
     fun setFavorite(isFavorite: Boolean){
         _UK.isFavorites = isFavorite
