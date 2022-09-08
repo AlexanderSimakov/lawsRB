@@ -3,7 +3,6 @@ package com.team.lawsrb
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(setOf(
                 R.id.nav_criminal_code, R.id.nav_code_of_criminal_procedure,
                 R.id.nav_koap, R.id.nav_pikoap,
-                R.id.nav_settings), drawerLayout)
+                R.id.nav_update_codex), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 

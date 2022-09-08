@@ -22,19 +22,19 @@ import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
-import com.team.lawsrb.databinding.FragmentSettingsBinding
-import kotlinx.android.synthetic.main.fragment_settings.view.*
+import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
+import kotlinx.android.synthetic.main.fragment_update_codex.view.*
 import kotlinx.android.synthetic.main.update_codex_button.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment() {
-    private val TAG = "SettingsFragment"
+class UpdateCodexFragment : Fragment() {
+    private val TAG = "UpdateCodexFragment"
 
-    private lateinit var model: SettingsViewModel
+    private lateinit var model: UpdateCodexViewModel
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentUpdateCodexBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,10 +46,10 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        model = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
+        model = ViewModelProviders.of(this).get(UpdateCodexViewModel::class.java)
 
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
@@ -66,7 +66,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setUpRefreshButtons(){
-        binding.settingsFragment.apply {
+        binding.updateCodexFragment.apply {
             update_uk.title.text = getString(R.string.menu_criminal_code)
             update_upk.title.text = getString(R.string.menu_code_of_criminal_proсedure)
             update_koap.title.text = getString(R.string.menu_KoAP)
@@ -94,7 +94,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setOnClickListenerForUpdateButtons(){
-        binding.settingsFragment.update_uk.update_codex_button
+        binding.updateCodexFragment.update_uk.update_codex_button
             .setOnClickListener {
                 if (model.isUKParserWorked){
                     Snackbar.make(requireView(), "УК уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -119,7 +119,7 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.UK)
                         )
 
-                        updateRefreshButton(binding.settingsFragment.update_uk, Codex.UK)
+                        updateRefreshButton(binding.updateCodexFragment.update_uk, Codex.UK)
 
                         // Bug: then click button and change page to UK (or others),
                         // after parsing app crash, because cannot find view(below)
@@ -129,7 +129,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_upk.update_codex_button
+        binding.updateCodexFragment.update_upk.update_codex_button
             .setOnClickListener {
                 if (model.isUPKParserWorked){
                     Snackbar.make(requireView(), "УПК уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -154,7 +154,7 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.UPK)
                         )
 
-                        updateRefreshButton(binding.settingsFragment.update_upk, Codex.UPK)
+                        updateRefreshButton(binding.updateCodexFragment.update_upk, Codex.UPK)
 
                         model.isUPKParserWorked = false
 
@@ -164,7 +164,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_koap.update_codex_button
+        binding.updateCodexFragment.update_koap.update_codex_button
             .setOnClickListener {
                 if (model.isKoAPParserWorked){
                     Snackbar.make(requireView(), "КоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -189,7 +189,7 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.KoAP)
                         )
 
-                        updateRefreshButton(binding.settingsFragment.update_koap, Codex.KoAP)
+                        updateRefreshButton(binding.updateCodexFragment.update_koap, Codex.KoAP)
 
                         model.isKoAPParserWorked = false
 
@@ -199,7 +199,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.settingsFragment.update_pikoap.update_codex_button
+        binding.updateCodexFragment.update_pikoap.update_codex_button
             .setOnClickListener {
                 if (model.isPIKoAPParserWorked){
                     Snackbar.make(requireView(), "ПИКоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
@@ -224,7 +224,7 @@ class SettingsFragment : Fragment() {
                             CodexVersionParser.getChangeDate(Codex.PIKoAP)
                         )
 
-                        updateRefreshButton(binding.settingsFragment.update_pikoap, Codex.PIKoAP)
+                        updateRefreshButton(binding.updateCodexFragment.update_pikoap, Codex.PIKoAP)
 
                         model.isPIKoAPParserWorked = false
 
@@ -245,7 +245,7 @@ class SettingsFragment : Fragment() {
 
     // debug function
     private fun setUpClearAllButton(){
-        binding.settingsFragment.debug_clear_all_button.setOnClickListener {
+        binding.updateCodexFragment.debug_clear_all_button.setOnClickListener {
             clearDatabase(BaseCodexDatabase.UK)
             clearDatabase(BaseCodexDatabase.UPK)
             clearDatabase(BaseCodexDatabase.KoAP)
