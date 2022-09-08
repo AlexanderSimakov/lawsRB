@@ -29,7 +29,7 @@ object CodexParser {
         parseSectionsTitles()
         parseChaptersTitles()
         parseArticlesTitles()
-        parseContent()
+        parseArticlesContent()
         articlesWithContent()
 
         return codexLists
@@ -95,9 +95,7 @@ object CodexParser {
                     }
                     else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
                         && !element.nextElementSibling().text().contains("ГЛАВА")) {
-                        parentId++
-                        chapterId++
-                        val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId, parentId, false)
+                        val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId + 1, parentId + 1, false)
                         codexLists.chapters.add(chapter)
                     }
                     else if (element.text().contains("РАЗДЕЛ")) {
@@ -122,7 +120,7 @@ object CodexParser {
                     if (element.text().contains("Статья")) {
                         if (element.attr("id").contains("/")) {
                             var title = element.toString()
-                            title = formatText(title)
+                            title = toTextFormat(title)
                             val article = CodexContent(parentId, title)
                             articlesList.add(article)
                         }
@@ -148,7 +146,7 @@ object CodexParser {
         }
     }
 
-    private fun parseContent() {
+    private fun parseArticlesContent() {
         try {
             val table = document!!.select("main")
             val elements = table.select("p")
@@ -182,11 +180,9 @@ object CodexParser {
 
                 if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
                     && !element.previousElementSibling().attr("class").equals("article")) {
-                    parentId++
-                    currentId++
-                    val articlesTitle = CodexContent(parentId, "Статья. Заключительные положения")
+                    val articlesTitle = CodexContent(parentId + 1, "Статья. Заключительные положения")
                     articlesList.add(articlesTitle)
-                    val codexContent = CodexContent(currentId, element.text())
+                    val codexContent = CodexContent(currentId + 1, element.text())
                     contentList.add(codexContent)
                     break
                 }
@@ -199,7 +195,7 @@ object CodexParser {
                     && element.text() != "") {
                     var content = element.toString()
                     if (content.contains("<sup>")) {
-                        content = formatText(content)
+                        content = toTextFormat(content)
                         val codexContent = CodexContent(currentId, content)
                         Log.d(TAG, content)
                         contentList.add(codexContent)
@@ -231,20 +227,22 @@ object CodexParser {
         }
     }
 
-    private fun formatText(content: String): String {
-        var text = content
+    private fun toTextFormat(content: String): String {
+        var textFormat = content
 
-        text = text.replace("<sup>", "/")
-        text = text.replace("</sup>", "")
-        text = text.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
-        text = text.replace("&nbsp;", " ")
-        text = text.replace("  ", " ")
-        text = text.replace(" ,", ",")
-        text = text.replace(" )", ")")
-        text = text.replace("( ", "(")
-        text = text.replace(" . ", ". ")
-        text = text.replace(" /", "/")
+        if (textFormat.contains("<sup></sup>"))
+            textFormat = textFormat.replace("<sup></sup>", "")
 
-        return text
+        textFormat = textFormat.replace("<sup>", "/")
+        textFormat = textFormat.replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+        textFormat = textFormat.replace("&nbsp;", " ")
+        textFormat = textFormat.replace("  ", " ")
+        textFormat = textFormat.replace(" ,", ",")
+        textFormat = textFormat.replace(" )", ")")
+        textFormat = textFormat.replace("( ", "(")
+        textFormat = textFormat.replace(" . ", ". ")
+        textFormat = textFormat.replace(" /", "/")
+
+        return textFormat
     }
 }
