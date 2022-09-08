@@ -216,15 +216,21 @@ class CodexParser {
 
     private fun articlesWithContent() {
         var contentText = ""
+        var countIterations = 0
         for ((id, articles) in articlesList.withIndex()) {
             for (content in contentList) {
                 if (content.parentId == id + 1) {
-                    contentText += content.contentText + "\n"
+                    countIterations++
+                    contentText += if (countIterations == 1)
+                        content.contentText
+                    else
+                        "\n" + content.contentText
                 }
             }
             val article = Article(articles.contentText, id + 1, articles.parentId, false, contentText)
             codexLists.articles.add(article)
             contentText = ""
+            countIterations = 0
         }
     }
 
