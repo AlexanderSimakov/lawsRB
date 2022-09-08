@@ -26,14 +26,17 @@ class CodexParser {
             Log.e(TAG, "${e.message}: Getting document's error")
         }
 
+        parse()
+        return codexLists
+    }
+
+    private fun parse() {
         parsePartsTitles()
         parseSectionsTitles()
         parseChaptersTitles()
         parseArticlesTitles()
         parseArticlesContent()
         articlesWithContent()
-
-        return codexLists
     }
 
     private fun parsePartsTitles() {
@@ -43,12 +46,11 @@ class CodexParser {
 
             var partId = 1
             for (element in elements) {
-                if (element.attr("class").equals("contenttext")) {
-                    if (element.text().contains("ЧАСТЬ")) {
-                        val part = Part(element.text(), partId, false)
-                        codexLists.parts.add(part)
-                        partId++
-                    }
+                if (element.attr("class").equals("contenttext")
+                    && element.text().contains("ЧАСТЬ")) {
+                    val part = Part(element.text(), partId, false)
+                    codexLists.parts.add(part)
+                    partId++
                 }
             }
         }
@@ -152,7 +154,7 @@ class CodexParser {
             val table = document!!.select("main")
             val elements = table.select("p")
 
-            var indices: MutableList<Int> = mutableListOf()
+            val indices: MutableList<Int> = mutableListOf()
             var currentId = 0
 
             for (element in elements) {
@@ -162,32 +164,27 @@ class CodexParser {
                 }
             }
 
-            var toIndicesList: Int
             for (element in elements) {
                 if (element.text().contains("А.Лукашенко")) {
-                    toIndicesList = (elements.indexOf(element))
-                    toIndicesList -= 2
-                    indices.add(toIndicesList)
+                    indices.add(elements.indexOf(element) - 2)
                     break
                 }
             }
 
-            var parentId = articlesList[articlesList.size - 1].parentId
             val mainContent = elements.subList(indices[0], indices[1])
             for (element in mainContent) {
                 if (element.attr("class").equals("article")) {
                     currentId++
                 }
-
                 if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
                     && !element.previousElementSibling().attr("class").equals("article")) {
+                    val parentId = articlesList[articlesList.size - 1].parentId
                     val articlesTitle = CodexContent(parentId + 1, "Статья. Заключительные положения")
                     articlesList.add(articlesTitle)
                     val codexContent = CodexContent(currentId + 1, element.text())
                     contentList.add(codexContent)
                     break
                 }
-
                 if (!element.attr("class").equals("article")
                     && !element.attr("class").equals("nonumheader")
                     && !element.attr("class").equals("zagrazdel")
