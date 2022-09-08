@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">lawsRB</string>
+    <string name="app_name">Кодексы РБ</string>
     <string name="nav_header_title">Кодексы РБ</string>
     <string name="action_search">Поиск</string>
     <string name="action_favorites">Избранное</string>
