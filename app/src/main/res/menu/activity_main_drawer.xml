@@ -34,7 +34,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_update_codex"
-            android:icon="@drawable/ic_settings"
+            android:icon="@drawable/ic_refresh_36"
             android:title="@string/menu_update_codex" />
     </group>
 
