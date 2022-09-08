@@ -14,10 +14,9 @@ object BaseCodexDatabase {
     private var PIKoAPInstance: CodexDatabase? = null
 
     init {
-        // TODO: change assetPaths to actual
         for (codex in Codex.values()){
             databaseNames[codex] = "${codex.name}_database.db"
-            assetPaths[codex] = "database/codex_database"
+            assetPaths[codex] = "database/${codex.name}_database.db"
         }
     }
 

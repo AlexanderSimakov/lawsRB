@@ -34,7 +34,7 @@ object CodexVersionParser {
 
     private const val TAG = "CodexVersionParser"
 
-    suspend fun update() = scope.launch {
+    fun update() = scope.launch {
         val handler = CoroutineExceptionHandler {
                 _, exception -> Log.e(TAG, "$exception: No internet connection")
         }

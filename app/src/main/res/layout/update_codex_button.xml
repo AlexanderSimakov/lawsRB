@@ -6,40 +6,35 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/article_card"
+        android:id="@+id/update_codex_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Theme.LawsRB.CardView.Article">
+        style="@style/Theme.LawsRB.CardView.Article"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp">
+
 
         <!-- Text -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp">
 
             <TextView
-                android:id="@+id/article_card_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="35dp"
                 style="@style/Theme.LawsRB.CardView.Title"/>
 
-            <!-- Expandable part -->
-            <LinearLayout
-                android:id="@+id/article_card_expandable_layout"
+            <TextView
+                android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:paddingTop="15dp">
-
-                <TextView
-                    android:id="@+id/article_card_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Theme.LawsRB.CardView.Article.Content"/>
-            </LinearLayout>
+                android:layout_marginEnd="35dp"
+                style="@style/Theme.LawsRB.CardView.Subtitle"/>
 
         </LinearLayout>
 
@@ -48,15 +43,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:gravity="right">
+            android:paddingRight="16dp"
+            android:gravity="right|center">
 
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/article_card_checkbox"
+            <ImageView
+                android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/card_checkbox_selector"
-                app:useMaterialThemeColors="false"/>
+                android:src="@drawable/ic_refresh_36"
+                app:tint="@color/light_grey"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

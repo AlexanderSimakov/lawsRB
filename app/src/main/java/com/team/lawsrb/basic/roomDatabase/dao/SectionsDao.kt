@@ -22,4 +22,10 @@ interface SectionsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(section: Section)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(sections: List<Section>)
+
+    @Query("DELETE FROM ${CodexDatabase.SECTIONS_NAME}")
+    fun clearAll()
+
 }

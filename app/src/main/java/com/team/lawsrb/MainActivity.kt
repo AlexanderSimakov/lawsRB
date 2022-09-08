@@ -1,23 +1,13 @@
 package com.team.lawsrb
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import android.widget.ToggleButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,11 +17,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.TaskStackBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.app.TaskStackBuilder
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
+import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
@@ -60,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        CodexVersionParser.update()
 
         // Saving state of app
         // using SharedPreferences
