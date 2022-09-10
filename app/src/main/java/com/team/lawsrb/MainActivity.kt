@@ -2,22 +2,24 @@ package com.team.lawsrb
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.CheckBox
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import android.widget.ToggleButton
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.TaskStackBuilder
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.core.app.TaskStackBuilder
+import com.google.android.material.navigation.NavigationView
+import com.team.lawsrb.basic.NetworkAvailable
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
@@ -25,6 +27,8 @@ import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
+import kotlinx.coroutines.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -74,6 +78,13 @@ class MainActivity : AppCompatActivity() {
                 setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
                 isRunFirst = false
             }
+        }
+
+        val coroutineContext = Dispatchers.Main
+        val mScope = CoroutineScope(coroutineContext + SupervisorJob())
+        mScope.launch {
+            val networkAvailable = NetworkAvailable(applicationContext)
+            networkAvailable.mRegisterNetworkCallback()
         }
 
         //Initialize database
