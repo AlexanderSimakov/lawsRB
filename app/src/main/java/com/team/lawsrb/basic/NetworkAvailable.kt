@@ -13,22 +13,21 @@ import java.net.Socket
 import java.net.SocketAddress
 
 class NetworkAvailable(context: Context) {
-    companion object {
-        var isNetworkAvailable: Boolean = false
-    }
     private val TAG = "NetworkAvailable"
+
     private val connectivityManager = getSystemService(context, ConnectivityManager::class.java) as ConnectivityManager
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
+
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         // network is available for use
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             isNetworkAvailable = checkInternetConnection()
-            Log.d(TAG, "Net $isNetworkAvailable")
+            Log.d(TAG, "$isNetworkAvailable")
             Log.d(TAG, "Network turned on")
         }
 
@@ -46,12 +45,12 @@ class NetworkAvailable(context: Context) {
         override fun onLost(network: Network) {
             super.onLost(network)
             isNetworkAvailable = false
-            Log.d(TAG, "Net $isNetworkAvailable")
+            Log.d(TAG, "$isNetworkAvailable")
             Log.d(TAG, "Network turned off")
         }
     }
 
-    fun mRegisterNetworkCallback() {
+    fun subscribeForUpdates() {
         try {
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
         }
@@ -60,7 +59,7 @@ class NetworkAvailable(context: Context) {
         }
     }
 
-    fun mUnregisterNetworkCallback() {
+    fun unsubscribeForUpdates() {
         try {
             connectivityManager.unregisterNetworkCallback(networkCallback)
         }
@@ -81,6 +80,10 @@ class NetworkAvailable(context: Context) {
         catch (e: IOException) {
             false
         }
+    }
+
+    companion object {
+        private var isNetworkAvailable: Boolean = false
     }
 }
 

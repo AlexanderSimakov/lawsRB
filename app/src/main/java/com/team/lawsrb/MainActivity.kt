@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         val mScope = CoroutineScope(coroutineContext + SupervisorJob())
         mScope.launch {
             val networkAvailable = NetworkAvailable(applicationContext)
-            networkAvailable.mRegisterNetworkCallback()
+            networkAvailable.subscribeForUpdates()
         }
 
         //Initialize database
