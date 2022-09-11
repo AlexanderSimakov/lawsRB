@@ -54,15 +54,27 @@ class UpdateCodexFragment : Fragment() {
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
         setUpClearAllButton()
+        hideHeaderAndSearchButtons()
 
+        return root
+    }
+
+    private fun hideHeaderAndSearchButtons() {
         val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
         val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
         val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
         fab.isVisible = false
         actionSearch.isVisible = false
         actionsFavorites.isVisible = false
+    }
 
-        return root
+    private fun showHeaderAndSearchButtons() {
+        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
+        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = true
+        actionSearch.isVisible = true
+        actionsFavorites.isVisible = true
     }
 
     private fun setUpRefreshButtons(){
@@ -272,14 +284,13 @@ class UpdateCodexFragment : Fragment() {
         database.partsDao().clearAll()
     }
 
-    override fun onDestroyView() {
-        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
-        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        fab.isVisible = true
-        actionSearch.isVisible = true
-        actionsFavorites.isVisible = true
+    override fun onResume() {
+        super.onResume()
+        hideHeaderAndSearchButtons()
+    }
 
+    override fun onDestroyView() {
+        showHeaderAndSearchButtons()
         super.onDestroyView()
         _binding = null
     }
