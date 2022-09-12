@@ -75,6 +75,8 @@ class UpdateCodexFragment : Fragment() {
                     CodexVersionParser.isHaveChanges(Codex.KoAP) ||
                     CodexVersionParser.isHaveChanges(Codex.PIKoAP)){
 
+                    model.updateIsUpdateEnabled()
+
                     view?.let {
                         Snackbar.make(it, "Доступны обновления кодексов", Snackbar.LENGTH_SHORT).show()
                     }
