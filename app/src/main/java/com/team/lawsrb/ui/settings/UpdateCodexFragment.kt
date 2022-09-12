@@ -52,6 +52,7 @@ class UpdateCodexFragment : Fragment() {
 
         model = ViewModelProviders.of(this).get(UpdateCodexViewModel::class.java)
 
+        setUpCheckCodexUpdatesButton()
         setUpObservers()
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
@@ -59,6 +60,35 @@ class UpdateCodexFragment : Fragment() {
         hideHeaderAndSearchButtons()
 
         return root
+    }
+
+    private fun setUpCheckCodexUpdatesButton(){
+        binding.checkUpdatesButton.setOnClickListener {
+            GlobalScope.launch {
+                model.isCheckUpdateButtonEnabled.postValue(false)
+                Snackbar.make(requireView(), "Проверка обновлений", Snackbar.LENGTH_SHORT).show()
+
+                CodexVersionParser.update().join()
+
+                if (CodexVersionParser.isHaveChanges(Codex.UK) ||
+                    CodexVersionParser.isHaveChanges(Codex.UPK) ||
+                    CodexVersionParser.isHaveChanges(Codex.KoAP) ||
+                    CodexVersionParser.isHaveChanges(Codex.PIKoAP)){
+
+                    model.updateIsUpdateEnabled()
+
+                    view?.let {
+                        Snackbar.make(it, "Доступны обновления кодексов", Snackbar.LENGTH_SHORT).show()
+                    }
+                }else{
+                    view?.let {
+                        Snackbar.make(it, "На данный момент обновлений нет", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+
+                model.isCheckUpdateButtonEnabled.postValue(true)
+            }
+        }
     }
 
     private fun hideHeaderAndSearchButtons() {
@@ -80,6 +110,10 @@ class UpdateCodexFragment : Fragment() {
     }
 
     private fun setUpObservers(){
+        model.isCheckUpdateButtonEnabled.observe(viewLifecycleOwner) {
+            binding.checkUpdatesButton.isEnabled = it
+        }
+
         model.isUpdateEnabled(Codex.UK).observe(viewLifecycleOwner) {
             updateRefreshButton(
                 update_uk,
