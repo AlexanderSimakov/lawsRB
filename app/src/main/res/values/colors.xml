@@ -13,4 +13,8 @@
     <color name="refresh_image">#959595</color>
     <color name="refresh_image_active">#000000</color>
 
+    <color name="dark_active">#2B2B2B</color>
+    <color name="dark">#1E1E1E</color>
+    <color name="almost_black">#0F0F0F</color>
+
 </resources>
