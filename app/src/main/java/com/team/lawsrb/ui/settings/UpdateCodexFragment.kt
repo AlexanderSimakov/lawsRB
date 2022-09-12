@@ -211,9 +211,9 @@ class UpdateCodexFragment : Fragment() {
                         CodexVersionParser.getChangeDate(Codex.UK)
                     )
 
-                    // Bug: then click button and change page to UK (or others),
-                    // after parsing app crash, because cannot find view(below)
-                    //Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
+                    view?.let {
+                        Snackbar.make(it, "УК обновлен", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
 
                 model.isUpdateEnabled(Codex.UK).value = false
@@ -239,8 +239,9 @@ class UpdateCodexFragment : Fragment() {
                         CodexVersionParser.getChangeDate(Codex.UPK)
                     )
 
-                    // See first
-                    //Snackbar.make(requireView(), "УПК обновлен", Snackbar.LENGTH_SHORT).show()
+                    view?.let {
+                        Snackbar.make(it, "УПК обновлен", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
 
                 model.isUpdateEnabled(Codex.UPK).value = false
@@ -266,8 +267,9 @@ class UpdateCodexFragment : Fragment() {
                         CodexVersionParser.getChangeDate(Codex.KoAP)
                     )
 
-                    // See first
-                    //Snackbar.make(requireView(), "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    view?.let {
+                        Snackbar.make(it, "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
 
                 model.isUpdateEnabled(Codex.KoAP).value = false
@@ -293,8 +295,9 @@ class UpdateCodexFragment : Fragment() {
                         CodexVersionParser.getChangeDate(Codex.PIKoAP)
                     )
 
-                    // See first
-                    //Snackbar.make(requireView(), "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    view?.let {
+                        Snackbar.make(it, "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
 
                 model.isUpdateEnabled(Codex.PIKoAP).value = false
