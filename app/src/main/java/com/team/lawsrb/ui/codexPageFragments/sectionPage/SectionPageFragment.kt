@@ -15,6 +15,7 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.databinding.FragmentCodexViewerBinding
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
+import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageAdapter
 
 class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() {
 
@@ -62,8 +63,18 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         PageNavigation.addRecyclerView(rvItems, items, 0)
 
         val itemsObserver = Observer<List<Any>> { newItems ->
-            rvItems.adapter = SectionPageAdapter(newItems)
-            PageNavigation.addRecyclerView(rvItems, newItems, 0)
+            if (newItems.isEmpty()){
+                binding.emptyMessage.visibility = View.VISIBLE
+                if (BaseCodexProvider.getQuery().isEmpty()){
+                    binding.emptyMessage.text = resources.getString(R.string.empty_favorites)
+                }else{
+                    binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
+                }
+            } else{
+                binding.emptyMessage.visibility = View.GONE
+                rvItems.adapter = SectionPageAdapter(newItems)
+                PageNavigation.addRecyclerView(rvItems, newItems, 0)
+            }
         }
 
         model.getItems().observe(viewLifecycleOwner, itemsObserver)

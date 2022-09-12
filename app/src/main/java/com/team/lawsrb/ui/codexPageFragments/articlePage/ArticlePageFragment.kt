@@ -63,8 +63,18 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         PageNavigation.addRecyclerView(rvItems, items, 2)
 
         val itemsObserver = Observer<List<Any>> { newItems ->
-            rvItems.adapter = ArticlePageAdapter(newItems, rvItems, codeProvider.database.articlesDao())
-            PageNavigation.addRecyclerView(rvItems, newItems, 2)
+            if (newItems.isEmpty()){
+                binding.emptyMessage.visibility = View.VISIBLE
+                if (BaseCodexProvider.getQuery().isEmpty()){
+                    binding.emptyMessage.text = resources.getString(R.string.empty_favorites)
+                }else{
+                    binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
+                }
+            }else{
+                binding.emptyMessage.visibility = View.GONE
+                rvItems.adapter = ArticlePageAdapter(newItems, rvItems, codeProvider.database.articlesDao())
+                PageNavigation.addRecyclerView(rvItems, newItems, 2)
+            }
         }
 
         model.getItems().observe(viewLifecycleOwner, itemsObserver)
