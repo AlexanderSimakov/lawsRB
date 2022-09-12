@@ -36,6 +36,7 @@ class CodexOfCriminalProcedureFragment : Fragment() {
         collectionAdapter = CollectionAdapter(this)
         viewPager = binding.upkPager
         viewPager.adapter = collectionAdapter
+        viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 

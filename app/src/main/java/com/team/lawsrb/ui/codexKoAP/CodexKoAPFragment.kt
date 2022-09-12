@@ -36,6 +36,7 @@ class CodexKoAPFragment : Fragment() {
         collectionAdapter = CollectionAdapter(this)
         viewPager = binding.koapPager
         viewPager.adapter = collectionAdapter
+        viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
