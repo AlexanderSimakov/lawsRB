@@ -11,7 +11,10 @@ class UpdateCodexViewModel : ViewModel() {
     private val isKoAPUpdateEnabled = MutableLiveData<Boolean>()
     private val isPIKoAPUpdateEnabled = MutableLiveData<Boolean>()
 
+    var isCheckUpdateButtonEnabled = MutableLiveData<Boolean>()
+
     init {
+        isCheckUpdateButtonEnabled.value = true
         updateIsUpdateEnabled()
     }
 
