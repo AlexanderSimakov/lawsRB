@@ -23,5 +23,7 @@
     <string name="card_default_expandable_text">Here is expandable part of a card</string>
 
     <string name="check_updates_button">Проверить наличие обновлений</string>
+    <string name="empty_search_message">По вашему запросу ничего не найдено</string>
+    <string name="empty_favorites">В даный момент в избранном пусто</string>
 
 </resources>
