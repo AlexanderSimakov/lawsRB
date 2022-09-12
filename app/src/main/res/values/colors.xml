@@ -12,6 +12,8 @@
     <color name="refresh_card_background_active">#FFB947</color>
     <color name="refresh_image">#959595</color>
     <color name="refresh_image_active">#000000</color>
+    <color name="translucent_background">#3077B4DB</color>
+    <color name="transparent_background">#00000000</color>
 
     <color name="dark_active">#2B2B2B</color>
     <color name="dark">#1E1E1E</color>
