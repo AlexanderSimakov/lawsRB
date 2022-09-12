@@ -6,11 +6,6 @@ import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 
 class UpdateCodexViewModel : ViewModel() {
-    var isUKParserWorked = false
-    var isUPKParserWorked = false
-    var isKoAPParserWorked = false
-    var isPIKoAPParserWorked = false
-
     private val isUKUpdateEnabled = MutableLiveData<Boolean>()
     private val isUPKUpdateEnabled = MutableLiveData<Boolean>()
     private val isKoAPUpdateEnabled = MutableLiveData<Boolean>()
