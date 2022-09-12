@@ -29,7 +29,6 @@ import com.team.lawsrb.databinding.ActivityMainBinding
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import kotlinx.coroutines.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -162,6 +161,8 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
