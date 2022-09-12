@@ -19,4 +19,9 @@
     <color name="light_lemon">#E1D38F</color>
     <color name="light_green">#64b6ae</color>
 
+    <color name="refresh_card_background">#1E1E1E</color>
+    <color name="refresh_card_background_active">#FFB947</color>
+    <color name="refresh_image">#959595</color>
+    <color name="refresh_image_active">#000000</color>
+
 </resources>

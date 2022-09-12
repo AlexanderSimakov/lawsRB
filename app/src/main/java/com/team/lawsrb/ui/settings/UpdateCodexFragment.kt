@@ -1,6 +1,5 @@
 package com.team.lawsrb.ui.settings
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.team.lawsrb.R
@@ -23,6 +23,7 @@ import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
+import kotlinx.android.synthetic.main.fragment_update_codex.*
 import kotlinx.android.synthetic.main.fragment_update_codex.view.*
 import kotlinx.android.synthetic.main.update_codex_button.view.*
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,7 @@ class UpdateCodexFragment : Fragment() {
 
         model = ViewModelProviders.of(this).get(UpdateCodexViewModel::class.java)
 
+        setUpObservers()
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
         setUpClearAllButton()
@@ -77,173 +79,191 @@ class UpdateCodexFragment : Fragment() {
         actionsFavorites.isVisible = true
     }
 
-    private fun setUpRefreshButtons(){
-        binding.updateCodexFragment.apply {
-            update_uk.title.text = getString(R.string.menu_criminal_code)
-            update_upk.title.text = getString(R.string.menu_code_of_criminal_proсedure)
-            update_koap.title.text = getString(R.string.menu_KoAP)
-            update_pikoap.title.text = getString(R.string.menu_PIKoAP)
+    private fun setUpObservers(){
+        model.isUpdateEnabled(Codex.UK).observe(viewLifecycleOwner) {
+            updateRefreshButton(
+                update_uk,
+                Codex.UK,
+                getString(R.string.menu_criminal_code)
+            )
+        }
 
-            updateRefreshButton(update_uk, Codex.UK)
-            updateRefreshButton(update_upk, Codex.UPK)
-            updateRefreshButton(update_koap, Codex.KoAP)
-            updateRefreshButton(update_pikoap, Codex.PIKoAP)
+        model.isUpdateEnabled(Codex.UPK).observe(viewLifecycleOwner) {
+            updateRefreshButton(
+                update_upk,
+                Codex.UPK,
+                getString(R.string.menu_code_of_criminal_proсedure)
+            )
+        }
+
+        model.isUpdateEnabled(Codex.KoAP).observe(viewLifecycleOwner) {
+            updateRefreshButton(
+                update_koap,
+                Codex.KoAP,
+                getString(R.string.menu_KoAP)
+            )
+        }
+
+        model.isUpdateEnabled(Codex.PIKoAP).observe(viewLifecycleOwner) {
+            updateRefreshButton(
+                update_pikoap,
+                Codex.PIKoAP,
+                getString(R.string.menu_PIKoAP)
+            )
         }
     }
 
-    private fun updateRefreshButton(button: View, codex: Codex){
-        if (CodexVersionParser.isHaveChanges(codex)){
-            button.update_codex_button.setCardBackgroundColor(Color.parseColor("#FFB947"))
-            button.image.setColorFilter(Color.DKGRAY)
-            button.subtitle.text = "Доступно обновление"
+    private fun setUpRefreshButtons(){
+        binding.updateCodexFragment.apply {
+            updateRefreshButton(update_uk, Codex.UK, getString(R.string.menu_criminal_code))
+            updateRefreshButton(update_upk, Codex.UPK, getString(R.string.menu_code_of_criminal_proсedure))
+            updateRefreshButton(update_koap, Codex.KoAP, getString(R.string.menu_KoAP))
+            updateRefreshButton(update_pikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
+        }
+    }
+
+    private fun updateRefreshButton(button: View, codex: Codex, title: String?){
+        if (model.isUpdateEnabled(codex).value == true){
+            button.update_codex_button.setCardBackgroundColor(
+                ContextCompat.getColor(requireContext(), R.color.refresh_card_background_active)
+            )
+
+            val activeRefreshButtonImageColor = ContextCompat.getColor(requireContext(), R.color.refresh_image_active)
+
+            button.image.setColorFilter(activeRefreshButtonImageColor)
+            button.title.setTextColor(activeRefreshButtonImageColor)
+            button.subtitle.setTextColor(activeRefreshButtonImageColor)
+
+            button.title.text = "Обновить $title"
+            button.subtitle.text = CodexVersionParser.getChangeDate(codex)
             button.update_codex_button.isEnabled = true
+            button.update_codex_button.cardElevation = 20F
         }else{
-            button.update_codex_button.setCardBackgroundColor(Color.WHITE)
-            button.image.setColorFilter(Color.GRAY)
+            button.update_codex_button.setCardBackgroundColor(
+                ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
+            )
+
+            val activeRefreshButtonImageColor = ContextCompat.getColor(requireContext(), R.color.refresh_image)
+
+            button.image.setColorFilter(activeRefreshButtonImageColor)
+            button.title.setTextColor(activeRefreshButtonImageColor)
+            button.subtitle.setTextColor(activeRefreshButtonImageColor)
+
+            button.title.text = title
             button.subtitle.text = Preferences.getCodexUpdateDate(codex)
             button.update_codex_button.isEnabled = false
+            button.update_codex_button.cardElevation = 5F
         }
     }
 
     private fun setOnClickListenerForUpdateButtons(){
         binding.updateCodexFragment.update_uk.update_codex_button
             .setOnClickListener {
-                if (model.isUKParserWorked){
-                    Snackbar.make(requireView(), "УК уже обновляется", Snackbar.LENGTH_SHORT).show()
-                }else{
-                    GlobalScope.launch(Dispatchers.Default) {
-                        model.isUKParserWorked = true
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление УК", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse UK")
+                    val codexLists = CodexParser().get(Codex.UK)
+                    Log.d(TAG, "End parse UK and start insert")
 
-                        Snackbar.make(requireView(), "Обновление УК", Snackbar.LENGTH_SHORT).show()
-                        Log.i(TAG, "Start parse UK")
-                        val codexLists = CodexParser().get(Codex.UK)
-                        Log.d(TAG, "End parse UK and start insert")
+                    insertCodexLists(BaseCodexDatabase.UK, codexLists)
+                    Log.d(TAG, "End UK insert")
 
-                        insertCodexLists(BaseCodexDatabase.UK, codexLists)
-                        Log.d(TAG, "End UK insert")
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (UK)")
 
-                        BaseCodexProvider.update()
-                        Log.d(TAG, "Update CodexProvider (UK)")
+                    Preferences.setCodexInfo(
+                        Codex.UK,
+                        CodexVersionParser.getChangesCount(Codex.UK),
+                        CodexVersionParser.getChangeDate(Codex.UK)
+                    )
 
-                        Preferences.setCodexInfo(
-                            Codex.UK,
-                            CodexVersionParser.getChangesCount(Codex.UK),
-                            CodexVersionParser.getChangeDate(Codex.UK)
-                        )
-
-                        updateRefreshButton(binding.updateCodexFragment.update_uk, Codex.UK)
-
-                        // Bug: then click button and change page to UK (or others),
-                        // after parsing app crash, because cannot find view(below)
-                        //Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
-                        model.isUKParserWorked = false
-                    }
+                    // Bug: then click button and change page to UK (or others),
+                    // after parsing app crash, because cannot find view(below)
+                    //Snackbar.make(requireView(), "УК обновлен", Snackbar.LENGTH_SHORT).show()
                 }
+
+                model.isUpdateEnabled(Codex.UK).value = false
             }
 
         binding.updateCodexFragment.update_upk.update_codex_button
             .setOnClickListener {
-                if (model.isUPKParserWorked){
-                    Snackbar.make(requireView(), "УПК уже обновляется", Snackbar.LENGTH_SHORT).show()
-                }else{
-                    GlobalScope.launch(Dispatchers.Default) {
-                        model.isUPKParserWorked = true
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление УПК ", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse UPK")
+                    val codexLists = CodexParser().get(Codex.UPK)
+                    Log.d(TAG, "End parse UPK and start insert")
 
-                        Snackbar.make(requireView(), "Обновление УПК ", Snackbar.LENGTH_SHORT).show()
-                        Log.i(TAG, "Start parse UPK")
-                        val codexLists = CodexParser().get(Codex.UPK)
-                        Log.d(TAG, "End parse UPK and start insert")
+                    insertCodexLists(BaseCodexDatabase.UPK, codexLists)
+                    Log.d(TAG, "End UPK insert")
 
-                        insertCodexLists(BaseCodexDatabase.UPK, codexLists)
-                        Log.d(TAG, "End UPK insert")
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (UPK)")
 
-                        BaseCodexProvider.update()
-                        Log.d(TAG, "Update CodexProvider (UPK)")
+                    Preferences.setCodexInfo(
+                        Codex.UPK,
+                        CodexVersionParser.getChangesCount(Codex.UPK),
+                        CodexVersionParser.getChangeDate(Codex.UPK)
+                    )
 
-                        Preferences.setCodexInfo(
-                            Codex.UPK,
-                            CodexVersionParser.getChangesCount(Codex.UPK),
-                            CodexVersionParser.getChangeDate(Codex.UPK)
-                        )
-
-                        updateRefreshButton(binding.updateCodexFragment.update_upk, Codex.UPK)
-
-                        model.isUPKParserWorked = false
-
-                        // See first
-                        //Snackbar.make(requireView(), "УПК обновлен", Snackbar.LENGTH_SHORT).show()
-                    }
+                    // See first
+                    //Snackbar.make(requireView(), "УПК обновлен", Snackbar.LENGTH_SHORT).show()
                 }
+
+                model.isUpdateEnabled(Codex.UPK).value = false
             }
 
         binding.updateCodexFragment.update_koap.update_codex_button
             .setOnClickListener {
-                if (model.isKoAPParserWorked){
-                    Snackbar.make(requireView(), "КоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
-                }else{
-                    GlobalScope.launch(Dispatchers.Default) {
-                        model.isKoAPParserWorked = true
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление КоАП", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse KoAP")
+                    val codexLists = CodexParser().get(Codex.KoAP)
+                    Log.d(TAG, "End parse KoAP and start insert")
 
-                        Snackbar.make(requireView(), "Обновление КоАП", Snackbar.LENGTH_SHORT).show()
-                        Log.i(TAG, "Start parse KoAP")
-                        val codexLists = CodexParser().get(Codex.KoAP)
-                        Log.d(TAG, "End parse KoAP and start insert")
+                    insertCodexLists(BaseCodexDatabase.KoAP, codexLists)
+                    Log.d(TAG, "End KoAP insert")
 
-                        insertCodexLists(BaseCodexDatabase.KoAP, codexLists)
-                        Log.d(TAG, "End KoAP insert")
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (KoAP)")
 
-                        BaseCodexProvider.update()
-                        Log.d(TAG, "Update CodexProvider (KoAP)")
+                    Preferences.setCodexInfo(
+                        Codex.KoAP,
+                        CodexVersionParser.getChangesCount(Codex.KoAP),
+                        CodexVersionParser.getChangeDate(Codex.KoAP)
+                    )
 
-                        Preferences.setCodexInfo(
-                            Codex.KoAP,
-                            CodexVersionParser.getChangesCount(Codex.KoAP),
-                            CodexVersionParser.getChangeDate(Codex.KoAP)
-                        )
-
-                        updateRefreshButton(binding.updateCodexFragment.update_koap, Codex.KoAP)
-
-                        model.isKoAPParserWorked = false
-
-                        // See first
-                        //Snackbar.make(requireView(), "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
-                    }
+                    // See first
+                    //Snackbar.make(requireView(), "КоАП обновлен", Snackbar.LENGTH_SHORT).show()
                 }
+
+                model.isUpdateEnabled(Codex.KoAP).value = false
             }
 
         binding.updateCodexFragment.update_pikoap.update_codex_button
             .setOnClickListener {
-                if (model.isPIKoAPParserWorked){
-                    Snackbar.make(requireView(), "ПИКоАП уже обновляется", Snackbar.LENGTH_SHORT).show()
-                }else{
-                    GlobalScope.launch(Dispatchers.Default) {
-                        model.isPIKoAPParserWorked = true
+                GlobalScope.launch(Dispatchers.Default) {
+                    Snackbar.make(requireView(), "Обновление ПИКоАП", Snackbar.LENGTH_SHORT).show()
+                    Log.i(TAG, "Start parse PIKoAP")
+                    val codexLists = CodexParser().get(Codex.PIKoAP)
+                    Log.d(TAG, "End parse PIKoAP and start insert")
 
-                        Snackbar.make(requireView(), "Обновление ПИКоАП", Snackbar.LENGTH_SHORT).show()
-                        Log.i(TAG, "Start parse PIKoAP")
-                        val codexLists = CodexParser().get(Codex.PIKoAP)
-                        Log.d(TAG, "End parse PIKoAP and start insert")
+                    insertCodexLists(BaseCodexDatabase.PIKoAP, codexLists)
+                    Log.d(TAG, "End PIKoAP insert")
 
-                        insertCodexLists(BaseCodexDatabase.PIKoAP, codexLists)
-                        Log.d(TAG, "End PIKoAP insert")
+                    BaseCodexProvider.update()
+                    Log.d(TAG, "Update CodexProvider (PIKoAP)")
 
-                        BaseCodexProvider.update()
-                        Log.d(TAG, "Update CodexProvider (PIKoAP)")
+                    Preferences.setCodexInfo(
+                        Codex.PIKoAP,
+                        CodexVersionParser.getChangesCount(Codex.PIKoAP),
+                        CodexVersionParser.getChangeDate(Codex.PIKoAP)
+                    )
 
-                        Preferences.setCodexInfo(
-                            Codex.PIKoAP,
-                            CodexVersionParser.getChangesCount(Codex.PIKoAP),
-                            CodexVersionParser.getChangeDate(Codex.PIKoAP)
-                        )
-
-                        updateRefreshButton(binding.updateCodexFragment.update_pikoap, Codex.PIKoAP)
-
-                        model.isPIKoAPParserWorked = false
-
-                        // See first
-                        //Snackbar.make(requireView(), "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
-                    }
+                    // See first
+                    //Snackbar.make(requireView(), "ПИКоАП обновлен", Snackbar.LENGTH_SHORT).show()
                 }
+
+                model.isUpdateEnabled(Codex.PIKoAP).value = false
             }
     }
 
@@ -269,7 +289,7 @@ class UpdateCodexFragment : Fragment() {
             Preferences.setCodexVersion(Codex.KoAP, -1)
             Preferences.setCodexVersion(Codex.PIKoAP, -1)
 
-            setUpRefreshButtons()
+            model.updateIsUpdateEnabled()
 
             Snackbar.make(requireView(), "Базы данных очищены", Snackbar.LENGTH_SHORT).show()
         }
@@ -294,5 +314,4 @@ class UpdateCodexFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
