@@ -6,8 +6,8 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         
         <!-- Primary brand color -->
-        <item name="colorPrimary">#2B2B2B</item>
-        <item name="colorPrimaryVariant">#292929</item>
+        <item name="colorPrimary">@color/dark_active</item>
+        <item name="colorPrimaryVariant">@color/dark_active</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <!-- Secondary brand color -->
@@ -22,13 +22,13 @@
         <item name="colorOnSurface">@color/white</item>
 
         <!-- Item and Article color -->
-        <item name="colorSurface">#0F0F0F</item>
+        <item name="colorSurface">@color/almost_black</item>
 
         <!-- Title color -->
-        <item name="colorSurfaceVariant">#2B2B2B</item>
+        <item name="colorSurfaceVariant">@color/dark_active</item>
 
         <!-- Background color -->
-        <item name="backgroundColor">#1E1E1E</item>
+        <item name="backgroundColor">@color/dark</item>
         <item name="android:colorBackground">?attr/backgroundColor</item>
 
     </style>
