@@ -23,6 +23,7 @@ import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
+import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.android.synthetic.main.fragment_update_codex.*
 import kotlinx.android.synthetic.main.fragment_update_codex.view.*
 import kotlinx.android.synthetic.main.update_codex_button.view.*
@@ -120,6 +121,7 @@ class UpdateCodexFragment : Fragment() {
                 Codex.UK,
                 getString(R.string.menu_criminal_code)
             )
+            NotificationBadge.isVisible = model.isUpdateEnabled()
         }
 
         model.isUpdateEnabled(Codex.UPK).observe(viewLifecycleOwner) {
@@ -128,6 +130,7 @@ class UpdateCodexFragment : Fragment() {
                 Codex.UPK,
                 getString(R.string.menu_code_of_criminal_proсedure)
             )
+            NotificationBadge.isVisible = model.isUpdateEnabled()
         }
 
         model.isUpdateEnabled(Codex.KoAP).observe(viewLifecycleOwner) {
@@ -136,6 +139,7 @@ class UpdateCodexFragment : Fragment() {
                 Codex.KoAP,
                 getString(R.string.menu_KoAP)
             )
+            NotificationBadge.isVisible = model.isUpdateEnabled()
         }
 
         model.isUpdateEnabled(Codex.PIKoAP).observe(viewLifecycleOwner) {
@@ -144,6 +148,7 @@ class UpdateCodexFragment : Fragment() {
                 Codex.PIKoAP,
                 getString(R.string.menu_PIKoAP)
             )
+            NotificationBadge.isVisible = model.isUpdateEnabled()
         }
     }
 

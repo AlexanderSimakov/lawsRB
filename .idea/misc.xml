@@ -35,10 +35,9 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3185" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.184" />
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.3185" />
-        <entry key="app/src/main/res/drawable/ic_refresh_36.xml" value="0.3365" />
-        <entry key="app/src/main/res/drawable/ic_sunny_dark_24.xml" value="0.3365" />
         <entry key="app/src/main/res/drawable/ic_sunny_light_24.xml" value="0.184" />
         <entry key="app/src/main/res/drawable/nav_item_color.xml" value="0.3365" />
+        <entry key="app/src/main/res/drawable/notification_badge.xml" value="0.3365" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.3185" />
         <entry key="app/src/main/res/drawable/theme_toggle_button.xml" value="0.184" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29243266353142366" />
@@ -64,7 +63,6 @@
         <entry key="app/src/main/res/layout/fragment_pikoap.xml" value="0.5514365152919369" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_uk.xml" value="0.247451343836886" />
-        <entry key="app/src/main/res/layout/fragment_update_codex.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_upk.xml" value="0.247451343836886" />
         <entry key="app/src/main/res/layout/item_card.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/light_card.xml" value="0.35520833333333335" />
@@ -77,6 +75,8 @@
         <entry key="app/src/main/res/layout/update_codex_card.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.67" />
         <entry key="app/src/main/res/menu/main.xml" value="0.25" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2515" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2515" />
       </map>
     </option>
   </component>

@@ -27,6 +27,14 @@ class UpdateCodexViewModel : ViewModel() {
         }
     }
 
+    fun isUpdateEnabled(): Boolean{
+        // '== true' because .value can be null
+        return isUKUpdateEnabled.value == true ||
+                isUPKUpdateEnabled.value == true ||
+                isKoAPUpdateEnabled.value == true ||
+                isPIKoAPUpdateEnabled.value == true
+    }
+
     fun updateIsUpdateEnabled(){
         isUKUpdateEnabled.postValue(CodexVersionParser.isHaveChanges(Codex.UK))
         isUPKUpdateEnabled.postValue(CodexVersionParser.isHaveChanges(Codex.UPK))

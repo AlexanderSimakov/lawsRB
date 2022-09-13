@@ -2,12 +2,10 @@ package com.team.lawsrb
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.CheckBox
-import android.widget.SearchView
+import android.view.View
+import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.TaskStackBuilder
@@ -26,6 +24,7 @@ import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
+import com.team.lawsrb.ui.NotificationBadge
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import kotlinx.coroutines.*
 
@@ -88,6 +87,22 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
+
+        // update notification badge
+        val item = binding.navView.menu.findItem(R.id.nav_update_codex)
+        val notificationImage = item.actionView as ImageView
+        notificationImage.setImageDrawable(resources.getDrawable(R.drawable.notification_badge, applicationContext.theme))
+        NotificationBadge.setImage(notificationImage)
+
+        // show notification if have changes
+        notificationImage.postDelayed({
+            // TODO: create isHaveChanges func
+            if (CodexVersionParser.isHaveChanges(Codex.UK) ||
+                CodexVersionParser.isHaveChanges(Codex.UPK) ||
+                CodexVersionParser.isHaveChanges(Codex.KoAP) ||
+                CodexVersionParser.isHaveChanges(Codex.PIKoAP))
+                NotificationBadge.isVisible = true
+        }, 3000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
