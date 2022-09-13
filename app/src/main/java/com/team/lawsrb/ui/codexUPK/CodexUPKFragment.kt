@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.codexOfCriminalProcedure
+package com.team.lawsrb.ui.codexUPK
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,7 +11,7 @@ import com.team.lawsrb.R
 import com.team.lawsrb.databinding.FragmentUpkBinding
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
-class CodexOfCriminalProcedureFragment : Fragment() {
+class CodexUPKFragment : Fragment() {
 
     private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
