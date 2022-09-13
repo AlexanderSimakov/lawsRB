@@ -14,6 +14,7 @@
     <color name="refresh_image_active">#000000</color>
     <color name="translucent_background">#15ffc93b </color>
     <color name="transparent_background">#00000000</color>
+    <color name="notification_badge">#BA1818</color>
 
     <color name="dark_active">#2B2B2B</color>
     <color name="dark">#1E1E1E</color>
