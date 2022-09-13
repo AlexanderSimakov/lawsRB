@@ -24,6 +24,7 @@ import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.databinding.ActivityMainBinding
+import com.team.lawsrb.ui.NotificationBadge
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import kotlinx.coroutines.*
 
@@ -91,7 +92,17 @@ class MainActivity : AppCompatActivity() {
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
         val notificationImage = item.actionView as ImageView
         notificationImage.setImageDrawable(resources.getDrawable(R.drawable.notification_badge, applicationContext.theme))
-        notificationImage.visibility = View.GONE
+        NotificationBadge.setImage(notificationImage)
+
+        // show notification if have changes
+        notificationImage.postDelayed({
+            // TODO: create isHaveChanges func
+            if (CodexVersionParser.isHaveChanges(Codex.UK) ||
+                CodexVersionParser.isHaveChanges(Codex.UPK) ||
+                CodexVersionParser.isHaveChanges(Codex.KoAP) ||
+                CodexVersionParser.isHaveChanges(Codex.PIKoAP))
+                NotificationBadge.isVisible = true
+        }, 3000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
