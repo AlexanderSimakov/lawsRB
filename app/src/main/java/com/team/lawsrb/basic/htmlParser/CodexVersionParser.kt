@@ -75,6 +75,13 @@ object CodexVersionParser {
         return changesCount[codex] != oldCountOfChanges
     }
 
+    fun isHaveChanges(): Boolean {
+        return isHaveChanges(Codex.UK) ||
+               isHaveChanges(Codex.UPK) ||
+               isHaveChanges(Codex.KoAP) ||
+               isHaveChanges(Codex.PIKoAP)
+    }
+
     fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
 
     fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!

@@ -69,11 +69,7 @@ class UpdateCodexFragment : Fragment() {
 
                 CodexVersionParser.update().join()
 
-                if (CodexVersionParser.isHaveChanges(Codex.UK) ||
-                    CodexVersionParser.isHaveChanges(Codex.UPK) ||
-                    CodexVersionParser.isHaveChanges(Codex.KoAP) ||
-                    CodexVersionParser.isHaveChanges(Codex.PIKoAP)){
-
+                if (CodexVersionParser.isHaveChanges()) {
                     model.updateIsUpdateEnabled()
 
                     view?.let {

@@ -96,12 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         // show notification if have changes
         notificationImage.postDelayed({
-            // TODO: create isHaveChanges func
-            if (CodexVersionParser.isHaveChanges(Codex.UK) ||
-                CodexVersionParser.isHaveChanges(Codex.UPK) ||
-                CodexVersionParser.isHaveChanges(Codex.KoAP) ||
-                CodexVersionParser.isHaveChanges(Codex.PIKoAP))
-                NotificationBadge.isVisible = true
+            NotificationBadge.isVisible = CodexVersionParser.isHaveChanges()
         }, 3000)
     }
 
