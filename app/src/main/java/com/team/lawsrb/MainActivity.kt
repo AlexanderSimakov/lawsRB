@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // init NetworkAvailable class
         val coroutineContext = Dispatchers.Main
         val mScope = CoroutineScope(coroutineContext + SupervisorJob())
         mScope.launch {
