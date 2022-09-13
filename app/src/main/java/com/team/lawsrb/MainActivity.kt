@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         CodexVersionParser.update()
 
-        // Saving state of app
-        // using SharedPreferences
+        // init Preferences and setup dark/light mode
         Preferences.update(applicationContext)
         if (Preferences.isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
