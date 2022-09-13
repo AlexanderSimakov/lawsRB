@@ -3,7 +3,6 @@ package com.team.lawsrb
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
@@ -171,8 +170,6 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
