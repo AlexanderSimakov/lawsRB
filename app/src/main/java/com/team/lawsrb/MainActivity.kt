@@ -2,12 +2,9 @@ package com.team.lawsrb
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.CheckBox
-import android.widget.SearchView
+import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.TaskStackBuilder
@@ -88,6 +85,10 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
+
+        val item = binding.navView.menu.findItem(R.id.nav_update_codex)
+        val notificationImage = item.actionView as ImageView
+        notificationImage.setImageDrawable(resources.getDrawable(R.drawable.notification_badge, applicationContext.theme))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

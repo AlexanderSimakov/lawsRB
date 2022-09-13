@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group
@@ -34,6 +35,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_update_codex"
+            app:actionViewClass="android.widget.ImageView"
             android:icon="@drawable/ic_refresh_36"
             android:title="@string/menu_update_codex" />
     </group>
