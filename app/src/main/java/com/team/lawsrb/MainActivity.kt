@@ -3,6 +3,7 @@ package com.team.lawsrb
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
@@ -86,9 +87,11 @@ class MainActivity : AppCompatActivity() {
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
 
+        // update notification badge
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
         val notificationImage = item.actionView as ImageView
         notificationImage.setImageDrawable(resources.getDrawable(R.drawable.notification_badge, applicationContext.theme))
+        notificationImage.visibility = View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
