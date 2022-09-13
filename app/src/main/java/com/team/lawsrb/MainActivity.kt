@@ -35,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Initialize database
+        BaseCodexDatabase.init(applicationContext)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -84,8 +87,6 @@ class MainActivity : AppCompatActivity() {
             networkAvailable.subscribeForUpdates()
         }
 
-        //Initialize database
-        BaseCodexDatabase.init(applicationContext)
 
         // update notification badge
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
