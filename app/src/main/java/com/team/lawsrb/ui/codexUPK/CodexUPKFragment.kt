@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.databinding.FragmentUpkBinding
+import com.team.lawsrb.ui.CollectionAdapter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class CodexUPKFragment : Fragment() {
 
-    private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
 
     private var _binding: FragmentUpkBinding? = null
@@ -33,9 +34,8 @@ class CodexUPKFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        collectionAdapter = CollectionAdapter(this)
         viewPager = binding.upkPager
-        viewPager.adapter = collectionAdapter
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
         viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
