@@ -19,9 +19,7 @@ import com.team.lawsrb.basic.htmlParser.CodexParser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import androidx.lifecycle.ViewModelProviders
 import com.team.lawsrb.basic.Preferences
-import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
-import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.android.synthetic.main.fragment_update_codex.*
@@ -204,7 +202,7 @@ class UpdateCodexFragment : Fragment() {
                     val codexLists = CodexParser().get(Codex.UK)
                     Log.d(TAG, "End parse UK and start insert")
 
-                    insertCodexLists(BaseCodexDatabase.UK, codexLists)
+                    BaseCodexDatabase.insertCodexLists(Codex.UK, codexLists)
                     Log.d(TAG, "End UK insert")
 
                     BaseCodexProvider.update()
@@ -232,7 +230,7 @@ class UpdateCodexFragment : Fragment() {
                     val codexLists = CodexParser().get(Codex.UPK)
                     Log.d(TAG, "End parse UPK and start insert")
 
-                    insertCodexLists(BaseCodexDatabase.UPK, codexLists)
+                    BaseCodexDatabase.insertCodexLists(Codex.UPK, codexLists)
                     Log.d(TAG, "End UPK insert")
 
                     BaseCodexProvider.update()
@@ -260,7 +258,7 @@ class UpdateCodexFragment : Fragment() {
                     val codexLists = CodexParser().get(Codex.KoAP)
                     Log.d(TAG, "End parse KoAP and start insert")
 
-                    insertCodexLists(BaseCodexDatabase.KoAP, codexLists)
+                    BaseCodexDatabase.insertCodexLists(Codex.KoAP, codexLists)
                     Log.d(TAG, "End KoAP insert")
 
                     BaseCodexProvider.update()
@@ -288,7 +286,7 @@ class UpdateCodexFragment : Fragment() {
                     val codexLists = CodexParser().get(Codex.PIKoAP)
                     Log.d(TAG, "End parse PIKoAP and start insert")
 
-                    insertCodexLists(BaseCodexDatabase.PIKoAP, codexLists)
+                    BaseCodexDatabase.insertCodexLists(Codex.PIKoAP, codexLists)
                     Log.d(TAG, "End PIKoAP insert")
 
                     BaseCodexProvider.update()
@@ -309,21 +307,10 @@ class UpdateCodexFragment : Fragment() {
             }
     }
 
-    // TODO move to BaseCodexDatabase?
-    private fun insertCodexLists(database: CodexDatabase, codexLists: CodexLists){
-        database.partsDao().insert(codexLists.parts)
-        database.sectionsDao().insert(codexLists.sections)
-        database.chaptersDao().insert(codexLists.chapters)
-        database.articlesDao().insert(codexLists.articles)
-    }
-
     // debug function
     private fun setUpClearAllButton(){
         binding.updateCodexFragment.debug_clear_all_button.setOnClickListener {
-            clearDatabase(BaseCodexDatabase.UK)
-            clearDatabase(BaseCodexDatabase.UPK)
-            clearDatabase(BaseCodexDatabase.KoAP)
-            clearDatabase(BaseCodexDatabase.PIKoAP)
+            BaseCodexDatabase.clearDatabases()
 
             BaseCodexProvider.update()
             Preferences.setCodexVersion(Codex.UK, -1)
@@ -335,15 +322,6 @@ class UpdateCodexFragment : Fragment() {
 
             Snackbar.make(requireView(), "Базы данных очищены", Snackbar.LENGTH_SHORT).show()
         }
-    }
-
-    // debug function
-    // TODO move to BaseCodexDatabase?
-    private fun clearDatabase(database: CodexDatabase){
-        database.articlesDao().clearAll()
-        database.chaptersDao().clearAll()
-        database.sectionsDao().clearAll()
-        database.partsDao().clearAll()
     }
 
     override fun onResume() {
