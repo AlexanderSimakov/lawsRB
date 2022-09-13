@@ -83,10 +83,10 @@ object BaseCodexDatabase {
 
     fun clearDatabase(codex: Codex){
         val db = getDatabase(codex)
-        db.partsDao().clearAll()
-        db.sectionsDao().clearAll()
-        db.chaptersDao().clearAll()
         db.articlesDao().clearAll()
+        db.chaptersDao().clearAll()
+        db.sectionsDao().clearAll()
+        db.partsDao().clearAll()
     }
 
     fun clearDatabases(){
