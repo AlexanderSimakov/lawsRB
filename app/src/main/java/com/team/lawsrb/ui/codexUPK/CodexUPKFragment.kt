@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.criminalCodex
+package com.team.lawsrb.ui.codexUPK
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
-import com.team.lawsrb.databinding.FragmentUkBinding
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
+import com.team.lawsrb.databinding.FragmentUpkBinding
+import com.team.lawsrb.ui.CollectionAdapter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
-class CriminalCodexFragment : Fragment() {
+class CodexUPKFragment : Fragment() {
 
-    private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
 
-    private var _binding: FragmentUkBinding? = null
+    private var _binding: FragmentUpkBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,19 +29,18 @@ class CriminalCodexFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentUkBinding.inflate(inflater, container, false)
+        _binding = FragmentUpkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        collectionAdapter = CollectionAdapter(this)
-        viewPager = binding.ukPager
-        viewPager.adapter = collectionAdapter
+        viewPager = binding.upkPager
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
         viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        val tabLayout = binding.ukTabLayout
+        val tabLayout = binding.upkTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)

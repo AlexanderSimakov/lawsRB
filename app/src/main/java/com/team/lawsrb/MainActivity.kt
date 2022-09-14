@@ -3,7 +3,6 @@ package com.team.lawsrb
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Initialize database
+        BaseCodexDatabase.init(applicationContext)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -55,8 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         CodexVersionParser.update()
 
-        // Saving state of app
-        // using SharedPreferences
+        // init Preferences and setup dark/light mode
         Preferences.update(applicationContext)
         if (Preferences.isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // init NetworkAvailable class
         val coroutineContext = Dispatchers.Main
         val mScope = CoroutineScope(coroutineContext + SupervisorJob())
         mScope.launch {
@@ -85,8 +87,6 @@ class MainActivity : AppCompatActivity() {
             networkAvailable.subscribeForUpdates()
         }
 
-        //Initialize database
-        BaseCodexDatabase.init(applicationContext)
 
         // update notification badge
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
@@ -96,12 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         // show notification if have changes
         notificationImage.postDelayed({
-            // TODO: create isHaveChanges func
-            if (CodexVersionParser.isHaveChanges(Codex.UK) ||
-                CodexVersionParser.isHaveChanges(Codex.UPK) ||
-                CodexVersionParser.isHaveChanges(Codex.KoAP) ||
-                CodexVersionParser.isHaveChanges(Codex.PIKoAP))
-                NotificationBadge.isVisible = true
+            NotificationBadge.isVisible = CodexVersionParser.isHaveChanges()
         }, 3000)
     }
 
@@ -176,8 +171,6 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

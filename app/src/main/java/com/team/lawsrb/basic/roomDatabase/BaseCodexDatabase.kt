@@ -1,10 +1,10 @@
 package com.team.lawsrb.basic.roomDatabase
 
 import android.content.Context
+import com.team.lawsrb.basic.htmlParser.Codex
+import com.team.lawsrb.basic.htmlParser.CodexLists
 
 object BaseCodexDatabase {
-    private enum class Codex { UK, UPK, KoAP, PIKoAP }
-
     private val databaseNames: MutableMap<Codex, String> = mutableMapOf()
     private val assetPaths: MutableMap<Codex, String> = mutableMapOf()
 
@@ -62,5 +62,37 @@ object BaseCodexDatabase {
                 .allowMainThreadQueries()
                 .build()
         }
+    }
+
+    fun getDatabase(codex: Codex): CodexDatabase{
+        return when(codex){
+            Codex.UK -> UK
+            Codex.UPK -> UPK
+            Codex.KoAP -> KoAP
+            Codex.PIKoAP -> PIKoAP
+        }
+    }
+
+    fun insertCodexLists(codex: Codex, codexLists: CodexLists){
+        val db = getDatabase(codex)
+        db.partsDao().insert(codexLists.parts)
+        db.sectionsDao().insert(codexLists.sections)
+        db.chaptersDao().insert(codexLists.chapters)
+        db.articlesDao().insert(codexLists.articles)
+    }
+
+    fun clearDatabase(codex: Codex){
+        val db = getDatabase(codex)
+        db.articlesDao().clearAll()
+        db.chaptersDao().clearAll()
+        db.sectionsDao().clearAll()
+        db.partsDao().clearAll()
+    }
+
+    fun clearDatabases(){
+        clearDatabase(Codex.UK)
+        clearDatabase(Codex.UPK)
+        clearDatabase(Codex.KoAP)
+        clearDatabase(Codex.PIKoAP)
     }
 }

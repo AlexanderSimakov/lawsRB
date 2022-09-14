@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.lawsrb.R
+import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.databinding.FragmentPikoapBinding
+import com.team.lawsrb.ui.CollectionAdapter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 class CodexPIKoAPFragment : Fragment() {
 
-    private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
 
     private var _binding: FragmentPikoapBinding? = null
@@ -33,9 +34,8 @@ class CodexPIKoAPFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        collectionAdapter = CollectionAdapter(this)
         viewPager = binding.pikoapPager
-        viewPager.adapter = collectionAdapter
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.PIKoAP, this)
         viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
