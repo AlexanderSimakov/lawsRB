@@ -16,7 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.team.lawsrb.basic.NetworkAvailable
+import com.team.lawsrb.basic.NetworkCheck
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.*
 import com.team.lawsrb.basic.htmlParser.Codex
@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         val coroutineContext = Dispatchers.Main
         val mScope = CoroutineScope(coroutineContext + SupervisorJob())
         mScope.launch {
-            val networkAvailable = NetworkAvailable(applicationContext)
-            networkAvailable.subscribeForUpdates()
+            val networkCheck = NetworkCheck(applicationContext)
+            networkCheck.subscribeForUpdates()
         }
 
         super.onCreate(savedInstanceState)
@@ -63,7 +63,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        CodexVersionParser.update()
+        if (NetworkCheck.isAvailable){
+            CodexVersionParser.update()
+        }
 
         // init Preferences and setup dark/light mode
         Preferences.update(applicationContext)
