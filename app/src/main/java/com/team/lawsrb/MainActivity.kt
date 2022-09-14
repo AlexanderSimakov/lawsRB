@@ -33,6 +33,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // init NetworkAvailable class
+        val coroutineContext = Dispatchers.Main
+        val mScope = CoroutineScope(coroutineContext + SupervisorJob())
+        mScope.launch {
+            val networkAvailable = NetworkAvailable(applicationContext)
+            networkAvailable.subscribeForUpdates()
+        }
+
         super.onCreate(savedInstanceState)
 
         //Initialize database
@@ -78,15 +86,6 @@ class MainActivity : AppCompatActivity() {
                 isRunFirst = false
             }
         }
-
-        // init NetworkAvailable class
-        val coroutineContext = Dispatchers.Main
-        val mScope = CoroutineScope(coroutineContext + SupervisorJob())
-        mScope.launch {
-            val networkAvailable = NetworkAvailable(applicationContext)
-            networkAvailable.subscribeForUpdates()
-        }
-
 
         // update notification badge
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
