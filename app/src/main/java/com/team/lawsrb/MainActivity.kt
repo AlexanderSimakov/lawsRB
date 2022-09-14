@@ -34,6 +34,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val coroutineContext = Dispatchers.Main
+        val mScope = CoroutineScope(coroutineContext + SupervisorJob())
+        mScope.launch {
+            val networkAvailable = NetworkAvailable(applicationContext)
+            networkAvailable.subscribeForUpdates()
+        }
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -76,13 +83,6 @@ class MainActivity : AppCompatActivity() {
                 setCodexInfo(Codex.PIKoAP, 1, "От 4 января 2022")
                 isRunFirst = false
             }
-        }
-
-        val coroutineContext = Dispatchers.Main
-        val mScope = CoroutineScope(coroutineContext + SupervisorJob())
-        mScope.launch {
-            val networkAvailable = NetworkAvailable(applicationContext)
-            networkAvailable.subscribeForUpdates()
         }
 
         //Initialize database
