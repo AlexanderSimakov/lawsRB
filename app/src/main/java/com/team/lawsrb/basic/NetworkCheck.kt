@@ -12,8 +12,8 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketAddress
 
-class NetworkAvailable(context: Context) {
-    private val TAG = "NetworkAvailable"
+class NetworkCheck(context: Context) {
+    private val TAG = "NetworkCheck"
 
     private val connectivityManager = getSystemService(context, ConnectivityManager::class.java) as ConnectivityManager
     private val networkRequest = NetworkRequest.Builder()
@@ -26,8 +26,8 @@ class NetworkAvailable(context: Context) {
         // network is available for use
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
-            isNetworkAvailable = checkInternetConnection()
-            Log.d(TAG, "$isNetworkAvailable")
+            _isAvailable = checkInternetConnection()
+            Log.d(TAG, "$_isAvailable")
             Log.d(TAG, "Network turned on")
         }
 
@@ -44,8 +44,8 @@ class NetworkAvailable(context: Context) {
         // lost network connection
         override fun onLost(network: Network) {
             super.onLost(network)
-            isNetworkAvailable = false
-            Log.d(TAG, "$isNetworkAvailable")
+            _isAvailable = false
+            Log.d(TAG, "$_isAvailable")
             Log.d(TAG, "Network turned off")
         }
     }
@@ -83,7 +83,10 @@ class NetworkAvailable(context: Context) {
     }
 
     companion object {
-        private var isNetworkAvailable: Boolean = false
+        private var _isAvailable: Boolean = false
+
+        val isAvailable get() = _isAvailable
+        val isNotAvailable get() = !_isAvailable
     }
 }
 

@@ -18,6 +18,7 @@ import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexParser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import androidx.lifecycle.ViewModelProviders
+import com.team.lawsrb.basic.NetworkCheck
 import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
@@ -63,6 +64,11 @@ class UpdateCodexFragment : Fragment() {
 
     private fun setUpCheckCodexUpdatesButton(){
         binding.checkUpdatesButton.setOnClickListener {
+            if (NetworkCheck.isNotAvailable){
+                Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             GlobalScope.launch {
                 model.isCheckUpdateButtonEnabled.postValue(false)
                 Snackbar.make(requireView(), "Проверка обновлений", Snackbar.LENGTH_SHORT).show()
@@ -199,6 +205,11 @@ class UpdateCodexFragment : Fragment() {
     }
 
     private fun onUpdateButtonClick(codex: Codex){
+        if (NetworkCheck.isNotAvailable){
+            Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         GlobalScope.launch(Dispatchers.Default) {
             Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
 
