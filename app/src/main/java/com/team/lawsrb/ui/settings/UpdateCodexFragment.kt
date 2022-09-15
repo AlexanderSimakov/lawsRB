@@ -213,10 +213,7 @@ class UpdateCodexFragment : Fragment() {
         GlobalScope.launch(Dispatchers.Default) {
             Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
 
-            Log.i(TAG, "Start parse ${codex.name}")
             val codexLists = CodexParser().get(codex)
-            Log.d(TAG, "End parse ${codex.name} and start insert")
-
             BaseCodexDatabase.insertCodexLists(codex, codexLists)
             BaseCodexProvider.update()
             Preferences.setCodexInfo(
