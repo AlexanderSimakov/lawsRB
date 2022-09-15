@@ -7,6 +7,7 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Part
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 
 class CodexParser {
     private val TAG = "CodexParser"
@@ -18,10 +19,12 @@ class CodexParser {
     private var articlesList = mutableListOf<CodexContent>()
 
     private lateinit var document: Document
+    private lateinit var documentElements: Elements
 
     fun get(codex: Codex): CodexLists {
         try {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
+            documentElements = document.select("main").select("p")
         }
         catch (e: Exception) {
             Log.e(TAG, "${e.message}: Getting document's error")
@@ -42,11 +45,8 @@ class CodexParser {
 
     private fun parsePartsTitles() {
         try {
-            val table = document.select("main")
-            val elements = table.select("p")
-
             var partId = 1
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.attr("class").equals("contenttext")
                     && element.text().contains("ЧАСТЬ")) {
                     val part = Part(element.text(), partId, false)
@@ -62,11 +62,8 @@ class CodexParser {
 
     private fun parseSectionsTitles() {
         try {
-            val table = document.select("main")
-            val elements = table.select("p")
-
             var (parentId, sectionId) = List(2) { 0 }
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.attr("class").equals("contenttext")) {
                     if (element.text().contains("РАЗДЕЛ")) {
                         sectionId++
@@ -86,11 +83,8 @@ class CodexParser {
 
     private fun parseChaptersTitles() {
         try {
-            val table = document.select("main")
-            val elements = table.select("p")
-
             var (parentId, chapterId) = List(2) { 0 }
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.attr("class").equals("contenttext")) {
                     if (element.text().contains("ГЛАВА")) {
                         chapterId++
@@ -115,11 +109,8 @@ class CodexParser {
 
     private fun parseArticlesTitles() {
         try {
-            val table = document.select("main")
-            val elements = table.select("p")
-
             var parentId = 0
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.attr("class").equals("contenttext")) {
                     if (element.text().contains("Статья")) {
                         if (element.attr("id").contains("/")) {
@@ -152,27 +143,24 @@ class CodexParser {
 
     private fun parseArticlesContent() {
         try {
-            val table = document.select("main")
-            val elements = table.select("p")
-
             val indices: MutableList<Int> = mutableListOf()
             var currentId = 0
 
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.attr("class").equals("article")) {
-                    indices.add(elements.indexOf(element))
+                    indices.add(documentElements.indexOf(element))
                     break
                 }
             }
 
-            for (element in elements) {
+            for (element in documentElements) {
                 if (element.text().contains("А.Лукашенко")) {
-                    indices.add(elements.indexOf(element) - 2)
+                    indices.add(documentElements.indexOf(element) - 2)
                     break
                 }
             }
 
-            val mainContent = elements.subList(indices[0], indices[1])
+            val mainContent = documentElements.subList(indices[0], indices[1])
             for (element in mainContent) {
                 if (element.attr("class").equals("article")) {
                     currentId++
