@@ -14,6 +14,6 @@
         android:title="@string/action_search"
         android:icon="@drawable/ic_search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always|withText"
         />
 </menu>
