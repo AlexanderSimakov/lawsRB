@@ -2,12 +2,16 @@ package com.team.lawsrb
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.TaskStackBuilder
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -31,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private var _savedInstanceState: Bundle? = null
+    private val onFavoritesClick = "is_favorites_showing"
+    private var isFavoritesShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init NetworkAvailable class
@@ -42,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
 
@@ -64,6 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         if (NetworkCheck.isAvailable){
             CodexVersionParser.update()
+        }
+
+        if(savedInstanceState != null){
+            _savedInstanceState = savedInstanceState
         }
 
         // init Preferences and setup dark/light mode
@@ -139,9 +149,16 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
+        Log.d("Test", "$_savedInstanceState")
+        if (_savedInstanceState != null && _savedInstanceState!!.getBoolean(onFavoritesClick)) {
+            isFavoritesShowing = true
+            favoritesCheckBox.toggle()
+        }
+
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.setFavorite(isChecked)
+            isFavoritesShowing = isChecked
         }
 
         // --- Search button ---
@@ -163,13 +180,16 @@ class MainActivity : AppCompatActivity() {
                 Preferences.isDarkTheme = false
                 Highlighter.isDarkMode = false
             }
-            TaskStackBuilder.create(applicationContext)
-                .addNextIntent(Intent(applicationContext, MainActivity::class.java))
-                .addNextIntent(intent)
-                .startActivities()
+            recreate()
+
         }
 
         return true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(onFavoritesClick, isFavoritesShowing)
     }
 
     override fun onSupportNavigateUp(): Boolean {
