@@ -56,7 +56,7 @@ class CodexParser {
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing parts titles");
+            Log.e(TAG, "Error : ${e.message}: Error parsing parts titles")
         }
     }
 
@@ -80,7 +80,7 @@ class CodexParser {
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing sections titles");
+            Log.e(TAG, "Error : ${e.message}: Error parsing sections titles")
         }
     }
 
@@ -109,7 +109,7 @@ class CodexParser {
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing chapters titles");
+            Log.e(TAG, "Error : ${e.message}: Error parsing chapters titles")
         }
     }
 
@@ -146,7 +146,7 @@ class CodexParser {
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing articles titles");
+            Log.e(TAG, "Error : ${e.message}: Error parsing articles titles")
         }
     }
 
@@ -208,7 +208,7 @@ class CodexParser {
             }
         }
         catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing article's contents");
+            Log.e(TAG, "Error : ${e.message}: Error parsing article's contents")
         }
     }
 
