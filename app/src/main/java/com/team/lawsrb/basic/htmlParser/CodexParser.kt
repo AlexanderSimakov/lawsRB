@@ -9,14 +9,15 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class CodexParser {
-    
+    private val TAG = "CodexParser"
+
+    private data class CodexContent(val parentId: Int, val contentText: String)
+
     private var codexLists = CodexLists()
     private var contentList = mutableListOf<CodexContent>()
     private var articlesList = mutableListOf<CodexContent>()
 
     private var document: Document? = null
-
-    private val TAG = "CodexParser"
 
     fun get(codex: Codex): CodexLists {
         try {
