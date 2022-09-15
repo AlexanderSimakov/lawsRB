@@ -215,7 +215,7 @@ class CodexParser {
             formattedText = formattedText.replace("<sup></sup>", "")
 
         formattedText = formattedText.replace("<sup>", "/")
-            .replace("(\\<[^<]+\\>\\s*)".toRegex(), " ")
+            .replace("(<[^<]+>\\s*)".toRegex(), " ")
             .replace("&nbsp;", " ")
             .replace("  ", " ")
             .replace(" ,", ",")
