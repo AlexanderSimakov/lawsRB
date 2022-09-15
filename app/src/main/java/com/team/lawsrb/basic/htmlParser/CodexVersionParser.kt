@@ -4,17 +4,12 @@ import android.util.Log
 import com.team.lawsrb.basic.Preferences
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import kotlin.coroutines.CoroutineContext
+import org.jsoup.select.Elements
 
 object CodexVersionParser {
-    private val context: CoroutineContext = Dispatchers.IO
-    private val scope = CoroutineScope (context + SupervisorJob ())
+    private const val TAG = "CodexVersionParser"
 
-    private var documentUK: Document? = null
-    private var documentUPK: Document? = null
-    private var documentKoAP: Document? = null
-    private var documentPIKoAP: Document? = null
+    private val scope = CoroutineScope (Dispatchers.IO + SupervisorJob ())
 
     private var changesCount: MutableMap<Codex, Int> =
         mutableMapOf(
@@ -32,46 +27,58 @@ object CodexVersionParser {
             Codex.PIKoAP to "От 4 января 2022"
         )
 
-    private const val TAG = "CodexVersionParser"
-
     fun update() = scope.launch {
-        val handler = CoroutineExceptionHandler {
-                _, exception -> Log.e(TAG, "$exception: No internet connection")
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, "No internet connection: $exception")
         }
-        supervisorScope {
-            launch(handler) {
-                documentUK = Jsoup.connect(Codex.UK.URL).get()
-                changesCount[Codex.UK] = getChangesCountFromHtmlPage(documentUK!!)
-                lastChangeDate[Codex.UK] = getLastChangeDateFromHtmlPage(documentUK!!)
-                Log.d(TAG, "${changesCount[Codex.UK]}")
-            }
-            
-            launch(handler) {
-                documentUPK = Jsoup.connect(Codex.UPK.URL).get()
-                changesCount[Codex.UPK] = getChangesCountFromHtmlPage(documentUPK!!)
-                lastChangeDate[Codex.UPK] = getLastChangeDateFromHtmlPage(documentUPK!!)
-                Log.d(TAG, "${changesCount[Codex.UPK]}")
-            }
 
-            launch (handler) {
-                documentKoAP = Jsoup.connect(Codex.KoAP.URL).get()
-                changesCount[Codex.KoAP] = getChangesCountFromHtmlPage(documentKoAP!!)
-                lastChangeDate[Codex.KoAP] = getLastChangeDateFromHtmlPage(documentKoAP!!)
-                Log.d(TAG, "${changesCount[Codex.KoAP]}")
-            }
-            
-            launch (handler) {
-                documentPIKoAP = Jsoup.connect(Codex.PIKoAP.URL).get()
-                changesCount[Codex.PIKoAP] = getChangesCountFromHtmlPage(documentPIKoAP!!)
-                lastChangeDate[Codex.PIKoAP] = getLastChangeDateFromHtmlPage(documentPIKoAP!!)
-                Log.d(TAG, "${changesCount[Codex.PIKoAP]}")
+        supervisorScope {
+            launch(handler) { parse(Codex.UK) }
+            launch(handler) { parse(Codex.UPK) }
+            launch(handler) { parse(Codex.KoAP) }
+            launch(handler) { parse(Codex.PIKoAP) }
+        }
+    }
+
+    private fun parse(codex: Codex){
+        val document = Jsoup.connect(codex.URL).get()
+        val elements = document.select("main").select("p")
+
+        changesCount[codex] = getChangeCount(elements)
+        lastChangeDate[codex] = getChangeDate(elements)
+        Log.d(TAG, "Parse ${codex.name}: ${lastChangeDate[codex]}, ${changesCount[codex]}")
+    }
+
+    private fun getChangeCount(elements: Elements): Int {
+        var changesCount = 0
+        for (element in elements) {
+            if (element.attr("class").equals("changeadd")) {
+                changesCount++
             }
         }
+
+        return changesCount
+    }
+
+    private fun getChangeDate(elements: Elements): String {
+        var lastChangeDate = ""
+        for (element in elements) {
+            if (element.attr("class").equals("changeadd")
+                && !element.nextElementSibling().attr("class").equals("changeadd")) {
+                lastChangeDate = formatDate(element.text())
+            }
+        }
+
+        return lastChangeDate
+    }
+
+    private fun formatDate(text: String): String {
+        return text.substring(text.indexOf("от"), text.indexOf("г.") - 1)
+            .replace("от", "От")
     }
 
     fun isHaveChanges(codex: Codex): Boolean {
         val oldCountOfChanges = Preferences.getCodexVersion(codex)
-        Log.d(TAG, "$oldCountOfChanges")
         return changesCount[codex] != oldCountOfChanges
     }
 
@@ -85,45 +92,4 @@ object CodexVersionParser {
     fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
 
     fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!
-
-    private fun getChangesCountFromHtmlPage(document: Document): Int {
-        var changesCount = 0
-        val mainTable = document.select("main")
-        val elements = mainTable.select("p")
-
-        for (element in elements) {
-            if (element.attr("class").equals("changeadd")) {
-                changesCount++
-            }
-        }
-
-        return changesCount
-    }
-
-    private fun getLastChangeDateFromHtmlPage(document: Document): String {
-        var lastChangeDate = ""
-        val mainTable = document.select("main")
-        val elements = mainTable.select("p")
-
-        for (element in elements) {
-            if (element.attr("class").equals("changeadd")
-                && !element.nextElementSibling().attr("class").equals("changeadd")) {
-                lastChangeDate = element.text()
-                lastChangeDate = leaveDateOnly(lastChangeDate)
-                Log.d(TAG, lastChangeDate)
-            }
-        }
-
-        return lastChangeDate
-    }
-
-    private fun leaveDateOnly(line: String): String {
-        var toDate = line
-
-        toDate = toDate.substring(toDate.indexOf("от"), toDate.indexOf("г."))
-        toDate = toDate.replace("от", "От")
-        toDate = toDate.substring(0, toDate.length - 1)
-
-        return toDate
-    }
 }
