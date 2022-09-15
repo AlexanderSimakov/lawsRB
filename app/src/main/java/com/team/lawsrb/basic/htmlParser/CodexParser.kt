@@ -44,159 +44,134 @@ class CodexParser {
     }
 
     private fun parsePartsTitles() {
-        try {
-            var partId = 1
-            for (element in documentElements) {
-                if (element.attr("class").equals("contenttext")
-                    && element.text().contains("ЧАСТЬ")) {
-                    val part = Part(element.text(), partId, false)
-                    codexLists.parts.add(part)
-                    partId++
-                }
+        var partId = 1
+        for (element in documentElements) {
+            if (element.attr("class").equals("contenttext")
+                && element.text().contains("ЧАСТЬ")) {
+                val part = Part(element.text(), partId, false)
+                codexLists.parts.add(part)
+                partId++
             }
-        }
-        catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing parts titles")
         }
     }
 
     private fun parseSectionsTitles() {
-        try {
-            var (parentId, sectionId) = List(2) { 0 }
-            for (element in documentElements) {
-                if (element.attr("class").equals("contenttext")) {
-                    if (element.text().contains("РАЗДЕЛ")) {
-                        sectionId++
-                        val section = Section(element.text(), sectionId, parentId, false)
-                        codexLists.sections.add(section)
-                    }
-                    else if (element.text().contains("ЧАСТЬ")) {
-                        parentId++
-                    }
+        var (parentId, sectionId) = List(2) { 0 }
+        for (element in documentElements) {
+            if (element.attr("class").equals("contenttext")) {
+                if (element.text().contains("РАЗДЕЛ")) {
+                    sectionId++
+                    val section = Section(element.text(), sectionId, parentId, false)
+                    codexLists.sections.add(section)
+                }
+                else if (element.text().contains("ЧАСТЬ")) {
+                    parentId++
                 }
             }
-        }
-        catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing sections titles")
         }
     }
 
     private fun parseChaptersTitles() {
-        try {
-            var (parentId, chapterId) = List(2) { 0 }
-            for (element in documentElements) {
-                if (element.attr("class").equals("contenttext")) {
-                    if (element.text().contains("ГЛАВА")) {
-                        chapterId++
-                        val chapter = Chapter(element.text(), chapterId, parentId, false)
-                        codexLists.chapters.add(chapter)
-                    }
-                    else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
-                        && !element.nextElementSibling().text().contains("ГЛАВА")) {
-                        val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId + 1, parentId + 1, false)
-                        codexLists.chapters.add(chapter)
-                    }
-                    else if (element.text().contains("РАЗДЕЛ")) {
-                        parentId++
-                    }
+        var (parentId, chapterId) = List(2) { 0 }
+        for (element in documentElements) {
+            if (element.attr("class").equals("contenttext")) {
+                if (element.text().contains("ГЛАВА")) {
+                    chapterId++
+                    val chapter = Chapter(element.text(), chapterId, parentId, false)
+                    codexLists.chapters.add(chapter)
+                }
+                else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
+                    && !element.nextElementSibling().text().contains("ГЛАВА")) {
+                    val chapter = Chapter("ГЛАВА. Заключительные положения", chapterId + 1, parentId + 1, false)
+                    codexLists.chapters.add(chapter)
+                }
+                else if (element.text().contains("РАЗДЕЛ")) {
+                    parentId++
                 }
             }
-        }
-        catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing chapters titles")
         }
     }
 
     private fun parseArticlesTitles() {
-        try {
-            var parentId = 0
-            for (element in documentElements) {
-                if (element.attr("class").equals("contenttext")) {
-                    if (element.text().contains("Статья")) {
-                        if (element.attr("id").contains("/")) {
-                            var title = element.toString()
-                            title = toTextFormat(title)
-                            val article = CodexContent(parentId, title)
-                            articlesList.add(article)
-                        }
-                        if (element.text().contains("в действие настоящего Кодекса")
-                            && !element.previousElementSibling().text().contains("ГЛАВА")) {
-                            parentId++
-                            val article = CodexContent(parentId, element.text())
-                            articlesList.add(article)
-                        }
-                        else if (!element.attr("id").contains("/")) {
-                            val article = CodexContent(parentId, element.text())
-                            articlesList.add(article)
-                        }
+        var parentId = 0
+        for (element in documentElements) {
+            if (element.attr("class").equals("contenttext")) {
+                if (element.text().contains("Статья")) {
+                    if (element.attr("id").contains("/")) {
+                        var title = element.toString()
+                        title = toTextFormat(title)
+                        val article = CodexContent(parentId, title)
+                        articlesList.add(article)
                     }
-                    else if (element.text().contains("ГЛАВА")) {
+                    if (element.text().contains("в действие настоящего Кодекса")
+                        && !element.previousElementSibling().text().contains("ГЛАВА")) {
                         parentId++
+                        val article = CodexContent(parentId, element.text())
+                        articlesList.add(article)
+                    }
+                    else if (!element.attr("id").contains("/")) {
+                        val article = CodexContent(parentId, element.text())
+                        articlesList.add(article)
                     }
                 }
+                else if (element.text().contains("ГЛАВА")) {
+                    parentId++
+                }
             }
-        }
-        catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing articles titles")
         }
     }
 
     private fun parseArticlesContent() {
-        try {
-            val indices: MutableList<Int> = mutableListOf()
-            var currentId = 0
+        val indices: MutableList<Int> = mutableListOf()
+        var currentId = 0
 
-            for (element in documentElements) {
-                if (element.attr("class").equals("article")) {
-                    indices.add(documentElements.indexOf(element))
-                    break
-                }
-            }
-
-            for (element in documentElements) {
-                if (element.text().contains("А.Лукашенко")) {
-                    indices.add(documentElements.indexOf(element) - 2)
-                    break
-                }
-            }
-
-            val mainContent = documentElements.subList(indices[0], indices[1])
-            for (element in mainContent) {
-                if (element.attr("class").equals("article")) {
-                    currentId++
-                }
-                if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
-                    && !element.previousElementSibling().attr("class").equals("article")) {
-                    val parentId = articlesList[articlesList.size - 1].parentId
-                    val articlesTitle = CodexContent(parentId + 1, "Статья. Заключительные положения")
-                    articlesList.add(articlesTitle)
-                    val codexContent = CodexContent(currentId + 1, element.text())
-                    contentList.add(codexContent)
-                    break
-                }
-                if (!element.attr("class").equals("article")
-                    && !element.attr("class").equals("nonumheader")
-                    && !element.attr("class").equals("zagrazdel")
-                    && !element.attr("class").equals("chapter")
-                    && !element.attr("class").equals("part")
-                    && element.text() != "") {
-                    var content = element.toString()
-                    if (content.contains("<sup>")) {
-                        content = toTextFormat(content)
-                        val codexContent = CodexContent(currentId, content)
-                        Log.d(TAG, content)
-                        contentList.add(codexContent)
-                    }
-                    else {
-                        val codexContent = CodexContent(currentId, element.text())
-                        Log.d(TAG, element.text())
-                        contentList.add(codexContent)
-                    }
-                }
+        for (element in documentElements) {
+            if (element.attr("class").equals("article")) {
+                indices.add(documentElements.indexOf(element))
+                break
             }
         }
-        catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}: Error parsing article's contents")
+
+        for (element in documentElements) {
+            if (element.text().contains("А.Лукашенко")) {
+                indices.add(documentElements.indexOf(element) - 2)
+                break
+            }
+        }
+
+        val mainContent = documentElements.subList(indices[0], indices[1])
+        for (element in mainContent) {
+            if (element.attr("class").equals("article")) {
+                currentId++
+            }
+            if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
+                && !element.previousElementSibling().attr("class").equals("article")) {
+                val parentId = articlesList[articlesList.size - 1].parentId
+                val articlesTitle = CodexContent(parentId + 1, "Статья. Заключительные положения")
+                articlesList.add(articlesTitle)
+                val codexContent = CodexContent(currentId + 1, element.text())
+                contentList.add(codexContent)
+                break
+            }
+            if (!element.attr("class").equals("article")
+                && !element.attr("class").equals("nonumheader")
+                && !element.attr("class").equals("zagrazdel")
+                && !element.attr("class").equals("chapter")
+                && !element.attr("class").equals("part")
+                && element.text() != "") {
+                var content = element.toString()
+                if (content.contains("<sup>")) {
+                    content = toTextFormat(content)
+                    val codexContent = CodexContent(currentId, content)
+                    Log.d(TAG, content)
+                    contentList.add(codexContent)
+                }
+                else {
+                    val codexContent = CodexContent(currentId, element.text())
+                    Log.d(TAG, element.text())
+                    contentList.add(codexContent)
+                }
+            }
         }
     }
 
