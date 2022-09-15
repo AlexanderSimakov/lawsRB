@@ -22,15 +22,17 @@ class CodexParser {
     private lateinit var documentElements: Elements
 
     fun get(codex: Codex): CodexLists {
+        Log.i(TAG, "Start parse ${codex.name}")
         try {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
             documentElements = document.select("main").select("p")
         }
         catch (e: Exception) {
-            Log.e(TAG, "${e.message}: Getting document's error")
+            Log.e(TAG, "Getting document's error(${codex.name}): ${e.message}")
         }
 
         parse()
+        Log.i(TAG, "End parse ${codex.name}")
         return codexLists
     }
 
@@ -172,11 +174,11 @@ class CodexParser {
 
                 val content = element.toString()
                 if (content.contains("<sup>")) {
-                    Log.d(TAG, formatText(content))
+                    //Log.d(TAG, formatText(content))
                     contentList.add(CodexContent(currentId, formatText(content)))
                 }
                 else {
-                    Log.d(TAG, element.text())
+                    //Log.d(TAG, element.text())
                     contentList.add(CodexContent(currentId, element.text()))
                 }
             }
