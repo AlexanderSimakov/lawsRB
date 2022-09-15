@@ -49,23 +49,6 @@ object CodexVersionParser {
         Log.d(TAG, "${changesCount[codex]}")
     }
 
-    fun isHaveChanges(codex: Codex): Boolean {
-        val oldCountOfChanges = Preferences.getCodexVersion(codex)
-        Log.d(TAG, "$oldCountOfChanges")
-        return changesCount[codex] != oldCountOfChanges
-    }
-
-    fun isHaveChanges(): Boolean {
-        return isHaveChanges(Codex.UK) ||
-               isHaveChanges(Codex.UPK) ||
-               isHaveChanges(Codex.KoAP) ||
-               isHaveChanges(Codex.PIKoAP)
-    }
-
-    fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
-
-    fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!
-
     private fun getChangeCount(elements: Elements): Int {
         var changesCount = 0
         for (element in elements) {
@@ -94,4 +77,21 @@ object CodexVersionParser {
         return text.substring(text.indexOf("от"), text.indexOf("г.") - 1)
             .replace("от", "От")
     }
+
+    fun isHaveChanges(codex: Codex): Boolean {
+        val oldCountOfChanges = Preferences.getCodexVersion(codex)
+        Log.d(TAG, "$oldCountOfChanges")
+        return changesCount[codex] != oldCountOfChanges
+    }
+
+    fun isHaveChanges(): Boolean {
+        return isHaveChanges(Codex.UK) ||
+               isHaveChanges(Codex.UPK) ||
+               isHaveChanges(Codex.KoAP) ||
+               isHaveChanges(Codex.PIKoAP)
+    }
+
+    fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
+
+    fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!
 }
