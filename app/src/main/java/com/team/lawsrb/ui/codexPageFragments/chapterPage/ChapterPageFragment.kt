@@ -42,22 +42,9 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
         val rvItems = binding.codexFragmentRecyclerView
-
-        rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                fab?.apply {
-                    if (dy < 0 && !isShown){ // scroll up
-                        show()
-                    }else if (dy > 0 && isShown){ // scroll down
-                        hide()
-                    }
-                }
-            }
-        })
-
         val items = model.getItems().value as List<Any>
+
         rvItems.adapter = ChapterPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerView(rvItems, items, 1)
@@ -78,5 +65,24 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         }
 
         model.getItems().observe(viewLifecycleOwner, itemsObserver)
+    }
+
+    override fun onStart(){
+        super.onStart()
+
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
+        binding.codexFragmentRecyclerView
+            .addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                fab?.apply {
+                    if (dy < 0 && !isShown){ // scroll up
+                        show()
+                    }else if (dy > 0 && isShown){ // scroll down
+                        hide()
+                    }
+                }
+            }
+        })
+
     }
 }
