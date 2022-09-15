@@ -46,7 +46,7 @@ object CodexVersionParser {
 
         changesCount[codex] = getChangeCount(elements)
         lastChangeDate[codex] = getChangeDate(elements)
-        Log.d(TAG, "${changesCount[codex]}")
+        Log.d(TAG, "Parse ${codex.name}: ${lastChangeDate[codex]}, ${changesCount[codex]}")
     }
 
     private fun getChangeCount(elements: Elements): Int {
@@ -66,7 +66,6 @@ object CodexVersionParser {
             if (element.attr("class").equals("changeadd")
                 && !element.nextElementSibling().attr("class").equals("changeadd")) {
                 lastChangeDate = formatDate(element.text())
-                Log.d(TAG, lastChangeDate)
             }
         }
 
@@ -80,7 +79,6 @@ object CodexVersionParser {
 
     fun isHaveChanges(codex: Codex): Boolean {
         val oldCountOfChanges = Preferences.getCodexVersion(codex)
-        Log.d(TAG, "$oldCountOfChanges")
         return changesCount[codex] != oldCountOfChanges
     }
 
