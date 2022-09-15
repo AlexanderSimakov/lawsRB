@@ -163,10 +163,7 @@ class MainActivity : AppCompatActivity() {
                 Preferences.isDarkTheme = false
                 Highlighter.isDarkMode = false
             }
-            TaskStackBuilder.create(applicationContext)
-                .addNextIntent(Intent(applicationContext, MainActivity::class.java))
-                .addNextIntent(intent)
-                .startActivities()
+            recreate()
         }
 
         return true
