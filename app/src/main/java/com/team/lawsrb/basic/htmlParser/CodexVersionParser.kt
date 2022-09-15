@@ -29,7 +29,7 @@ object CodexVersionParser {
 
     fun update() = scope.launch {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, "$exception: No internet connection")
+            Log.e(TAG, "No internet connection: $exception")
         }
 
         supervisorScope {
