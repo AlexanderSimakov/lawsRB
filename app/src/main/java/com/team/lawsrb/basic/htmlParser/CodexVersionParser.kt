@@ -5,11 +5,9 @@ import com.team.lawsrb.basic.Preferences
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import kotlin.coroutines.CoroutineContext
 
 object CodexVersionParser {
-    private val context: CoroutineContext = Dispatchers.IO
-    private val scope = CoroutineScope (context + SupervisorJob ())
+    private val scope = CoroutineScope (Dispatchers.IO + SupervisorJob ())
 
     private var documentUK: Document? = null
     private var documentUPK: Document? = null
