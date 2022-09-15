@@ -17,7 +17,7 @@ class CodexParser {
     private var contentList = mutableListOf<CodexContent>()
     private var articlesList = mutableListOf<CodexContent>()
 
-    private var document: Document? = null
+    private lateinit var document: Document
 
     fun get(codex: Codex): CodexLists {
         try {
@@ -42,7 +42,7 @@ class CodexParser {
 
     private fun parsePartsTitles() {
         try {
-            val table = document!!.select("main")
+            val table = document.select("main")
             val elements = table.select("p")
 
             var partId = 1
@@ -62,7 +62,7 @@ class CodexParser {
 
     private fun parseSectionsTitles() {
         try {
-            val table = document!!.select("main")
+            val table = document.select("main")
             val elements = table.select("p")
 
             var (parentId, sectionId) = List(2) { 0 }
@@ -86,7 +86,7 @@ class CodexParser {
 
     private fun parseChaptersTitles() {
         try {
-            val table = document!!.select("main")
+            val table = document.select("main")
             val elements = table.select("p")
 
             var (parentId, chapterId) = List(2) { 0 }
@@ -115,7 +115,7 @@ class CodexParser {
 
     private fun parseArticlesTitles() {
         try {
-            val table = document!!.select("main")
+            val table = document.select("main")
             val elements = table.select("p")
 
             var parentId = 0
@@ -152,7 +152,7 @@ class CodexParser {
 
     private fun parseArticlesContent() {
         try {
-            val table = document!!.select("main")
+            val table = document.select("main")
             val elements = table.select("p")
 
             val indices: MutableList<Int> = mutableListOf()
