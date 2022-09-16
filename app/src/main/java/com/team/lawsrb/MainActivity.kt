@@ -1,6 +1,7 @@
 package com.team.lawsrb
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
@@ -27,10 +28,13 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = "MainActivityLog"
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var _savedInstanceState: Bundle? = null
 
+    //variables for state instance
     private val FAVORITES_KEY = "is_favorites_showing"
     private val SEARCH_KEY = "is_search_showing"
     private val SEARCH_STRING = "search_string"
@@ -152,17 +156,19 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
-        if (_savedInstanceState != null && _savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
-            isFavoritesShowing = true
-            favoritesCheckBox.toggle()
-        }
 
-        if(_savedInstanceState != null && _savedInstanceState!!.getBoolean(SEARCH_KEY)) {
-            searchableString = _savedInstanceState!!.getString(SEARCH_STRING)!!
-            searchView.isIconified = false
-            searchView.setQuery(searchableString, false)
-            searchView.clearFocus()
-            isSearchShowing = true
+        if (_savedInstanceState != null) {
+            if (_savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
+                isFavoritesShowing = true
+                favoritesCheckBox.toggle()
+            }
+            if (_savedInstanceState!!.getBoolean(SEARCH_KEY)) {
+                searchableString = _savedInstanceState!!.getString(SEARCH_STRING)!!
+                searchView.isIconified = false
+                searchView.setQuery(searchableString, false)
+                searchView.clearFocus()
+                isSearchShowing = true
+            }
         }
 
         favoritesCheckBox.setOnClickListener {
@@ -211,6 +217,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        Log.i(TAG, "Activity has been destroyed")
         super.onDestroy()
     }
 }
