@@ -23,7 +23,6 @@ class ArticlePageAdapter (private val items: List<Any>,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val openedArticleIds = mutableSetOf<Int>()
-
     private val isArticle = 1
     private val isChapter = 2
 
@@ -66,30 +65,45 @@ class ArticlePageAdapter (private val items: List<Any>,
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) =
-        when (viewHolder.itemViewType){
+        when (viewHolder.itemViewType) {
             isArticle -> {
                 val article: Article = items[position] as Article
                 (viewHolder as ArticleViewHolder).title.text = article.title
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
+
+                if (ArticlePageFragment._savedInstanceState != null
+                    && ArticlePageFragment._savedInstanceState!!.getBoolean(ArticlePageFragment.ARTICLE_SHOWING_KEY)
+                ) {
+                    viewHolder.expandable.visibility = View.VISIBLE
+                    for (iterator in shownArticles) {
+                        openedArticleIds.add(iterator)
+                    }
+                    isArticlesShowing = true
+                }
+
                 viewHolder.card.setOnClickListener {
                     TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
-                    if (viewHolder.expandable.visibility == View.VISIBLE){
+                    if (viewHolder.expandable.visibility == View.VISIBLE) {
                         viewHolder.expandable.visibility = View.GONE
                         openedArticleIds.remove(article.id)
-                    }else{
+                        shownArticles.remove(article.id)
+                    } else {
                         viewHolder.expandable.visibility = View.VISIBLE
                         openedArticleIds.add(article.id)
+                        isArticlesShowing = true
+                        shownArticles.add(article.id)
                     }
                 }
+
                 viewHolder.checkBox.setOnClickListener {
                     article.isLiked = viewHolder.checkBox.isChecked
                     articlesDao.update(article)
                 }
 
-                if (article.id in openedArticleIds){
+                if (article.id in openedArticleIds) {
                     viewHolder.expandable.visibility = View.VISIBLE
-                }else{
+                } else {
                     viewHolder.expandable.visibility = View.GONE
                 }
 
@@ -107,4 +121,12 @@ class ArticlePageAdapter (private val items: List<Any>,
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }
+
+    companion object {
+        //variables for saved instance state
+        //list stores ids of articles that have been opened before than activity was destroyed
+        private val shownArticles = mutableListOf<Int>()
+        //the flag indicates the state of articles
+        var isArticlesShowing = false
+    }
 }
