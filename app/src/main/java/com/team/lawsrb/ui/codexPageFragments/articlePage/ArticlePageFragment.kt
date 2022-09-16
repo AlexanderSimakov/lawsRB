@@ -45,10 +45,6 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
         val rvItems = binding.codexFragmentRecyclerView
 
-        if (savedInstanceState != null) {
-            _savedInstanceState = savedInstanceState
-        }
-
         rvItems.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 fab?.apply {
@@ -82,15 +78,5 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         }
 
         model.getItems().observe(viewLifecycleOwner, itemsObserver)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(ARTICLE_SHOWING_KEY, ArticlePageAdapter.isArticlesShowing)
-    }
-
-    companion object {
-        var _savedInstanceState: Bundle? = null
-        const val ARTICLE_SHOWING_KEY = "is_article_showing"
     }
 }

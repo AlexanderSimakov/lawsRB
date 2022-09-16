@@ -22,7 +22,6 @@ class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val openedArticleIds = mutableSetOf<Int>()
     private val isArticle = 1
     private val isChapter = 2
 
@@ -72,14 +71,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
 
-                if (ArticlePageFragment._savedInstanceState != null
-                    && ArticlePageFragment._savedInstanceState!!.getBoolean(ArticlePageFragment.ARTICLE_SHOWING_KEY)
-                ) {
+                if (openedArticleIds.isNotEmpty()){
                     viewHolder.expandable.visibility = View.VISIBLE
-                    for (iterator in shownArticles) {
-                        openedArticleIds.add(iterator)
-                    }
-                    isArticlesShowing = true
                 }
 
                 viewHolder.card.setOnClickListener {
@@ -87,12 +80,9 @@ class ArticlePageAdapter (private val items: List<Any>,
                     if (viewHolder.expandable.visibility == View.VISIBLE) {
                         viewHolder.expandable.visibility = View.GONE
                         openedArticleIds.remove(article.id)
-                        shownArticles.remove(article.id)
                     } else {
                         viewHolder.expandable.visibility = View.VISIBLE
                         openedArticleIds.add(article.id)
-                        isArticlesShowing = true
-                        shownArticles.add(article.id)
                     }
                 }
 
@@ -123,10 +113,6 @@ class ArticlePageAdapter (private val items: List<Any>,
         }
 
     companion object {
-        //variables for saved instance state
-        //list stores ids of articles that have been opened before than activity was destroyed
-        private val shownArticles = mutableListOf<Int>()
-        //the flag indicates the state of articles
-        var isArticlesShowing = false
+        private val openedArticleIds = mutableSetOf<Int>()
     }
 }
