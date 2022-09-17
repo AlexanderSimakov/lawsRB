@@ -81,6 +81,20 @@ object BaseCodexDatabase {
         db.articlesDao().insert(codexLists.articles)
     }
 
+    fun update(codex: Codex, codexLists: CodexLists){
+        val favorites = getDatabase(codex).articlesDao().getFavorites()
+        val articles = codexLists.articles
+
+        for (article in articles){
+            if (article.title in favorites.map { it.title }){
+                article.isLiked = true
+            }
+        }
+
+        codexLists.articles = articles
+        insertCodexLists(codex, codexLists)
+    }
+
     fun clearDatabase(codex: Codex){
         val db = getDatabase(codex)
         db.articlesDao().clearAll()
