@@ -15,7 +15,6 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 import com.team.lawsrb.databinding.FragmentCodexViewerBinding
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
-import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageAdapter
 
 class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() {
 
@@ -57,6 +56,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
                 }
+                PageNavigation.adjustCurrentPageByItems(codeProvider)
             } else{
                 binding.emptyMessage.visibility = View.GONE
                 rvItems.adapter = SectionPageAdapter(newItems)
