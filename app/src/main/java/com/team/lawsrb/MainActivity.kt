@@ -1,13 +1,12 @@
 package com.team.lawsrb
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.TaskStackBuilder
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -29,8 +28,20 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
+    //Class name keywords used in log, tag separation required
+    private val TAG = "MainActivityLog"
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private var _savedInstanceState: Bundle? = null
+
+    //variables for state instance
+    private val FAVORITES_KEY = "is_favorites_showing"
+    private val SEARCH_KEY = "is_search_showing"
+    private val SEARCH_STRING = "search_string"
+    private var searchableString = ""
+    private var isFavoritesShowing = false
+    private var isSearchShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init NetworkAvailable class
@@ -42,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-
         //Initialize database
         BaseCodexDatabase.init(applicationContext)
 
@@ -64,6 +74,10 @@ class MainActivity : AppCompatActivity() {
 
         if (NetworkCheck.isAvailable){
             CodexVersionParser.update()
+        }
+
+        if(savedInstanceState != null){
+            _savedInstanceState = savedInstanceState
         }
 
         // init Preferences and setup dark/light mode
@@ -112,20 +126,24 @@ class MainActivity : AppCompatActivity() {
 
         searchView.setOnQueryTextListener( object : OnQueryTextListener{
             override fun onQueryTextChange(text: String?): Boolean {
+                searchableString = text!!
                 return false
             }
 
             override fun onQueryTextSubmit(text: String): Boolean {
                 BaseCodexProvider.sentQuery(text)
+                searchableString = text
                 return false
             }
         })
 
         searchView.setOnSearchClickListener {
             searchFab.hide()
+            isSearchShowing = true
         }
 
         searchView.setOnCloseListener {
+            isSearchShowing = false
             searchFab.show()
             BaseCodexProvider.sentQuery("")
             false
@@ -139,15 +157,33 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
+
+        if (_savedInstanceState != null) {
+            if (_savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
+                isFavoritesShowing = true
+                favoritesCheckBox.toggle()
+            }
+            if (_savedInstanceState!!.getBoolean(SEARCH_KEY)) {
+                searchableString = _savedInstanceState!!.getString(SEARCH_STRING)!!
+                searchView.isIconified = false
+                searchView.setQuery(searchableString, false)
+                searchView.clearFocus()
+                isSearchShowing = true
+            }
+        }
+
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.setFavorite(isChecked)
+            isFavoritesShowing = isChecked
         }
 
         // --- Search button ---
         searchFab.setOnClickListener {
+            isSearchShowing = true
             searchView.isIconified = false
             searchFab.hide()
+            searchableString = searchView.query.toString()
         }
 
         // --- Theme switcher ---
@@ -169,8 +205,20 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_STRING, searchableString)
+        outState.putBoolean(FAVORITES_KEY, isFavoritesShowing)
+        outState.putBoolean(SEARCH_KEY, isSearchShowing)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        Log.i(TAG, "Activity has been destroyed")
+        super.onDestroy()
     }
 }
