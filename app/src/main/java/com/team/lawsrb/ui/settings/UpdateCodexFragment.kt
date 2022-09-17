@@ -24,10 +24,8 @@ import com.team.lawsrb.basic.htmlParser.CodexParser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
+import com.team.lawsrb.databinding.UpdateCodexButtonBinding
 import com.team.lawsrb.ui.NotificationBadge
-import kotlinx.android.synthetic.main.fragment_update_codex.*
-import kotlinx.android.synthetic.main.fragment_update_codex.view.*
-import kotlinx.android.synthetic.main.update_codex_button.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -120,7 +118,7 @@ class UpdateCodexFragment : Fragment() {
 
         model.isUpdateEnabled(Codex.UK).observe(viewLifecycleOwner) {
             updateRefreshButton(
-                update_uk,
+                binding.updateUk,
                 Codex.UK,
                 getString(R.string.menu_criminal_code)
             )
@@ -129,7 +127,7 @@ class UpdateCodexFragment : Fragment() {
 
         model.isUpdateEnabled(Codex.UPK).observe(viewLifecycleOwner) {
             updateRefreshButton(
-                update_upk,
+                binding.updateUpk,
                 Codex.UPK,
                 getString(R.string.menu_code_of_criminal_proсedure)
             )
@@ -138,7 +136,7 @@ class UpdateCodexFragment : Fragment() {
 
         model.isUpdateEnabled(Codex.KoAP).observe(viewLifecycleOwner) {
             updateRefreshButton(
-                update_koap,
+                binding.updateKoap,
                 Codex.KoAP,
                 getString(R.string.menu_KoAP)
             )
@@ -147,7 +145,7 @@ class UpdateCodexFragment : Fragment() {
 
         model.isUpdateEnabled(Codex.PIKoAP).observe(viewLifecycleOwner) {
             updateRefreshButton(
-                update_pikoap,
+                binding.updatePikoap,
                 Codex.PIKoAP,
                 getString(R.string.menu_PIKoAP)
             )
@@ -156,17 +154,17 @@ class UpdateCodexFragment : Fragment() {
     }
 
     private fun setUpRefreshButtons(){
-        binding.updateCodexFragment.apply {
-            updateRefreshButton(update_uk, Codex.UK, getString(R.string.menu_criminal_code))
-            updateRefreshButton(update_upk, Codex.UPK, getString(R.string.menu_code_of_criminal_proсedure))
-            updateRefreshButton(update_koap, Codex.KoAP, getString(R.string.menu_KoAP))
-            updateRefreshButton(update_pikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
+        binding.apply {
+            updateRefreshButton(updateUk, Codex.UK, getString(R.string.menu_criminal_code))
+            updateRefreshButton(updateUpk, Codex.UPK, getString(R.string.menu_code_of_criminal_proсedure))
+            updateRefreshButton(updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
+            updateRefreshButton(updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
         }
     }
 
-    private fun updateRefreshButton(button: View, codex: Codex, title: String?){
+    private fun updateRefreshButton(button: UpdateCodexButtonBinding, codex: Codex, title: String?){
         if (model.isUpdateEnabled(codex).value == true){
-            button.update_codex_button.setCardBackgroundColor(
+            button.updateCodexButton.setCardBackgroundColor(
                 ContextCompat.getColor(requireContext(), R.color.refresh_card_background_active)
             )
 
@@ -178,10 +176,10 @@ class UpdateCodexFragment : Fragment() {
 
             button.title.text = "Обновить $title"
             button.subtitle.text = CodexVersionParser.getChangeDate(codex)
-            button.update_codex_button.isEnabled = true
-            button.update_codex_button.cardElevation = 20F
+            button.updateCodexButton.isEnabled = true
+            button.updateCodexButton.cardElevation = 20F
         }else{
-            button.update_codex_button.setCardBackgroundColor(
+            button.updateCodexButton.setCardBackgroundColor(
                 ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
             )
 
@@ -193,17 +191,17 @@ class UpdateCodexFragment : Fragment() {
 
             button.title.text = title
             button.subtitle.text = Preferences.getCodexUpdateDate(codex)
-            button.update_codex_button.isEnabled = false
-            button.update_codex_button.cardElevation = 5F
+            button.updateCodexButton.isEnabled = false
+            button.updateCodexButton.cardElevation = 5F
         }
     }
 
     private fun setOnClickListenerForUpdateButtons(){
-        binding.updateCodexFragment.apply {
-            update_uk.update_codex_button.setOnClickListener { onUpdateButtonClick(Codex.UK) }
-            update_upk.update_codex_button.setOnClickListener { onUpdateButtonClick(Codex.UPK) }
-            update_koap.update_codex_button.setOnClickListener { onUpdateButtonClick(Codex.KoAP) }
-            update_pikoap.update_codex_button.setOnClickListener { onUpdateButtonClick(Codex.PIKoAP) }
+        binding.apply {
+            updateUk.updateCodexButton.setOnClickListener { onUpdateButtonClick(Codex.UK) }
+            updateUpk.updateCodexButton.setOnClickListener { onUpdateButtonClick(Codex.UPK) }
+            updateKoap.updateCodexButton.setOnClickListener { onUpdateButtonClick(Codex.KoAP) }
+            updatePikoap.updateCodexButton.setOnClickListener { onUpdateButtonClick(Codex.PIKoAP) }
         }
     }
 
@@ -250,10 +248,10 @@ class UpdateCodexFragment : Fragment() {
     private fun getCodexImage(codex: Codex): View?{
         return if (_binding != null){
             when(codex){
-                Codex.UK -> binding.updateCodexFragment.update_uk.image
-                Codex.UPK -> binding.updateCodexFragment.update_upk.image
-                Codex.KoAP -> binding.updateCodexFragment.update_koap.image
-                Codex.PIKoAP -> binding.updateCodexFragment.update_pikoap.image
+                Codex.UK -> binding.updateUk.image
+                Codex.UPK -> binding.updateUpk.image
+                Codex.KoAP -> binding.updateKoap.image
+                Codex.PIKoAP -> binding.updatePikoap.image
             }
         }else{
             null
@@ -262,7 +260,7 @@ class UpdateCodexFragment : Fragment() {
 
     // debug function
     private fun setUpClearAllButton(){
-        binding.updateCodexFragment.debug_clear_all_button.setOnClickListener {
+        binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearDatabases()
 
             BaseCodexProvider.update()
