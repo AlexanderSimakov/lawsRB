@@ -45,6 +45,28 @@ object BaseCodexProvider {
         private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
         private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
+        // is page items empty
+        override val isSectionPageItemsEmpty: Boolean
+            get() = getSectionPageItems().value?.isEmpty() == true
+
+        override val isChapterPageItemsEmpty: Boolean
+            get() = getChapterPageItems().value?.isEmpty() == true
+
+        override val isArticlePageItemsEmpty: Boolean
+            get() = getArticlePageItems().value?.isEmpty() == true
+
+
+        // is page items not empty
+        override val isSectionPageItemsNotEmpty: Boolean
+            get() = getSectionPageItems().value?.isNotEmpty() == true
+
+        override val isChapterPageItemsNotEmpty: Boolean
+            get() = getChapterPageItems().value?.isNotEmpty() == true
+
+        override val isArticlePageItemsNotEmpty: Boolean
+            get() = getArticlePageItems().value?.isNotEmpty() == true
+
+
         var searchQuery: String = ""
             set(value) {
                 field = value
