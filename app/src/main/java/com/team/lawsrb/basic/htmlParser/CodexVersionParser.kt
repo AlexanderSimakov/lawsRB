@@ -64,7 +64,7 @@ object CodexVersionParser {
         var lastChangeDate = ""
         for (element in elements) {
             if (element.attr("class").equals("changeadd")
-                && !element.nextElementSibling().attr("class").equals("changeadd")) {
+                && !element.nextElementSibling()!!.attr("class").equals("changeadd")) {
                 lastChangeDate = formatDate(element.text())
             }
         }

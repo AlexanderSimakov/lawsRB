@@ -88,7 +88,7 @@ class CodexParser {
                     )
                 }
                 else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
-                    && !element.nextElementSibling().text().contains("ГЛАВА")) {
+                    && !element.nextElementSibling()!!.text().contains("ГЛАВА")) {
                     codexLists.chapters.add(
                         Chapter("ГЛАВА. Заключительные положения", chapterId + 1, parentId + 1, false)
                     )
@@ -113,7 +113,7 @@ class CodexParser {
                     }
 
                     if (element.text().contains("в действие настоящего Кодекса")
-                        && !element.previousElementSibling().text().contains("ГЛАВА")) {
+                        && !element.previousElementSibling()!!.text().contains("ГЛАВА")) {
                         parentId++
                         articlesList.add(
                             CodexContent(parentId, element.text())
@@ -157,7 +157,7 @@ class CodexParser {
             }
 
             if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
-                && !element.previousElementSibling().attr("class").equals("article")) {
+                && !element.previousElementSibling()!!.attr("class").equals("article")) {
 
                 val parentId = articlesList[articlesList.size - 1].parentId
                 articlesList.add(
