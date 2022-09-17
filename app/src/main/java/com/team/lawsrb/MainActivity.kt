@@ -28,6 +28,7 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
+    //Class name keywords used in log, tag separation required
     private val TAG = "MainActivityLog"
 
     private lateinit var appBarConfiguration: AppBarConfiguration
