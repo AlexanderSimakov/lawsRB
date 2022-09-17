@@ -1,6 +1,5 @@
 package com.team.lawsrb.ui.codexPageFragments
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.basic.dataProviders.CodexProvider
