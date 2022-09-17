@@ -63,9 +63,9 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:2.4.2"
 
     // Kotlin components
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
     //Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
