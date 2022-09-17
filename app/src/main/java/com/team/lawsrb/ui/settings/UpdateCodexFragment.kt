@@ -1,18 +1,23 @@
 package com.team.lawsrb.ui.settings
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.CheckBox
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.team.lawsrb.R
 import com.google.android.material.snackbar.Snackbar
+import com.team.lawsrb.R
+import com.team.lawsrb.basic.NetworkCheck
+import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexParser
@@ -35,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Connection
+
 
 class UpdateCodexFragment : Fragment() {
     private val TAG = "UpdateCodexFragment"
@@ -216,6 +222,18 @@ class UpdateCodexFragment : Fragment() {
             return
         }
 
+        val rotateAnimation = RotateAnimation(0F, 360F,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnimation.apply {
+            duration = 2000
+            interpolator = LinearInterpolator()
+            repeatCount = Animation.INFINITE
+        }
+
+        getCodexImage(codex)?.startAnimation(rotateAnimation)
+
         GlobalScope.launch(Dispatchers.Default) {
             Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
 
@@ -231,9 +249,24 @@ class UpdateCodexFragment : Fragment() {
             view?.let {
                 Snackbar.make(it, "${codex.rusName} обновлен", Snackbar.LENGTH_SHORT).show()
             }
+
+            getCodexImage(codex)?.animation?.cancel()
         }
 
         model.isUpdateEnabled(codex).value = false
+    }
+
+    private fun getCodexImage(codex: Codex): View?{
+        return if (_binding != null){
+            when(codex){
+                Codex.UK -> binding.updateCodexFragment.update_uk.image
+                Codex.UPK -> binding.updateCodexFragment.update_upk.image
+                Codex.KoAP -> binding.updateCodexFragment.update_koap.image
+                Codex.PIKoAP -> binding.updateCodexFragment.update_pikoap.image
+            }
+        }else{
+            null
+        }
     }
 
     // debug function
