@@ -22,8 +22,6 @@ class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val openedArticleIds = mutableSetOf<Int>()
-
     private val isArticle = 1
     private val isChapter = 2
 
@@ -66,30 +64,36 @@ class ArticlePageAdapter (private val items: List<Any>,
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) =
-        when (viewHolder.itemViewType){
+        when (viewHolder.itemViewType) {
             isArticle -> {
                 val article: Article = items[position] as Article
                 (viewHolder as ArticleViewHolder).title.text = article.title
                 viewHolder.checkBox.isChecked = article.isLiked
                 viewHolder.expandableText.text = article.content
+
+                if (openedArticleIds.isNotEmpty()){
+                    viewHolder.expandable.visibility = View.VISIBLE
+                }
+
                 viewHolder.card.setOnClickListener {
                     TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
-                    if (viewHolder.expandable.visibility == View.VISIBLE){
+                    if (viewHolder.expandable.visibility == View.VISIBLE) {
                         viewHolder.expandable.visibility = View.GONE
                         openedArticleIds.remove(article.id)
-                    }else{
+                    } else {
                         viewHolder.expandable.visibility = View.VISIBLE
                         openedArticleIds.add(article.id)
                     }
                 }
+
                 viewHolder.checkBox.setOnClickListener {
                     article.isLiked = viewHolder.checkBox.isChecked
                     articlesDao.update(article)
                 }
 
-                if (article.id in openedArticleIds){
+                if (article.id in openedArticleIds) {
                     viewHolder.expandable.visibility = View.VISIBLE
-                }else{
+                } else {
                     viewHolder.expandable.visibility = View.GONE
                 }
 
@@ -107,4 +111,8 @@ class ArticlePageAdapter (private val items: List<Any>,
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }
+
+    companion object {
+        private val openedArticleIds = mutableSetOf<Int>()
+    }
 }

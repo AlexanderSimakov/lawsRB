@@ -21,8 +21,16 @@ import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexParser
-import com.team.lawsrb.basic.htmlParser.CodexVersionParser
 import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
+import androidx.lifecycle.ViewModelProviders
+import com.team.lawsrb.basic.NetworkCheck
+import com.team.lawsrb.basic.Preferences
+import com.team.lawsrb.basic.htmlParser.CodexLists
+import com.team.lawsrb.basic.htmlParser.CodexVersionParser
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Part
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.android.synthetic.main.fragment_update_codex.*
@@ -31,6 +39,7 @@ import kotlinx.android.synthetic.main.update_codex_button.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jsoup.Connection
 
 
 class UpdateCodexFragment : Fragment() {
@@ -229,7 +238,7 @@ class UpdateCodexFragment : Fragment() {
             Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
 
             val codexLists = CodexParser().get(codex)
-            BaseCodexDatabase.insertCodexLists(codex, codexLists)
+            BaseCodexDatabase.update(codex, codexLists)
             BaseCodexProvider.update()
             Preferences.setCodexInfo(
                 codex,
