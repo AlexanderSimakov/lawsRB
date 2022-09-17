@@ -12,4 +12,13 @@ interface CodexProvider{
     fun getSectionPageItems(): LiveData<List<Any>>
     fun getChapterPageItems(): LiveData<List<Any>>
     fun getArticlePageItems(): LiveData<List<Any>>
+
+    val isSectionPageItemsEmpty: Boolean
+    val isChapterPageItemsEmpty: Boolean
+    val isArticlePageItemsEmpty: Boolean
+
+    val isSectionPageItemsNotEmpty: Boolean
+    val isChapterPageItemsNotEmpty: Boolean
+    val isArticlePageItemsNotEmpty: Boolean
+
 }

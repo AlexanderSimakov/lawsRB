@@ -1,7 +1,6 @@
 package com.team.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +56,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
                 }
+                PageNavigation.adjustCurrentPageByItems(codeProvider)
             }else{
                 binding.emptyMessage.visibility = View.GONE
                 rvItems.adapter = ArticlePageAdapter(newItems, rvItems, codeProvider.database.articlesDao())
