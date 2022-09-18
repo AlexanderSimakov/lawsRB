@@ -5,9 +5,16 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.team.lawsrb.basic.htmlParser.Codex
 
+/**
+ * [Preferences] is a *object* class which main purpose is to provide us useful methods
+ * for working with [SharedPreferences].
+ */
 object Preferences {
 
+    /** Unique preferences name */
     private const val PREFERENCES_NAME = "com.team.lawsrb.preferences"
+
+    /** Instance of [SharedPreferences] class */
     private var sharedPref: SharedPreferences? = null
 
     // keys
