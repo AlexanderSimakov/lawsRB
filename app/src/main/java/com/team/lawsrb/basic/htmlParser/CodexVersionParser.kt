@@ -78,7 +78,7 @@ object CodexVersionParser {
     }
 
     fun isHaveChanges(codex: Codex): Boolean {
-        val oldCountOfChanges = Preferences.getCodexVersion(codex)
+        val oldCountOfChanges = Preferences.getCodexChangesCount(codex)
         return changesCount[codex] != oldCountOfChanges
     }
 
