@@ -261,7 +261,7 @@ class UpdateCodexFragment : Fragment() {
     // debug function
     private fun setUpClearAllButton(){
         binding.debugClearAllButton.setOnClickListener {
-            BaseCodexDatabase.clearDatabases()
+            BaseCodexDatabase.clearAll()
 
             BaseCodexProvider.update()
             Preferences.setCodexVersion(Codex.UK, -1)
