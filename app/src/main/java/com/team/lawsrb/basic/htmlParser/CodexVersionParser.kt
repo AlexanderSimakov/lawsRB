@@ -1,8 +1,3 @@
-/**
- * The singleton class provides information about all changes to existing codes
- * @author by tokyolem
- */
-
 package com.team.lawsrb.basic.htmlParser
 
 import android.util.Log
@@ -11,6 +6,9 @@ import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
+/**
+ * The singleton class provides information about all changes to existing codes
+ */
 object CodexVersionParser {
     /** Log tag field */
     private const val TAG = "CodexVersionParser"
@@ -38,7 +36,7 @@ object CodexVersionParser {
 
     /**
      * Function for updating values in maps, works async
-     * @exception CodexVersionParser - can throw an NetworkException
+     * @exception CodexVersionParser - can throw an exception?, NetworkException
      */
     fun update() = scope.launch {
         val handler = CoroutineExceptionHandler { _, exception ->
@@ -130,7 +128,6 @@ object CodexVersionParser {
     /**
      * The function of checking codes for changes
      * @return state of codes change
-     * @see isHaveChanges
      */
     fun isHaveChanges(): Boolean {
         return isHaveChanges(Codex.UK) ||
@@ -141,7 +138,6 @@ object CodexVersionParser {
 
     /**
      * Function to get the number of changes of a certain code
-     * Data is taken from the map [changesCount]
      * @param codex certain code from enum [Codex]
      * @return changes count of certain code
      * @see Codex
@@ -151,7 +147,6 @@ object CodexVersionParser {
 
     /**
      * Function to get the last change's date of a certain code
-     * Data is taken from the map [lastChangeDate]
      * @param codex certain code from enum [Codex]
      * @return last change's date of certain code
      * @see Codex
