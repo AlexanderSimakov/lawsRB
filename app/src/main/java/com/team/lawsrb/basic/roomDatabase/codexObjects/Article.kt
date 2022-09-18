@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 
 /**
- * A *data class* that represents single codex article with items.
- *
- * @constructor Creates single [Article] object.
+ * A *data class* that represents single codex article.
  *
  * @property title Name of an [Article].
  * @property id Unique id.
  * @property parentId Id of an [Article] parent.
  * @property isLiked Equals *true* if [Article] marked as favorite.
- * @property content Contain an [Article] items as [String].
+ * @property content Contain an [Article] items as a [String].
+ *
+ * @constructor Creates single [Article] object.
  */
 @Entity(
     tableName = CodexDatabase.ARTICLES_NAME,

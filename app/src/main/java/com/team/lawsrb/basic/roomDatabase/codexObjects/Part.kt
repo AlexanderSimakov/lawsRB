@@ -7,11 +7,11 @@ import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 /**
  * A *data class* that represents single codex Part.
  *
- * @constructor Creates single [Part] object.
- *
  * @property title Name of an [Part].
  * @property id Unique id.
  * @property isLiked Equals *true* if [Part] marked as favorite.
+ *
+ * @constructor Creates single [Part] object.
  */
 @Entity(tableName = CodexDatabase.PARTS_NAME)
 data class Part(

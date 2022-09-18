@@ -12,8 +12,13 @@ import com.team.lawsrb.basic.roomDatabase.dao.PartsDao
 import com.team.lawsrb.basic.roomDatabase.dao.SectionsDao
 
 /**
- * [CodexDatabase] is a parent of all room database classes which contains codex: part, section, chapter and article tables.
+ * [CodexDatabase] is a class that provides access to codex tables.
  *
+ * @see BaseCodexDatabase
+ * @see ArticlesDao
+ * @see ChaptersDao
+ * @see SectionsDao
+ * @see PartsDao
  */
 @Database(entities =
 [
@@ -25,9 +30,16 @@ import com.team.lawsrb.basic.roomDatabase.dao.SectionsDao
     version = 1,
     exportSchema = false)
 abstract class CodexDatabase : RoomDatabase(){
+    /** This method give access to parts table by return [PartsDao]. */
     abstract fun partsDao(): PartsDao
+
+    /** This method give access to sections table by return [SectionsDao]. */
     abstract fun sectionsDao(): SectionsDao
+
+    /** This method give access to chapters table by return [ChaptersDao]. */
     abstract fun chaptersDao(): ChaptersDao
+
+    /** This method give access to articles table by return [ArticlesDao]. */
     abstract fun articlesDao(): ArticlesDao
 
     companion object {

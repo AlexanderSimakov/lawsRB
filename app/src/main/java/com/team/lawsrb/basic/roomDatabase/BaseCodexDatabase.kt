@@ -4,14 +4,77 @@ import android.content.Context
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexLists
 
+/**
+ * [BaseCodexDatabase] is a *object* class that initialize
+ * UK, UPK, KoAP and PIKoAP [CodexDatabase]s,
+ * provide single access point to them, and contain some general methods.
+ *
+ * @see [CodexDatabase]
+ */
 object BaseCodexDatabase {
+
+    /** Contain file names for each [CodexDatabase]. */
     private val databaseNames: MutableMap<Codex, String> = mutableMapOf()
+
+    /** Contain paths in assets/ to each [CodexDatabase]. */
     private val assetPaths: MutableMap<Codex, String> = mutableMapOf()
 
     private var UKInstance: CodexDatabase? = null
     private var UPKInstance: CodexDatabase? = null
     private var KoAPInstance: CodexDatabase? = null
     private var PIKoAPInstance: CodexDatabase? = null
+
+    /**
+     * Use this property to access UK [CodexDatabase].
+     *
+     * Also you can use [BaseCodexDatabase.get] method for this purpose.
+     *
+     * @throws IllegalAccessException if [CodexDatabase] was not initialized.
+     */
+    val UK: CodexDatabase
+        get() {
+            if (UKInstance != null) return UKInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to UK database because class was not initialized")
+        }
+
+    /**
+     * Use this property to access UPK [CodexDatabase].
+     *
+     * Also you can use [BaseCodexDatabase.get] method for this purpose.
+     *
+     * @throws IllegalAccessException if [CodexDatabase] was not initialized.
+     */
+    val UPK: CodexDatabase
+        get() {
+            if (UPKInstance != null) return UPKInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to UPK database because class was not initialized")
+        }
+
+    /**
+     * Use this property to access KoAP [CodexDatabase].
+     *
+     * Also you can use [BaseCodexDatabase.get] method for this purpose.
+     *
+     * @throws IllegalAccessException if [CodexDatabase] was not initialized.
+     */
+    val KoAP: CodexDatabase
+        get() {
+            if (KoAPInstance != null) return KoAPInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to KoAP database because class was not initialized")
+        }
+
+    /**
+     * Use this property to access PIKoAP [CodexDatabase].
+     *
+     * Also you can use [BaseCodexDatabase.get] method for this purpose.
+     *
+     * @throws IllegalAccessException if [CodexDatabase] was not initialized.
+     */
+    val PIKoAP: CodexDatabase
+        get() {
+            if (PIKoAPInstance != null) return PIKoAPInstance as CodexDatabase
+            else throw IllegalAccessException("Cannot access to PIKoAP database because class was not initialized")
+        }
 
     init {
         for (codex in Codex.values()){
@@ -20,30 +83,11 @@ object BaseCodexDatabase {
         }
     }
 
-    val UK: CodexDatabase
-        get() {
-            if (UKInstance != null) return UKInstance as CodexDatabase
-            else throw IllegalAccessException("Cannot access to UK database because class was not initialized")
-        }
-
-    val UPK: CodexDatabase
-        get() {
-            if (UPKInstance != null) return UPKInstance as CodexDatabase
-            else throw IllegalAccessException("Cannot access to UPK database because class was not initialized")
-        }
-
-    val KoAP: CodexDatabase
-        get() {
-            if (KoAPInstance != null) return KoAPInstance as CodexDatabase
-            else throw IllegalAccessException("Cannot access to KoAP database because class was not initialized")
-        }
-
-    val PIKoAP: CodexDatabase
-        get() {
-            if (PIKoAPInstance != null) return PIKoAPInstance as CodexDatabase
-            else throw IllegalAccessException("Cannot access to PIKoAP database because class was not initialized")
-        }
-
+    /**
+     * This method initialize UK, UPK, KoAP and PIKoAP [CodexDatabase]s.
+     *
+     * Call it before using any other methods.
+     */
     fun init(context: Context){
         if (UKInstance == null) UKInstance = getCodexDatabase(context, Codex.UK)
         if (UPKInstance == null) UPKInstance = getCodexDatabase(context, Codex.UPK)
@@ -51,6 +95,10 @@ object BaseCodexDatabase {
         if (PIKoAPInstance == null) PIKoAPInstance = getCodexDatabase(context, Codex.PIKoAP)
     }
 
+    /**
+     * Build and return [CodexDatabase] by given [Codex],
+     * also it use [Context] for [androidx.room.Room.databaseBuilder].
+     */
     private fun getCodexDatabase(context: Context, codex: Codex): CodexDatabase{
         synchronized(this) {
             return androidx.room.Room.databaseBuilder(
@@ -64,7 +112,13 @@ object BaseCodexDatabase {
         }
     }
 
-    fun getDatabase(codex: Codex): CodexDatabase{
+    /**
+     * Return [CodexDatabase] by given [Codex].
+     *
+     * You can also use [BaseCodexDatabase] property [UK], [UPK], [KoAP], [PIKoAP]
+     * for this purpose.
+     */
+    fun get(codex: Codex): CodexDatabase{
         return when(codex){
             Codex.UK -> UK
             Codex.UPK -> UPK
@@ -73,16 +127,12 @@ object BaseCodexDatabase {
         }
     }
 
-    fun insertCodexLists(codex: Codex, codexLists: CodexLists){
-        val db = getDatabase(codex)
-        db.partsDao().insert(codexLists.parts)
-        db.sectionsDao().insert(codexLists.sections)
-        db.chaptersDao().insert(codexLists.chapters)
-        db.articlesDao().insert(codexLists.articles)
-    }
-
+    /**
+     * Update [CodexDatabase] chosen by given [Codex] with given [CodexLists].
+     * It transfer all favorites from old database to new.
+     */
     fun update(codex: Codex, codexLists: CodexLists){
-        val favorites = getDatabase(codex).articlesDao().getFavorites()
+        val favorites = get(codex).articlesDao().getFavorites()
         val articles = codexLists.articles
 
         for (article in articles){
@@ -95,18 +145,39 @@ object BaseCodexDatabase {
         insertCodexLists(codex, codexLists)
     }
 
-    fun clearDatabase(codex: Codex){
-        val db = getDatabase(codex)
+    /**
+     * Insert given [CodexLists] to [CodexDatabase] chosen by [Codex].
+     */
+    private fun insertCodexLists(codex: Codex, codexLists: CodexLists){
+        val db = get(codex)
+        db.partsDao().insert(codexLists.parts)
+        db.sectionsDao().insert(codexLists.sections)
+        db.chaptersDao().insert(codexLists.chapters)
+        db.articlesDao().insert(codexLists.articles)
+    }
+
+    /**
+     * Choose [CodexDatabase] by given [Codex] and clear it.
+     *
+     * **Attention:** this changes cannot be undone.
+     */
+    fun clear(codex: Codex){
+        val db = get(codex)
         db.articlesDao().clearAll()
         db.chaptersDao().clearAll()
         db.sectionsDao().clearAll()
         db.partsDao().clearAll()
     }
 
-    fun clearDatabases(){
-        clearDatabase(Codex.UK)
-        clearDatabase(Codex.UPK)
-        clearDatabase(Codex.KoAP)
-        clearDatabase(Codex.PIKoAP)
+    /**
+     * Clear all [CodexDatabase]s *([UK], [UPK], [KoAP], [PIKoAP]).*
+     *
+     * **Attention:** this changes cannot be undone.
+     */
+    fun clearAll(){
+        clear(Codex.UK)
+        clear(Codex.UPK)
+        clear(Codex.KoAP)
+        clear(Codex.PIKoAP)
     }
 }
