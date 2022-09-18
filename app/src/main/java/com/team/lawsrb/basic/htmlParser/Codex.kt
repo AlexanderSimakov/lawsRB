@@ -1,5 +1,8 @@
 package com.team.lawsrb.basic.htmlParser
 
+/**
+ * The enum stores the url per code
+ */
 enum class Codex(
     val URL: String,
     val rusName: String
