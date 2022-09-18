@@ -23,10 +23,6 @@ object Preferences {
     private const val CODEX_VERSION_AFFIX = "version"
     private const val CODEX_UPDATE_DATE_AFFIX = "updateDate"
 
-    fun update(context: Context){
-        sharedPref = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
-    }
-
     var isDarkTheme: Boolean
         get() {
             return sharedPref!!.getBoolean(IS_DARK_THEME_KEY, false)
@@ -50,6 +46,10 @@ object Preferences {
                 }
             }
         }
+
+    fun update(context: Context){
+        sharedPref = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+    }
 
     fun setCodexVersion(codex: Codex, version: Int){
         sharedPref!!.edit().apply {
