@@ -58,7 +58,6 @@ class CodexParser {
         return codexLists
     }
 
-    /** Generalization function */
     private fun parse() {
         parsePartsTitles()
         parseSectionsTitles()
