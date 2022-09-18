@@ -9,18 +9,40 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
+/**
+ * The class receives a code from the web resource for write to the database.
+ */
 class CodexParser {
+    /** Log tag field */
     private val TAG = "CodexParser"
 
+    /** Data class, passed as a data type to the collection */
     private data class CodexContent(val parentId: Int, val contentText: String)
 
+    /** Instance of [CodexLists] */
     private var codexLists = CodexLists()
+    /** List for storing articles content
+     * @see CodexContent
+     */
     private var contentList = mutableListOf<CodexContent>()
+    /** List for storing articles
+     * @see CodexContent
+     */
     private var articlesList = mutableListOf<CodexContent>()
 
+    /** [Jsoup] instance */
     private lateinit var document: Document
+    /** Array of elements obtained from the [Jsoup] [document] instance */
     private lateinit var documentElements: Elements
 
+    /** [Jsoup] instance initialization function to get data from web resource.
+     * Calls the [parse] method
+     * @param codex certain code from enum [Codex]
+     * @return [CodexLists] instance
+     * @exception CodexParser can throw an exception?, NetworkException
+     * @see Codex
+     * @see CodexLists
+     */
     fun get(codex: Codex): CodexLists {
         Log.i(TAG, "Start parse ${codex.name}")
         try {
@@ -36,6 +58,7 @@ class CodexParser {
         return codexLists
     }
 
+    /** Generalization function */
     private fun parse() {
         parsePartsTitles()
         parseSectionsTitles()
@@ -45,6 +68,7 @@ class CodexParser {
         articlesWithContent()
     }
 
+    /** The function selects parts titles from an array of [documentElements] */
     private fun parsePartsTitles() {
         var partId = 1
         for (element in documentElements) {
@@ -58,6 +82,7 @@ class CodexParser {
         }
     }
 
+    /** The function selects sections titles from an array of [documentElements] */
     private fun parseSectionsTitles() {
         var (parentId, sectionId) = List(2) { 0 }
 
@@ -76,6 +101,7 @@ class CodexParser {
         }
     }
 
+    /** The function selects chapters titles from an array of [documentElements] */
     private fun parseChaptersTitles() {
         var (parentId, chapterId) = List(2) { 0 }
 
@@ -100,6 +126,7 @@ class CodexParser {
         }
     }
 
+    /** The function selects articles titles from an array of [documentElements] */
     private fun parseArticlesTitles() {
         var parentId = 0
 
@@ -132,6 +159,7 @@ class CodexParser {
         }
     }
 
+    /** The function selects articles content from an array of [documentElements] */
     private fun parseArticlesContent() {
         val indices = mutableListOf<Int>()
 
@@ -185,6 +213,7 @@ class CodexParser {
         }
     }
 
+    /** Function connects articles titles and articles content */
     private fun articlesWithContent() {
         var contentText = ""
         var countIterations = 0
