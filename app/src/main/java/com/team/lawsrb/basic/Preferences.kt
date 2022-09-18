@@ -20,8 +20,6 @@ object Preferences {
     // keys
     private const val IS_DARK_THEME_KEY = "isDarkModeOn"
     private const val IS_RUN_FIRST_KEY = "isRunFirst"
-    private const val CODEX_VERSION_AFFIX = "version"
-    private const val CODEX_UPDATE_DATE_AFFIX = "updateDate"
 
     var isDarkTheme: Boolean
         get() {
@@ -51,33 +49,37 @@ object Preferences {
         sharedPref = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
     }
 
-    fun setCodexVersion(codex: Codex, version: Int){
+    fun setCodexChangesCount(codex: Codex, changesCount: Int){
         sharedPref!!.edit().apply {
-            putInt(CODEX_VERSION_AFFIX + codex.name, version)
+            putInt(getChangesCountKey(codex), changesCount)
             apply()
         }
     }
 
     fun setCodexUpdateDate(codex: Codex, date: String){
         sharedPref!!.edit().apply {
-            putString(CODEX_UPDATE_DATE_AFFIX + codex.name, date)
+            putString(getUpdateDateKey(codex), date)
             apply()
         }
     }
 
-    fun setCodexInfo(codex: Codex, version: Int, date: String){
+    fun setCodexInfo(codex: Codex, changesCount: Int, date: String){
         sharedPref!!.edit().apply {
-            putInt(CODEX_VERSION_AFFIX + codex.name, version)
-            putString(CODEX_UPDATE_DATE_AFFIX + codex.name, date)
+            putInt(getChangesCountKey(codex), changesCount)
+            putString(getUpdateDateKey(codex), date)
             apply()
         }
     }
 
-    fun getCodexVersion(codex: Codex): Int{
-        return sharedPref!!.getInt(CODEX_VERSION_AFFIX + codex.name, -1)
+    fun getCodexChangesCount(codex: Codex): Int{
+        return sharedPref!!.getInt(getChangesCountKey(codex), -1)
     }
 
     fun getCodexUpdateDate(codex: Codex): String{
-        return sharedPref!!.getString(CODEX_UPDATE_DATE_AFFIX + codex.name, "")!!
+        return sharedPref!!.getString(getUpdateDateKey(codex), "")!!
     }
+
+    private fun getChangesCountKey(codex: Codex) = "changesCount" + codex.name
+
+    private fun getUpdateDateKey(codex: Codex) = "updateDate" + codex.name
 }

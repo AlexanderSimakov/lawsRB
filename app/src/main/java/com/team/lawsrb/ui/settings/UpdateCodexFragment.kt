@@ -264,10 +264,10 @@ class UpdateCodexFragment : Fragment() {
             BaseCodexDatabase.clearAll()
 
             BaseCodexProvider.update()
-            Preferences.setCodexVersion(Codex.UK, -1)
-            Preferences.setCodexVersion(Codex.UPK, -1)
-            Preferences.setCodexVersion(Codex.KoAP, -1)
-            Preferences.setCodexVersion(Codex.PIKoAP, -1)
+            Preferences.setCodexChangesCount(Codex.UK, -1)
+            Preferences.setCodexChangesCount(Codex.UPK, -1)
+            Preferences.setCodexChangesCount(Codex.KoAP, -1)
+            Preferences.setCodexChangesCount(Codex.PIKoAP, -1)
 
             model.updateIsUpdateEnabled()
 
