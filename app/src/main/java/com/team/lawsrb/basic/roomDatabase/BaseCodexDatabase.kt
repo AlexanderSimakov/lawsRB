@@ -8,6 +8,8 @@ import com.team.lawsrb.basic.htmlParser.CodexLists
  * [BaseCodexDatabase] is a *object* class that initialize
  * UK, UPK, KoAP and PIKoAP [CodexDatabase]s,
  * provide single access point to them, and contain some general methods.
+ *
+ * @see [CodexDatabase]
  */
 object BaseCodexDatabase {
 
