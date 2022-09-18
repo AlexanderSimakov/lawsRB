@@ -9,12 +9,12 @@ import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 /**
  * A *data class* that represents single codex section.
  *
- * @constructor Creates single [Section] object.
- *
  * @property title Name of an [Section].
  * @property id Unique id.
  * @property parentId Id of an [Section] parent.
  * @property isLiked Equals *true* if [Section] marked as favorite.
+ *
+ * @constructor Creates single [Section] object.
  */
 @Entity(
     tableName = CodexDatabase.SECTIONS_NAME,
