@@ -8,6 +8,13 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Part
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 
+/**
+ * [BaseCodexProvider] is a *object* class which initialize
+ * UK, UPK, KoAP and PIKoAP [CodexProvider]s,
+ * provide single access point to them, and contain some manage methods.
+ *
+ * @see [CodexProvider]
+ */
 object BaseCodexProvider {
     val UK: CodexProvider
         get() = _UK
