@@ -16,15 +16,19 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
  * @see [CodexProvider]
  */
 object BaseCodexProvider {
+    /** Instance of [CodexDatabase] which provide access to the UK codex tables. */
     val UK: CodexProvider
         get() = _UK
 
+    /** Instance of [CodexDatabase] which provide access to the UPK codex tables. */
     val UPK: CodexProvider
         get() = _UPK
 
+    /** Instance of [CodexDatabase] which provide access to the KoAP codex tables. */
     val KoAP: CodexProvider
         get() = _KoAP
 
+    /** Instance of [CodexDatabase] which provide access to the PIKoAP codex tables. */
     val PIKoAP: CodexProvider
         get() = _PIKoAP
 
