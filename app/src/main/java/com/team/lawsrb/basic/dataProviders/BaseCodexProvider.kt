@@ -37,13 +37,6 @@ object BaseCodexProvider {
     private val _KoAP = getCodex(BaseCodexDatabase.KoAP)
     private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP)
 
-    fun update(){
-        _UK.updateAll()
-        _UPK.updateAll()
-        _KoAP.updateAll()
-        _PIKoAP.updateAll()
-    }
-
     private fun getCodex(_database: CodexDatabase) = object: CodexProvider  {
         override val database = _database
 
@@ -202,6 +195,13 @@ object BaseCodexProvider {
             }
             articlePageItems.postValue(articleItems)
         }
+    }
+
+    fun update(){
+        _UK.updateAll()
+        _UPK.updateAll()
+        _KoAP.updateAll()
+        _PIKoAP.updateAll()
     }
 
     fun sentQuery(search: String){
