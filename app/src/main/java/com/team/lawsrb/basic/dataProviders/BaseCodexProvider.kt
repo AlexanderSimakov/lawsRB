@@ -37,6 +37,7 @@ object BaseCodexProvider {
     private val _KoAP = getCodex(BaseCodexDatabase.KoAP)
     private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP)
 
+    /** This method initialize and return [CodexProvider] for given [CodexDatabase]. */
     private fun getCodex(_database: CodexDatabase) = object: CodexProvider  {
         override val database = _database
 
@@ -45,11 +46,34 @@ object BaseCodexProvider {
         private var chapters = emptyList<Chapter>()
         private var articles = emptyList<Article>()
 
+        /**
+         * [sectionPageItems] are items *(Parts and Sections)*
+         * which will shown on the **Section Page**.
+         *
+         * @see Part
+         * @see Section
+         */
         private val sectionPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
+
+        /**
+         * [chapterPageItems] are items *(Sections and Chapters)*
+         * which will shown on the **Chapter Page**.
+         *
+         * @see Section
+         * @see Chapter
+         */
         private val chapterPageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
+
+        /**
+         * [articlePageItems] are items *(Chapters and Articles)*
+         * which will shown on the **Article Page**.
+         *
+         * @see Chapter
+         * @see Article
+         */
         private val articlePageItems: MutableLiveData<List<Any>> by lazy { MutableLiveData<List<Any>>() }
 
-        // is page items empty
+
         override val isSectionPageItemsEmpty: Boolean
             get() = getSectionPageItems().value?.isEmpty() == true
 
@@ -60,7 +84,6 @@ object BaseCodexProvider {
             get() = getArticlePageItems().value?.isEmpty() == true
 
 
-        // is page items not empty
         override val isSectionPageItemsNotEmpty: Boolean
             get() = getSectionPageItems().value?.isNotEmpty() == true
 
