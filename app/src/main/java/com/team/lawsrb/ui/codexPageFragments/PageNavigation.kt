@@ -41,11 +41,15 @@ object PageNavigation {
         recyclerWithItemsMap[page] = RecyclerWithItems(recycler, items)
     }
 
+    /** This method smooth move to given [page]. */
     fun moveTo(page: Page){
         viewPager!!.setCurrentItem(page.itemIndex, true)
     }
 
-
+    /**
+     * This method opens the page to the left of current one
+     * and smooth scroll it to [codexObject].
+     */
     fun moveLeftTo(codexObject: Any) {
         viewPager!!.setCurrentItem(currentPage.itemIndex - 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING){
@@ -53,6 +57,10 @@ object PageNavigation {
         }
     }
 
+    /**
+     * This method opens the page to the right of current one
+     * and smooth scroll it to [codexObject].
+     */
     fun moveRightTo(codexObject: Any) {
         viewPager!!.setCurrentItem(currentPage.itemIndex + 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING){
@@ -60,6 +68,7 @@ object PageNavigation {
         }
     }
 
+    /** This method smooth scroll current page from [recyclerWithItemsMap] to [codexObject]. */
     private fun scrollPageTo(codexObject: Any){
         recyclerWithItemsMap[currentPage]?.let { recycler ->
             val position = recycler.items.indexOfFirst { it == codexObject }
@@ -67,13 +76,22 @@ object PageNavigation {
         }
     }
 
+    /**
+     * This method adjust current page by page items from [codeProvider].
+     *
+     * **Rules**
+     *  1. if current page is not empty or all pages are empty, then stay on this page.
+     *  2. if only one page is not empty, then move to that page.
+     *  3. if current page is empty, but two others are not, then move to nearest (**Article page**
+     *  in priority).
+     */
     fun adjustCurrentPageByItems(codeProvider: CodexProvider){
         /*
             s - section, c - chapter, a - Article (S/C/A - current page)
             0 - empty page
             1 - not empty page
 
-            All variations:
+              All variations:
             S|c|a  s|C|a  s|c|A
             0|0|0  0|0|0  0|0|0
             0|0|1  0|0|1  0|0|1
@@ -83,29 +101,17 @@ object PageNavigation {
             1|0|1  1|0|1  1|0|1
             1|1|0  1|1|0  1|1|0
             1|1|1  1|1|1  1|1|1
+         */
 
-            (1) if current page is not empty, then stay on this page
-                  Before:
+
+        /* (1) if current page is not empty, then stay on this page
+                After:
             S|c|a  s|C|a  s|c|A
             0|0|0  0|0|0  0|0|0
             0|0|1  0|0|1  0|1|0
             0|1|0  1|0|0  1|0|0
             0|1|1  1|0|1  1|1|0
-
-            (2) if all pages are empty, then stay on current page
-                  Before:
-            S|c|a  s|C|a  s|c|A
-            0|0|1  0|0|1  0|1|0
-            0|1|0  1|0|0  1|0|0
-            0|1|1  1|0|1  1|1|0
-
-            (3) if only one page is not empty, then choose that page
-                  Before:
-            S|c|a  s|C|a  s|c|A
-            0|1|1  1|0|1  1|1|0
          */
-
-        // (1) if current page is not empty, then stay on this page
         if (currentPage == Page.SECTIONS &&
             codeProvider.isSectionPageItemsNotEmpty ||
             currentPage == Page.CHAPTERS &&
@@ -115,14 +121,26 @@ object PageNavigation {
             return
         }
 
-        // (2) if all pages are empty, then stay on current page
+
+        /* (2) if all pages are empty, then stay on current page
+                  After:
+            S|c|a  s|C|a  s|c|A
+            0|0|1  0|0|1  0|1|0
+            0|1|0  1|0|0  1|0|0
+            0|1|1  1|0|1  1|1|0
+         */
         if (codeProvider.isSectionPageItemsEmpty &&
             codeProvider.isChapterPageItemsEmpty &&
             codeProvider.isArticlePageItemsEmpty){
             return
         }
 
-        // (3) if only one page is not empty, then choose those page
+
+        /* (3) if only one page is not empty, then choose that page
+                  After:
+            S|c|a  s|C|a  s|c|A
+            0|1|1  1|0|1  1|1|0
+         */
         if (codeProvider.isSectionPageItemsNotEmpty &&
             codeProvider.isChapterPageItemsEmpty &&
             codeProvider.isArticlePageItemsEmpty){
@@ -151,6 +169,7 @@ object PageNavigation {
         }
     }
 
+    /** This method clear [viewPager], [RecyclerView]s and page items. */
     fun clear(){
         viewPager = null
         recyclerWithItemsMap.clear()
