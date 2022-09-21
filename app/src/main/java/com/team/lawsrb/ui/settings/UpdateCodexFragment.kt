@@ -34,6 +34,14 @@ import kotlinx.coroutines.launch
 class UpdateCodexFragment : Fragment() {
     private val TAG = "UpdateCodexFragment"
 
+    /**
+     * This variable is responsible for enabling and disabling some debug functions such as
+     * clear database button.
+     *
+     * **Attention:** make sure that you set it to `false` after using.
+     */
+    private val IS_DEBUG: Boolean = false
+
     private lateinit var model: UpdateCodexViewModel
 
     private var _binding: FragmentUpdateCodexBinding? = null
@@ -57,8 +65,11 @@ class UpdateCodexFragment : Fragment() {
         setUpObservers()
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
-        setUpClearAllButton()
         hideHeaderAndSearchButtons()
+
+        if (IS_DEBUG){
+            setUpClearAllButton()
+        }
 
         return root
     }
@@ -260,6 +271,7 @@ class UpdateCodexFragment : Fragment() {
 
     // debug function
     private fun setUpClearAllButton(){
+        binding.debugClearAllButton.visibility = View.VISIBLE
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
 
