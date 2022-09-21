@@ -6,6 +6,14 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 import java.util.*
 import kotlin.concurrent.schedule
 
+/**
+ * [PageNavigation] is a *object* class which allow page fragments (**Article page**,
+ * **Chapter page** and **Section page**) to switch between other page fragments.
+ *
+ * To use [PageNavigation] it need:
+ *  1. Set up [viewPager] with codex fragment (**CodexUKFragment** and others) [ViewPager2].
+ *  2. Use [addRecyclerView] to add each page fragment [RecyclerView].
+ */
 object PageNavigation {
     var viewPager: ViewPager2? = null
 
