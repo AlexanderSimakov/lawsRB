@@ -7,6 +7,8 @@ import com.team.lawsrb.basic.dataProviders.CodexProvider
 /**
  * [SectionPageViewModelFactory] is a custom [ViewModelProvider.Factory] which main purpose is
  * to sent [codexProvider] to the [SectionPageViewModel].
+ *
+ * @see SectionPageViewModel
  */
 class SectionPageViewModelFactory(private val codexProvider: CodexProvider) : ViewModelProvider.Factory{
     @Suppress("UNCHECKED_CAST")
