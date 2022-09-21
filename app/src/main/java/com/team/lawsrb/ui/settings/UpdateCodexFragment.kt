@@ -228,7 +228,7 @@ class UpdateCodexFragment : Fragment() {
 
             val codexLists = CodexParser().get(codex)
             BaseCodexDatabase.update(codex, codexLists)
-            BaseCodexProvider.update()
+            BaseCodexProvider.setDefaultPageItems()
             Preferences.setCodexInfo(
                 codex,
                 CodexVersionParser.getChangesCount(codex),
@@ -263,7 +263,7 @@ class UpdateCodexFragment : Fragment() {
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
 
-            BaseCodexProvider.update()
+            BaseCodexProvider.setDefaultPageItems()
             Preferences.setCodexChangesCount(Codex.UK, -1)
             Preferences.setCodexChangesCount(Codex.UPK, -1)
             Preferences.setCodexChangesCount(Codex.KoAP, -1)

@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(text: String): Boolean {
-                BaseCodexProvider.sentQuery(text)
+                BaseCodexProvider.search = text
                 searchableString = text
                 return false
             }
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnCloseListener {
             isSearchShowing = false
             searchFab.show()
-            BaseCodexProvider.sentQuery("")
+            BaseCodexProvider.search = ""
             false
         }
 
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
         favoritesCheckBox.setOnClickListener {
             val isChecked = (it as CheckBox).isChecked
-            BaseCodexProvider.setFavorite(isChecked)
+            BaseCodexProvider.showFavorites = isChecked
             isFavoritesShowing = isChecked
         }
 
