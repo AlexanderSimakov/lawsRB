@@ -8,33 +8,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 
-class CenterLayoutManager : LinearLayoutManager {
-    constructor(context: Context) : super(context)
+/**
+ * [CenterLayoutManager] is a custom [LinearLayoutManager] which main difference and purpose
+ * is to scroll to the beginning of the element.
+ *
+ * @see LinearLayoutManager
+ */
+class CenterLayoutManager(context: Context) : LinearLayoutManager(context) {
 
     override fun smoothScrollToPosition(
         recyclerView: RecyclerView?,
         state: RecyclerView.State?,
         position: Int
     ) {
-        val smoothScroller = CenterSmoothScroller(recyclerView!!.context)
+        val smoothScroller = getSmoothScroller(recyclerView!!.context)
         smoothScroller.targetPosition = position
         startSmoothScroll(smoothScroller)
     }
 
-}
+    private fun getSmoothScroller(context: Context) = object : LinearSmoothScroller(context){
+        private val MILLISECONDS_PER_INCH = 5F
 
-class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
-    companion object {
-        private const val MILLISECONDS_PER_INCH = 5F
-    }
+        override fun getVerticalSnapPreference() = SNAP_TO_START
 
-    override fun getVerticalSnapPreference() = SNAP_TO_START
+        override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
+            return MILLISECONDS_PER_INCH / displayMetrics!!.densityDpi
+        }
 
-    override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
-        return MILLISECONDS_PER_INCH / displayMetrics!!.densityDpi
-    }
-
-    override fun calculateTimeForDeceleration(dx: Int): Int {
-        return super.calculateTimeForDeceleration(dx) * 5
+        override fun calculateTimeForDeceleration(dx: Int): Int {
+            return super.calculateTimeForDeceleration(dx) * 5
+        }
     }
 }
