@@ -15,12 +15,18 @@ import kotlin.concurrent.schedule
  *  2. Use [addRecyclerWithItems] to add each page fragment [RecyclerView].
  */
 object PageNavigation {
-    var viewPager: ViewPager2? = null
-
-    private class RecyclerWithItems(val recycler: RecyclerView, val items: List<Any>)
-    private var recyclerWithItemsMap = mutableMapOf<Page, RecyclerWithItems>()
     private const val DELAY_BEFORE_SCROLLING = 300L
 
+    /** [viewPager] is a currently open codex page [ViewPager2]. */
+    var viewPager: ViewPager2? = null
+
+    /** [recyclerWithItemsMap] contains [RecyclerWithItems] of each ui page. */
+    private var recyclerWithItemsMap = mutableMapOf<Page, RecyclerWithItems>()
+
+    /** [RecyclerWithItems] is a class which represents single [RecyclerView] and its items. */
+    private class RecyclerWithItems(val recycler: RecyclerView, val items: List<Any>)
+
+    /** Return current [Page] from [viewPager]. */
     val currentPage: Page
         get() {
             return when(viewPager!!.currentItem){
@@ -31,12 +37,15 @@ object PageNavigation {
             }
         }
 
+    /** [Page] is an `enum` class which represents codex ui pages. */
     enum class Page(val itemIndex: Int) {
         SECTIONS(0),
         CHAPTERS(1),
         ARTICLES(2)
     }
 
+
+    /** This method set up given [page] with given [recycler] and [items]. */
     fun addRecyclerWithItems(recycler: RecyclerView, items: List<Any>, page: Page) {
         recyclerWithItemsMap[page] = RecyclerWithItems(recycler, items)
     }
@@ -68,7 +77,7 @@ object PageNavigation {
         }
     }
 
-    /** This method smooth scroll current page from [recyclerWithItemsMap] to [codexObject]. */
+    /** This method smooth scroll current page to [codexObject]. */
     private fun scrollPageTo(codexObject: Any){
         recyclerWithItemsMap[currentPage]?.let { recycler ->
             val position = recycler.items.indexOfFirst { it == codexObject }
