@@ -9,39 +9,44 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
-/**
- * The class receives a code from the web resource for write to the database.
- */
+/** The class receives a code from the web resource for write to the database */
 class CodexParser {
-    /** Log tag field */
+    /** Log tag field. */
     private val TAG = "CodexParser"
 
-    /** Data class, passed as a data type to the collection */
+    /**
+     * Data class, passed as a data type to the collection.
+     *
+     * Used in the collection that storing the titles of the articles
+     * and in the collection that string the content of the articles.
+     */
     private data class CodexContent(val parentId: Int, val contentText: String)
 
-    /** Instance of [CodexLists] */
+    /** [CodexLists] instance. */
     private var codexLists = CodexLists()
-    /** List for storing articles content
+
+    /**
+     * List for storing articles content.
      * @see CodexContent
      */
     private var contentList = mutableListOf<CodexContent>()
-    /** List for storing articles
+
+    /**
+     * List for storing articles titles.
      * @see CodexContent
      */
     private var articlesList = mutableListOf<CodexContent>()
 
-    /** [Jsoup] instance */
+    /** [Jsoup] instance. */
     private lateinit var document: Document
     /** Array of elements obtained from the [Jsoup] [document] instance */
     private lateinit var documentElements: Elements
 
-    /** [Jsoup] instance initialization function to get data from web resource.
-     * Calls the [parse] method
+    /**
+     * [Jsoup] instance initialization function to parse html from web resource.
      * @param codex certain code from enum [Codex]
-     * @return [CodexLists] instance
+     * @return the code obtained from the web resource in [CodexLists] instance
      * @exception CodexParser can throw an exception?, NetworkException
-     * @see Codex
-     * @see CodexLists
      */
     fun get(codex: Codex): CodexLists {
         Log.i(TAG, "Start parse ${codex.name}")
@@ -67,7 +72,7 @@ class CodexParser {
         articlesWithContent()
     }
 
-    /** The function selects parts titles from an array of [documentElements] */
+    /** The function selects parts titles from [documentElements] array. */
     private fun parsePartsTitles() {
         var partId = 1
         for (element in documentElements) {
@@ -81,7 +86,7 @@ class CodexParser {
         }
     }
 
-    /** The function selects sections titles from an array of [documentElements] */
+    /** The function selects sections titles from [documentElements] array. */
     private fun parseSectionsTitles() {
         var (parentId, sectionId) = List(2) { 0 }
 
@@ -100,7 +105,7 @@ class CodexParser {
         }
     }
 
-    /** The function selects chapters titles from an array of [documentElements] */
+    /** The function selects chapters titles from [documentElements] array. */
     private fun parseChaptersTitles() {
         var (parentId, chapterId) = List(2) { 0 }
 
@@ -125,7 +130,7 @@ class CodexParser {
         }
     }
 
-    /** The function selects articles titles from an array of [documentElements] */
+    /** The function selects articles titles from [documentElements] array. */
     private fun parseArticlesTitles() {
         var parentId = 0
 
@@ -158,7 +163,7 @@ class CodexParser {
         }
     }
 
-    /** The function selects articles content from an array of [documentElements] */
+    /** The function selects articles content from [documentElements] array. */
     private fun parseArticlesContent() {
         val indices = mutableListOf<Int>()
 
@@ -212,7 +217,7 @@ class CodexParser {
         }
     }
 
-    /** Function connects articles titles and articles content */
+    /** Function connects articles titles and articles content. */
     private fun articlesWithContent() {
         var contentText = ""
         var countIterations = 0
@@ -238,8 +243,12 @@ class CodexParser {
         }
     }
 
-    private fun formatText(text: String): String {
-        var formattedText = text
+    /**
+     * The function converts the passed html into the finished text.
+     * @param htmlCode received from a web resource
+     */
+    private fun formatText(htmlCode: String): String {
+        var formattedText = htmlCode
 
         if (formattedText.contains("<sup></sup>"))
             formattedText = formattedText.replace("<sup></sup>", "")

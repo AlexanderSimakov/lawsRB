@@ -7,16 +7,22 @@ import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
 /**
- * The singleton class provides information about all changes to existing codes
+ * The singleton class that parsing html code from the web resource.
+ *
+ * Provides data on all changes in codes.
  */
 object CodexVersionParser {
-    /** Log tag field */
+    /** Log tag field. */
     private const val TAG = "CodexVersionParser"
 
-    /** Custom coroutine creation field */
+    /** Custom coroutine creation field. */
     private val scope = CoroutineScope (Dispatchers.IO + SupervisorJob ())
 
-    /** Map storing the number of code changes by default */
+    /**
+     * Map storing the count of code changes.
+     *
+     * Initialized with values that are true for the version of codes written to the application by default.
+     */
     private var changesCount: MutableMap<Codex, Int> =
         mutableMapOf(
             Codex.UK to 82,
@@ -25,7 +31,11 @@ object CodexVersionParser {
             Codex.PIKoAP to 1
         )
 
-    /** Map storing the date of last change by default */
+    /**
+     * Map storing the dates of lasts code's change.
+     *
+     * Initialized with values that are true for the version of codes written to the application by default.
+     */
     private var lastChangeDate: MutableMap<Codex, String> =
         mutableMapOf(
             Codex.UK to "От 13 мая 2022",
@@ -35,7 +45,7 @@ object CodexVersionParser {
         )
 
     /**
-     * Function for updating values in maps, works async
+     * The function for updating values in maps, works async.
      * @exception CodexVersionParser - can throw an exception?, NetworkException
      */
     fun update() = scope.launch {
@@ -52,10 +62,10 @@ object CodexVersionParser {
     }
 
     /**
-     * The function of connecting to a web resource of a certain codex
-     * Updates the value of the maps of a certain codex
+     * The function of connecting to a web resource of a certain code.
+     *
+     * Updates the values of the maps of a certain code.
      * @param codex certain code from enum [Codex]
-     * @see Codex
      */
     private fun parse(codex: Codex){
         val document = Jsoup.connect(codex.URL).get()
@@ -67,11 +77,11 @@ object CodexVersionParser {
     }
 
     /**
-     * The function counts the number of changes
-     * Changes received from the web resource in the method [parse]
+     * The function counts the number of changes.
+     *
+     * Changes received from the web resource.
      * @param elements array of elements received from the web resource
      * @return count of elements with changes
-     * @see parse
      */
     private fun getChangeCount(elements: Elements): Int {
         var changesCount = 0
@@ -85,11 +95,11 @@ object CodexVersionParser {
     }
 
     /**
-     * Function to get the date of the last element
-     * Changes received from the web resource in the method [parse]
+     * Function to get the date of the last element.
+     *
+     * Changes received from the web resource.
      * @param elements array of elements received from the web resource
      * @return date of last change
-     * @see parse
      */
     private fun getChangeDate(elements: Elements): String {
         var lastChangeDate = ""
@@ -104,10 +114,9 @@ object CodexVersionParser {
     }
 
     /**
-     * The function excludes everything except the date from the received string with the change
+     * The function excludes everything except the date from the received string with the change.
      * @param text string storing info about code change
      * @return date from input string
-     * @see getChangeDate
      */
     private fun formatDate(text: String): String {
         return text.substring(text.indexOf("от"), text.indexOf("г.") - 1)
@@ -115,10 +124,11 @@ object CodexVersionParser {
     }
 
     /**
-     * The function of checking a certain code for changes,
-     * old data is taken from parameter file
+     * The function of checking a certain code for changes.
+     *
+     * Old data is taken from parameter file.
      * @param codex certain code from enum [Codex]
-     * @see Codex
+     * @return state of code change
      */
     fun isHaveChanges(codex: Codex): Boolean {
         val oldCountOfChanges = Preferences.getCodexVersion(codex)
@@ -126,8 +136,8 @@ object CodexVersionParser {
     }
 
     /**
-     * The function of checking codes for changes
-     * @return state of codes change
+     * The function of checking all codes for changes.
+     * @return state of codes changes, it will be true if at least one code changed
      */
     fun isHaveChanges(): Boolean {
         return isHaveChanges(Codex.UK) ||
@@ -137,20 +147,16 @@ object CodexVersionParser {
     }
 
     /**
-     * Function to get the number of changes of a certain code
+     * Function to get the number of changes of a certain code.
      * @param codex certain code from enum [Codex]
      * @return changes count of certain code
-     * @see Codex
-     * @see changesCount
      */
     fun getChangesCount(codex: Codex): Int = changesCount[codex]!!
 
     /**
-     * Function to get the last change's date of a certain code
+     * Function to get the last change's date of a certain code.
      * @param codex certain code from enum [Codex]
      * @return last change's date of certain code
-     * @see Codex
-     * @see lastChangeDate
      */
     fun getChangeDate(codex: Codex): String = lastChangeDate[codex]!!
 }

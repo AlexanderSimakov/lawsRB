@@ -6,7 +6,7 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 
 /**
- * Class for storing data received from a web resource.
+ * Class for storing and represent code data received from a web resource.
  * @constructor stores lists for data
  */
 data class CodexLists (
