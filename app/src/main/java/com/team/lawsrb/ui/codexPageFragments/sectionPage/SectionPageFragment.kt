@@ -46,7 +46,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
 
         rvItems.adapter = SectionPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
-        PageNavigation.addRecyclerView(rvItems, items, 0)
+        PageNavigation.addRecyclerWithItems(rvItems, items, PageNavigation.Page.SECTIONS)
 
         val itemsObserver = Observer<List<Any>> { newItems ->
             if (newItems.isEmpty()){
@@ -60,7 +60,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
             } else{
                 binding.emptyMessage.visibility = View.GONE
                 rvItems.adapter = SectionPageAdapter(newItems)
-                PageNavigation.addRecyclerView(rvItems, newItems, 0)
+                PageNavigation.addRecyclerWithItems(rvItems, newItems, PageNavigation.Page.SECTIONS)
             }
         }
 

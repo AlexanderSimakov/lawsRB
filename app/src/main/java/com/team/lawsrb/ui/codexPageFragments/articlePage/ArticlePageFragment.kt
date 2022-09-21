@@ -46,7 +46,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
 
         rvItems.adapter = ArticlePageAdapter(items, rvItems, codeProvider.database.articlesDao())
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
-        PageNavigation.addRecyclerView(rvItems, items, 2)
+        PageNavigation.addRecyclerWithItems(rvItems, items, PageNavigation.Page.ARTICLES)
 
         val itemsObserver = Observer<List<Any>> { newItems ->
             if (newItems.isEmpty()){
@@ -60,7 +60,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
             }else{
                 binding.emptyMessage.visibility = View.GONE
                 rvItems.adapter = ArticlePageAdapter(newItems, rvItems, codeProvider.database.articlesDao())
-                PageNavigation.addRecyclerView(rvItems, newItems, 2)
+                PageNavigation.addRecyclerWithItems(rvItems, newItems, PageNavigation.Page.ARTICLES)
             }
         }
 

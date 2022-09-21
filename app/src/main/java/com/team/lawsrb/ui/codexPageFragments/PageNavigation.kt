@@ -12,14 +12,14 @@ import kotlin.concurrent.schedule
  *
  * To use [PageNavigation] it need:
  *  1. Set up [viewPager] with codex fragment (**CodexUKFragment** and others) [ViewPager2].
- *  2. Use [addRecyclerView] to add each page fragment [RecyclerView].
+ *  2. Use [addRecyclerWithItems] to add each page fragment [RecyclerView].
  */
 object PageNavigation {
     var viewPager: ViewPager2? = null
 
-    private class Recycler(val recyclerView: RecyclerView, val items: List<Any>)
-    private var recyclers: MutableList<Recycler> = mutableListOf()
-    private val delayBeforeScrolling = 300L
+    private class RecyclerWithItems(val recycler: RecyclerView, val items: List<Any>)
+    private var recyclerWithItemsMap = mutableMapOf<Page, RecyclerWithItems>()
+    private const val DELAY_BEFORE_SCROLLING = 300L
 
     val currentPage: Page
         get() {
@@ -37,8 +37,8 @@ object PageNavigation {
         ARTICLES(2)
     }
 
-    fun addRecyclerView(view: RecyclerView, items: List<Any>, number: Int) {
-        recyclers.add(number, Recycler(view, items))
+    fun addRecyclerWithItems(recycler: RecyclerView, items: List<Any>, page: Page) {
+        recyclerWithItemsMap[page] = RecyclerWithItems(recycler, items)
     }
 
     fun moveTo(page: Page){
@@ -47,23 +47,23 @@ object PageNavigation {
 
 
     fun moveLeftTo(codexObject: Any) {
-        viewPager!!.setCurrentItem(viewPager!!.currentItem - 1, true)
-        Timer().schedule(delayBeforeScrolling){
+        viewPager!!.setCurrentItem(currentPage.itemIndex - 1, true)
+        Timer().schedule(DELAY_BEFORE_SCROLLING){
             scrollPageTo(codexObject)
         }
     }
 
     fun moveRightTo(codexObject: Any) {
-        viewPager!!.setCurrentItem(viewPager!!.currentItem + 1, true)
-        Timer().schedule(delayBeforeScrolling){
+        viewPager!!.setCurrentItem(currentPage.itemIndex + 1, true)
+        Timer().schedule(DELAY_BEFORE_SCROLLING){
             scrollPageTo(codexObject)
         }
     }
 
     private fun scrollPageTo(codexObject: Any){
-        recyclers[viewPager!!.currentItem].let { recycler ->
+        recyclerWithItemsMap[currentPage]?.let { recycler ->
             val position = recycler.items.indexOfFirst { it == codexObject }
-            recycler.recyclerView.smoothScrollToPosition(position)
+            recycler.recycler.smoothScrollToPosition(position)
         }
     }
 
@@ -153,6 +153,6 @@ object PageNavigation {
 
     fun clear(){
         viewPager = null
-        recyclers.clear()
+        recyclerWithItemsMap.clear()
     }
 }
