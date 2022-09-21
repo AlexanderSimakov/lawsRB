@@ -97,8 +97,8 @@ class ArticlePageAdapter (private val items: List<Any>,
                     viewHolder.expandable.visibility = View.GONE
                 }
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
-                Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.search)
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
@@ -107,7 +107,7 @@ class ArticlePageAdapter (private val items: List<Any>,
                     PageNavigation.moveLeftTo(chapter)
                 }
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }

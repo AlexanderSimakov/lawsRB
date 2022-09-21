@@ -61,7 +61,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                     PageNavigation.moveLeftTo(section)
                 }
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
@@ -70,7 +70,7 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                     PageNavigation.moveRightTo(chapter)
                 }
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
         }

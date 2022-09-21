@@ -60,13 +60,13 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
                     PageNavigation.moveRightTo(section)
                 }
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
             }
             isPart -> {
                 val part: Part = items[position] as Part
                 (viewHolder as PartViewHolder).title.text = part.title
 
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.getQuery())
+                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isPart")
         }
