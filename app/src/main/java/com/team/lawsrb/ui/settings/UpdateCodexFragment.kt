@@ -59,10 +59,10 @@ class UpdateCodexFragment : Fragment() {
     }
 
     /**
-     *  Menu overriding.
-     *  -
-     *  Allows to hide unnecessary menu items in the current fragment.
-     *  */
+     * Menu overriding.
+     *
+     * Allows to hide unnecessary menu items in the current fragment.
+     */
     private fun clearMenuOptions() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             //Remove all existing items from the menu,
@@ -226,7 +226,7 @@ class UpdateCodexFragment : Fragment() {
         val handler = CoroutineExceptionHandler { _, exception ->
             Log.e(TAG, "Internet connection interrupted: $exception")
             view?.let {
-                Snackbar.make(it, "${codex.rusName} обновлен", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(it, "Интернет-соединение прервано", Snackbar.LENGTH_SHORT).show()
             }
             getCodexImage(codex)?.animation?.cancel()
             model.isUpdateEnabled(codex).postValue(true)
