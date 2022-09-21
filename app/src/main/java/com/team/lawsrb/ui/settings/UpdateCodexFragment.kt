@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -25,7 +26,6 @@ import com.team.lawsrb.databinding.UpdateCodexButtonBinding
 import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.coroutines.*
 
-
 class UpdateCodexFragment : Fragment() {
     private val TAG = "UpdateCodexFragment"
 
@@ -43,20 +43,11 @@ class UpdateCodexFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
-
         val root: View = binding.root
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
+
+        clearMenuOptions()
 
         setUpCheckCodexUpdatesButton()
         setUpObservers()
@@ -65,6 +56,25 @@ class UpdateCodexFragment : Fragment() {
         setUpClearAllButton()
 
         return root
+    }
+
+    /**
+     *  Menu overriding.
+     *  -
+     *  Allows to hide unnecessary menu items in the current fragment.
+     *  */
+    private fun clearMenuOptions() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            //Remove all existing items from the menu,
+            //leaving it empty as if it had just been created.
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
 
     private fun setUpCheckCodexUpdatesButton(){
@@ -212,11 +222,11 @@ class UpdateCodexFragment : Fragment() {
 
         getCodexImage(codex)?.startAnimation(rotateAnimation)
 
+        //The coroutine exception handler that will be called if the coroutine failed
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, "Internet connection fallen: $exception")
+            Log.e(TAG, "Internet connection interrupted: $exception")
             view?.let {
-                Snackbar.make(it, "Интеренет-соединение прервано", Snackbar.LENGTH_SHORT)
-                    .show()
+                Snackbar.make(it, "${codex.rusName} обновлен", Snackbar.LENGTH_SHORT).show()
             }
             getCodexImage(codex)?.animation?.cancel()
             model.isUpdateEnabled(codex).postValue(true)
