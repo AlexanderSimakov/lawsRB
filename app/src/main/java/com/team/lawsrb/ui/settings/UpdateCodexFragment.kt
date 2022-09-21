@@ -34,6 +34,8 @@ import kotlinx.coroutines.launch
 class UpdateCodexFragment : Fragment() {
     private val TAG = "UpdateCodexFragment"
 
+    private val IS_DEBUG: Boolean = false
+
     private lateinit var model: UpdateCodexViewModel
 
     private var _binding: FragmentUpdateCodexBinding? = null
@@ -57,8 +59,11 @@ class UpdateCodexFragment : Fragment() {
         setUpObservers()
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
-        setUpClearAllButton()
         hideHeaderAndSearchButtons()
+
+        if (IS_DEBUG){
+            setUpClearAllButton()
+        }
 
         return root
     }
@@ -260,6 +265,7 @@ class UpdateCodexFragment : Fragment() {
 
     // debug function
     private fun setUpClearAllButton(){
+        binding.debugClearAllButton.visibility = View.VISIBLE
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
 
