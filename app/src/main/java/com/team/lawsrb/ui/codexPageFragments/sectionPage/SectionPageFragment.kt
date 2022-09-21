@@ -33,7 +33,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, SectionViewModelFactory(codeProvider))
+        model = ViewModelProvider(this, SectionPageViewModelFactory(codeProvider))
             .get(SectionPageViewModel::class.java)
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
