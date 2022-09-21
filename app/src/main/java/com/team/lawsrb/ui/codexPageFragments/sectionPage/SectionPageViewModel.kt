@@ -5,6 +5,5 @@ import androidx.lifecycle.ViewModel
 import com.team.lawsrb.basic.dataProviders.CodexProvider
 
 class SectionPageViewModel(codexProvider: CodexProvider) : ViewModel(){
-    private val sectionItems: LiveData<List<Any>> = codexProvider.getSectionPageItems()
-    fun getItems() = sectionItems
+    val pageItems: LiveData<List<Any>> = codexProvider.getSectionPageItems()
 }

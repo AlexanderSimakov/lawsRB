@@ -42,7 +42,7 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val rvItems = binding.codexFragmentRecyclerView
-        val items = model.getItems().value as List<Any>
+        val items = model.pageItems.value as List<Any>
 
         rvItems.adapter = ChapterPageAdapter(items)
         rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
@@ -64,7 +64,7 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
             }
         }
 
-        model.getItems().observe(viewLifecycleOwner, itemsObserver)
+        model.pageItems.observe(viewLifecycleOwner, itemsObserver)
     }
 
     override fun onStart(){
