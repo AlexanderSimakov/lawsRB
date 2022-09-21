@@ -118,6 +118,8 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
 
+        Log.d(TAG, "Method called")
+
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
 
         val searchItem = menu.findItem(R.id.action_search)
