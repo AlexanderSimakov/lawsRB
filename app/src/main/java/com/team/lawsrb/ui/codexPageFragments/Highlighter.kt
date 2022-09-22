@@ -6,7 +6,14 @@ import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
 import android.widget.TextView
 
+/**
+ * [Highlighter] is a *object* class which provide method to highlight text in a [TextView].
+ *
+ * **Note:** [Highlighter.isDarkMode] should always match app theme for correct work.
+ */
 object Highlighter {
+
+    /** This field return highlight color depending on the [isDarkMode]. */
     private val color: Int
         get() {
             // TODO: adjust colors
@@ -14,8 +21,10 @@ object Highlighter {
                    else Color.parseColor("#EBD671")
         }
 
+    /** [isDarkMode] used to determine highlight color. It should always match app theme. */
     var isDarkMode = false
 
+    /** This method highlight [textToHighlight] in a given [textView]. */
     fun applyTo(textView: TextView, textToHighlight: String){
         if (textToHighlight.isEmpty()) return
 

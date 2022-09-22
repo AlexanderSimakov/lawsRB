@@ -16,6 +16,10 @@ import com.team.lawsrb.databinding.FragmentCodexViewerBinding
 import com.team.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
+/**
+ * [ChapterPageFragment] is a child of [Fragment] which represent **Chapter page** of any codex.
+ * It use [codeProvider] to create ui list of elements which consist of Chapters and Sections.
+ */
 class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() {
 
     constructor() : this(BaseCodexProvider.UK)
@@ -23,8 +27,7 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     private lateinit var model: ChapterPageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -33,7 +36,7 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, ChapterViewModelFactory(codeProvider))
+        model = ViewModelProvider(this, ChapterPageViewModelFactory(codeProvider))
             .get(ChapterPageViewModel::class.java)
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
@@ -41,15 +44,17 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val rvItems = binding.codexFragmentRecyclerView
-        val items = model.getItems().value as List<Any>
+        val recycler = binding.codexFragmentRecyclerView
+        val pageItems = model.pageItems.value as List<Any>
 
-        rvItems.adapter = ChapterPageAdapter(items)
-        rvItems.layoutManager = context?.let { CenterLayoutManager(it) }
-        PageNavigation.addRecyclerView(rvItems, items, 1)
+        recycler.adapter = ChapterPageAdapter(pageItems)
+        recycler.layoutManager = context?.let { CenterLayoutManager(it) }
+        PageNavigation.addRecyclerWithItems(recycler, pageItems, PageNavigation.Page.CHAPTERS)
 
-        val itemsObserver = Observer<List<Any>> { newItems ->
-            if (newItems.isEmpty()){
+        // if the result of search or show favorites is empty, then show corresponding message.
+        // else update recycler adapter with new items.
+        model.pageItems.observe(viewLifecycleOwner) { newPageItems ->
+            if (newPageItems.isEmpty()){
                 binding.emptyMessage.visibility = View.VISIBLE
                 if (BaseCodexProvider.search.isEmpty()){
                     binding.emptyMessage.text = resources.getString(R.string.empty_favorites)
@@ -59,17 +64,17 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 PageNavigation.adjustCurrentPageByItems(codeProvider)
             }else{
                 binding.emptyMessage.visibility = View.GONE
-                rvItems.adapter = ChapterPageAdapter(newItems)
-                PageNavigation.addRecyclerView(rvItems, newItems, 1)
+                recycler.adapter = ChapterPageAdapter(newPageItems)
+                PageNavigation.addRecyclerWithItems(recycler, newPageItems, PageNavigation.Page.CHAPTERS)
             }
         }
-
-        model.getItems().observe(viewLifecycleOwner, itemsObserver)
     }
 
     override fun onStart(){
         super.onStart()
 
+        // scroll down - hide fab
+        // scroll up   - show fab
         val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
         binding.codexFragmentRecyclerView
             .addOnScrollListener(object : RecyclerView.OnScrollListener() {

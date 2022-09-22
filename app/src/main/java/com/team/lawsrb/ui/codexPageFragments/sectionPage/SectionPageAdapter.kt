@@ -8,19 +8,43 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Part
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
+import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageAdapter
+import com.team.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageAdapter.SectionViewHolder
 
+/**
+ * [SectionPageAdapter] is a child of [RecyclerView.Adapter] which is used for creating
+ * [Section] and [Part]'s views for **Section page**.
+ *
+ * @param items The list of all shown codex elements.
+ *
+ * @see RecyclerView
+ * @see RecyclerView.Adapter
+ */
 class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
     private val isPart = 2
 
+    /**
+     * [PartViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Part card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class PartViewHolder(partCardView: View) : RecyclerView.ViewHolder(partCardView) {
         val title: TextView = partCardView.findViewById(R.id.title_card_title)
     }
 
+    /**
+     * [SectionViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Section card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
         val card: MaterialCardView = sectionCardView.findViewById(R.id.item_card)
         val title: TextView = sectionCardView.findViewById(R.id.item_card_title)
@@ -55,19 +79,28 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
         when (viewHolder.itemViewType){
             isSection -> {
                 val section: Section = items[position] as Section
-                (viewHolder as SectionViewHolder).title.text = section.title
-                viewHolder.card.setOnClickListener {
-                    PageNavigation.moveRightTo(section)
-                }
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                setUpSectionView(section, viewHolder)
             }
             isPart -> {
                 val part: Part = items[position] as Part
-                (viewHolder as PartViewHolder).title.text = part.title
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                setUpPartView(part, viewHolder)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isPart")
         }
+
+    /** This method set up given Section [viewHolder] with given [section]. */
+    private fun setUpSectionView(section: Section, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as SectionViewHolder).title.text = section.title
+        viewHolder.card.setOnClickListener {
+            PageNavigation.moveRightTo(section)
+        }
+
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+    }
+
+    /** This method set up given Part [viewHolder] with given [part]. */
+    private fun setUpPartView(part: Part, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as PartViewHolder).title.text = part.title
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+    }
 }

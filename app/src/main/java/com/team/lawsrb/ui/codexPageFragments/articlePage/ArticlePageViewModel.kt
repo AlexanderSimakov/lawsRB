@@ -2,17 +2,18 @@ package com.team.lawsrb.ui.codexPageFragments.articlePage
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.team.lawsrb.basic.dataProviders.CodexProvider
 
+/**
+ * [ArticlePageViewModel] is a child class of the [ViewModel] which is used in [ArticlePageFragment].
+ *
+ * @param codexProvider Current codex provider.
+ * @property pageItems Items which will shown on the **Article page**.
+ * @see ViewModel
+ * @see ArticlePageViewModelFactory
+ * @see ArticlePageFragment
+ */
 class ArticlePageViewModel(codexProvider: CodexProvider) : ViewModel(){
-    private val articleItems: LiveData<List<Any>> = codexProvider.getArticlePageItems()
-    fun getItems() = articleItems
+    val pageItems: LiveData<List<Any>> = codexProvider.getArticlePageItems()
 }
 
-class ArticleViewModelFactory(private val codexProvider: CodexProvider) : ViewModelProvider.Factory{
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ArticlePageViewModel(codexProvider) as T
-    }
-}
