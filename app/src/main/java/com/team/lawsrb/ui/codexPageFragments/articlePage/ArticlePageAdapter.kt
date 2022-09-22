@@ -18,6 +18,17 @@ import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
+/**
+ * [ArticlePageAdapter] is a child of [RecyclerView.Adapter] which is used for creating
+ * [Article] and [Chapter]'s views for **Article page**.
+ *
+ * @param items The list of all shown codex elements.
+ * @param rvView [RecyclerView] which will show [items].
+ * @param articlesDao Dao class for codex [Article]s.
+ *
+ * @see RecyclerView
+ * @see RecyclerView.Adapter
+ */
 class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -25,6 +36,12 @@ class ArticlePageAdapter (private val items: List<Any>,
     private val isArticle = 1
     private val isChapter = 2
 
+    /**
+     * [ArticleViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Article card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class ArticleViewHolder(articleCardView: View) : RecyclerView.ViewHolder(articleCardView) {
         val card: MaterialCardView = articleCardView.findViewById(R.id.article_card)
         val title: TextView = articleCardView.findViewById(R.id.article_card_title)
@@ -33,6 +50,12 @@ class ArticlePageAdapter (private val items: List<Any>,
         val expandableText: TextView = articleCardView.findViewById(R.id.article_card_content)
     }
 
+    /**
+     * [ChapterViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Chapter card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
         val card: MaterialCardView = chapterCardView.findViewById(R.id.title_card)
         val title: TextView = chapterCardView.findViewById(R.id.title_card_title)
@@ -67,50 +90,60 @@ class ArticlePageAdapter (private val items: List<Any>,
         when (viewHolder.itemViewType) {
             isArticle -> {
                 val article: Article = items[position] as Article
-                (viewHolder as ArticleViewHolder).title.text = article.title
-                viewHolder.checkBox.isChecked = article.isLiked
-                viewHolder.expandableText.text = article.content
-
-                if (openedArticleIds.isNotEmpty()){
-                    viewHolder.expandable.visibility = View.VISIBLE
-                }
-
-                viewHolder.card.setOnClickListener {
-                    TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
-                    if (viewHolder.expandable.visibility == View.VISIBLE) {
-                        viewHolder.expandable.visibility = View.GONE
-                        openedArticleIds.remove(article.id)
-                    } else {
-                        viewHolder.expandable.visibility = View.VISIBLE
-                        openedArticleIds.add(article.id)
-                    }
-                }
-
-                viewHolder.checkBox.setOnClickListener {
-                    article.isLiked = viewHolder.checkBox.isChecked
-                    articlesDao.update(article)
-                }
-
-                if (article.id in openedArticleIds) {
-                    viewHolder.expandable.visibility = View.VISIBLE
-                } else {
-                    viewHolder.expandable.visibility = View.GONE
-                }
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
-                Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.search)
+                setUpArticleView(article, viewHolder)
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
-                (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.card.setOnClickListener {
-                    PageNavigation.moveLeftTo(chapter)
-                }
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                setUpChapterView(chapter, viewHolder)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isArticle or $isChapter")
         }
+
+    /** This method set up given Article [viewHolder] with given [article]. */
+    private fun setUpArticleView(article: Article, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as ArticleViewHolder).title.text = article.title
+        viewHolder.checkBox.isChecked = article.isLiked
+        viewHolder.expandableText.text = article.content
+
+        if (openedArticleIds.isNotEmpty()){
+            viewHolder.expandable.visibility = View.VISIBLE
+        }
+
+        viewHolder.card.setOnClickListener {
+            TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
+            if (viewHolder.expandable.visibility == View.VISIBLE) {
+                viewHolder.expandable.visibility = View.GONE
+                openedArticleIds.remove(article.id)
+            } else {
+                viewHolder.expandable.visibility = View.VISIBLE
+                openedArticleIds.add(article.id)
+            }
+        }
+
+        viewHolder.checkBox.setOnClickListener {
+            article.isLiked = viewHolder.checkBox.isChecked
+            articlesDao.update(article)
+        }
+
+        if (article.id in openedArticleIds) {
+            viewHolder.expandable.visibility = View.VISIBLE
+        } else {
+            viewHolder.expandable.visibility = View.GONE
+        }
+
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+        Highlighter.applyTo(viewHolder.expandableText, BaseCodexProvider.search)
+    }
+
+    /** This method set up given Chapter [viewHolder] with given [chapter]. */
+    private fun setUpChapterView(chapter: Chapter, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as ChapterViewHolder).title.text = chapter.title
+        viewHolder.card.setOnClickListener {
+            PageNavigation.moveLeftTo(chapter)
+        }
+
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+    }
 
     companion object {
         private val openedArticleIds = mutableSetOf<Int>()

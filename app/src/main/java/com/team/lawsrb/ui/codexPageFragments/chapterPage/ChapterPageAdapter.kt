@@ -8,20 +8,44 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
+import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
+import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageAdapter
+import com.team.lawsrb.ui.codexPageFragments.articlePage.ArticlePageAdapter.ArticleViewHolder
 
+/**
+ * [ChapterPageAdapter] is a child of [RecyclerView.Adapter] which is used for creating
+ * [Chapter] and [Section]'s views for **Chapter page**.
+ *
+ * @param items The list of all shown codex elements.
+ *
+ * @see RecyclerView
+ * @see RecyclerView.Adapter
+ */
 class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
     private val isChapter = 2
 
+    /**
+     * [SectionViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Section card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
         val card: MaterialCardView = sectionCardView.findViewById(R.id.title_card)
         val title: TextView = sectionCardView.findViewById(R.id.title_card_title)
     }
 
+    /**
+     * [ChapterViewHolder] is a child of [RecyclerView.ViewHolder] which is
+     * storing data that makes binding **Chapter card** view content easier.
+     *
+     * @see RecyclerView.ViewHolder
+     */
     inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
         val card: MaterialCardView = chapterCardView.findViewById(R.id.item_card)
         val title: TextView = chapterCardView.findViewById(R.id.item_card_title)
@@ -56,22 +80,32 @@ class ChapterPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
         when (viewHolder.itemViewType){
             isSection -> {
                 val section: Section = items[position] as Section
-                (viewHolder as SectionViewHolder).title.text = section.title
-                viewHolder.card.setOnClickListener {
-                    PageNavigation.moveLeftTo(section)
-                }
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                setUpSectionView(section, viewHolder)
             }
             isChapter -> {
                 val chapter: Chapter = items[position] as Chapter
-                (viewHolder as ChapterViewHolder).title.text = chapter.title
-                viewHolder.card.setOnClickListener {
-                    PageNavigation.moveRightTo(chapter)
-                }
-
-                Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+                setUpChapterView(chapter, viewHolder)
             }
             else -> throw IllegalArgumentException("itemViewType was ${viewHolder.itemViewType}, expected $isSection or $isChapter")
         }
+
+    /** This method set up given Section [viewHolder] with given [section]. */
+    private fun setUpSectionView(section: Section, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as SectionViewHolder).title.text = section.title
+        viewHolder.card.setOnClickListener {
+            PageNavigation.moveLeftTo(section)
+        }
+
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+    }
+
+    /** This method set up given Chapter [viewHolder] with given [chapter]. */
+    private fun setUpChapterView(chapter: Chapter, viewHolder: RecyclerView.ViewHolder){
+        (viewHolder as ChapterViewHolder).title.text = chapter.title
+        viewHolder.card.setOnClickListener {
+            PageNavigation.moveRightTo(chapter)
+        }
+
+        Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
+    }
 }
