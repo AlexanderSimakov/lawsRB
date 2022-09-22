@@ -51,7 +51,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
         val itemsObserver = Observer<List<Any>> { newItems ->
             if (newItems.isEmpty()){
                 binding.emptyMessage.visibility = View.VISIBLE
-                if (BaseCodexProvider.getQuery().isEmpty()){
+                if (BaseCodexProvider.search.isEmpty()){
                     binding.emptyMessage.text = resources.getString(R.string.empty_favorites)
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
