@@ -1,4 +1,4 @@
-package com.team.lawsrb.ui.settings
+package com.team.lawsrb.ui.updateCodex
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
