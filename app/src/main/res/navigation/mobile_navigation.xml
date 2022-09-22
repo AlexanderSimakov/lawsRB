@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_update_codex"
-        android:name="com.team.lawsrb.ui.settings.UpdateCodexFragment"
+        android:name="com.team.lawsrb.ui.updateCodex.UpdateCodexFragment"
         android:label="@string/menu_update_codex"
         tools:layout="@layout/fragment_update_codex" />
 </navigation>

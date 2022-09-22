@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.settings.UpdateCodexFragment">
+    tools:context=".ui.updateCodex.UpdateCodexFragment">
 
     <include layout="@layout/update_codex_button"
         android:id="@+id/update_uk"/>
