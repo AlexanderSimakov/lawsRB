@@ -1,19 +1,17 @@
 package com.team.lawsrb.ui.settings
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
-import android.widget.CheckBox
-import android.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.NetworkCheck
@@ -21,15 +19,12 @@ import com.team.lawsrb.basic.Preferences
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexParser
-import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.team.lawsrb.basic.htmlParser.CodexVersionParser
+import com.team.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.team.lawsrb.databinding.UpdateCodexButtonBinding
 import com.team.lawsrb.ui.NotificationBadge
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.*
 
 class UpdateCodexFragment : Fragment() {
     private val TAG = "UpdateCodexFragment"
@@ -55,23 +50,42 @@ class UpdateCodexFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        model = ViewModelProviders.of(this).get(UpdateCodexViewModel::class.java)
+        model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
+
+        clearMenuOptions()
 
         setUpCheckCodexUpdatesButton()
         setUpObservers()
         setUpRefreshButtons()
         setOnClickListenerForUpdateButtons()
-        hideHeaderAndSearchButtons()
 
         if (IS_DEBUG){
             setUpClearAllButton()
         }
 
         return root
+    }
+
+    /**
+     * Menu overriding.
+     *
+     * Allows to hide unnecessary menu items in the current fragment.
+     */
+    private fun clearMenuOptions() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            //Remove all existing items from the menu,
+            //leaving it empty as if it had just been created.
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
 
     private fun setUpCheckCodexUpdatesButton(){
@@ -81,7 +95,10 @@ class UpdateCodexFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            GlobalScope.launch {
+            val handler = CoroutineExceptionHandler { _, exception ->
+                Log.e(TAG, "Internet connection fallen: $exception")
+            }
+            CoroutineScope(Dispatchers.Default).launch(handler) {
                 model.isCheckUpdateButtonEnabled.postValue(false)
                 Snackbar.make(requireView(), "Проверка обновлений", Snackbar.LENGTH_SHORT).show()
 
@@ -102,24 +119,6 @@ class UpdateCodexFragment : Fragment() {
                 model.isCheckUpdateButtonEnabled.postValue(true)
             }
         }
-    }
-
-    private fun hideHeaderAndSearchButtons() {
-        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
-        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        fab.isVisible = false
-        actionSearch.isVisible = false
-        actionsFavorites.isVisible = false
-    }
-
-    private fun showHeaderAndSearchButtons() {
-        val actionSearch = requireActivity().findViewById<SearchView>(R.id.action_search)
-        val actionsFavorites = requireActivity().findViewById<CheckBox>(R.id.action_favorites)
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        fab.isVisible = true
-        actionSearch.isVisible = true
-        actionsFavorites.isVisible = true
     }
 
     private fun setUpObservers(){
@@ -234,7 +233,16 @@ class UpdateCodexFragment : Fragment() {
 
         getCodexImage(codex)?.startAnimation(rotateAnimation)
 
-        GlobalScope.launch(Dispatchers.Default) {
+        //The coroutine exception handler that will be called if the coroutine failed
+        val handler = CoroutineExceptionHandler { _, exception ->
+            Log.e(TAG, "Internet connection interrupted: $exception")
+            view?.let {
+                Snackbar.make(it, "Интернет-соединение прервано", Snackbar.LENGTH_SHORT).show()
+            }
+            getCodexImage(codex)?.animation?.cancel()
+            model.isUpdateEnabled(codex).postValue(true)
+        }
+        CoroutineScope(Dispatchers.Default).launch(handler) {
             Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
 
             val codexLists = CodexParser().get(codex)
@@ -287,13 +295,7 @@ class UpdateCodexFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        hideHeaderAndSearchButtons()
-    }
-
     override fun onDestroyView() {
-        showHeaderAndSearchButtons()
         super.onDestroyView()
         _binding = null
     }
