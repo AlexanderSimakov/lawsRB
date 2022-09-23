@@ -27,6 +27,7 @@ import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.team.lawsrb.databinding.UpdateCodexButtonBinding
 import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.coroutines.*
+import java.lang.NullPointerException
 
 /**
  * This class is a child of [Fragment] which represents **Update Codex Page** where user can:
@@ -330,13 +331,21 @@ class UpdateCodexFragment : Fragment() {
         }
     }
 
+    /**
+     * The method is responsible for hiding and showing the Floating Action Button.
+     * @param visibility button display state, pass false to hide, pass true to show
+     */
     private fun fabVisibility(visibility: Boolean) {
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        fab.isVisible = visibility
+        val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
+        try { fab!!.isVisible = visibility }
+        catch (e: NullPointerException) {
+            Log.e(TAG, "Variable fab: ${e.message}")
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        fabVisibility(true)
         _binding = null
     }
 }
