@@ -337,7 +337,6 @@ class UpdateCodexFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        fabVisibility(true)
         _binding = null
     }
 }
