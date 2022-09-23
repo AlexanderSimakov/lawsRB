@@ -117,6 +117,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        
+        Log.d(TAG, "$_savedInstanceState")
 
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
 
@@ -157,10 +159,9 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
-
         if (_savedInstanceState != null) {
             if (_savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
-                isFavoritesShowing = true
+                isFavoritesShowing = _savedInstanceState!!.getBoolean(FAVORITES_KEY)
                 favoritesCheckBox.toggle()
             }
             if (_savedInstanceState!!.getBoolean(SEARCH_KEY)) {
@@ -170,6 +171,12 @@ class MainActivity : AppCompatActivity() {
                 searchView.clearFocus()
                 isSearchShowing = true
             }
+        }
+
+        if (_savedInstanceState != null && isFavoritesShowing && !favoritesCheckBox.isChecked) {
+            favoritesCheckBox.toggle()
+        }else if (_savedInstanceState == null && isFavoritesShowing) {
+            favoritesCheckBox.toggle()
         }
 
         favoritesCheckBox.setOnClickListener {
