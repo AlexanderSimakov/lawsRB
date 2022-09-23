@@ -9,9 +9,11 @@ import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.NetworkCheck
@@ -64,6 +66,7 @@ class UpdateCodexFragment : Fragment() {
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
 
         clearMenuOptions()
+        fabVisibility(false)
 
         setUpCheckCodexUpdatesButton()
         setUpObservers()
@@ -327,8 +330,14 @@ class UpdateCodexFragment : Fragment() {
         }
     }
 
+    private fun fabVisibility(visibility: Boolean) {
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+        fab.isVisible = visibility
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        fabVisibility(true)
         _binding = null
     }
 }
