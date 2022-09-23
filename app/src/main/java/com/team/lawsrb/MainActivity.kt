@@ -173,9 +173,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (_savedInstanceState != null && isFavoritesShowing && !favoritesCheckBox.isChecked) {
-            favoritesCheckBox.toggle()
-        }else if (_savedInstanceState == null && isFavoritesShowing) {
+        if (isFavoritesShowing && !favoritesCheckBox.isChecked) {
             favoritesCheckBox.toggle()
         }
 
