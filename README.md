@@ -1,7 +1,8 @@
 # Законы РБ
 
-<img src="doc/example1.jpg" width="250"/> <img src="doc/example2.jpg" width="250"/> <img src="doc/example4.jpg" width="250"/>
+<img src="doc/example1.jpg" width="250"/> <img src="doc/example2.jpg" width="250"/> <img src="doc/example3.jpg" width="250"/>
 
+<img src="doc/example4.jpg" width="250"/> <img src="doc/example5.jpg" width="250"/> <img src="doc/example6.jpg" width="250"/>
 
 
 ## Разработчики
