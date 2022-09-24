@@ -1,12 +1,15 @@
 package com.team.lawsrb
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -114,21 +117,36 @@ class MainActivity : AppCompatActivity() {
         }, 3000)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        isFavoritesShowing = savedInstanceState.getBoolean(FAVORITES_KEY)
+        isSearchShowing = savedInstanceState.getBoolean(SEARCH_KEY)
+        searchableString = savedInstanceState.getString(SEARCH_STRING) ?: ""
+
+        Log.d(TAG, "Restored state: isFavoritesShowing=$isFavoritesShowing, " +
+                        "isSearchShowing=$isSearchShowing, " +
+                        "searchableString=$searchableString")
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
-        
-        Log.d(TAG, "$_savedInstanceState")
 
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
-
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+
+        searchItem.isVisible = isSearchShowing
         searchView.queryHint = getString(R.string.action_search)
+        searchView.isIconified = !isSearchShowing
+
+        if (searchableString.isNotEmpty()){
+            searchView.setQuery(searchableString, false)
+            searchView.clearFocus()
+        }
 
         searchView.setOnQueryTextListener( object : OnQueryTextListener{
             override fun onQueryTextChange(text: String?): Boolean {
-                searchableString = text!!
+                searchableString = text ?: ""
                 return false
             }
 
@@ -139,16 +157,25 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        searchView.setOnSearchClickListener {
-            searchFab.hide()
-            isSearchShowing = true
-        }
-
         searchView.setOnCloseListener {
             isSearchShowing = false
-            searchFab.show()
+            searchItem.isVisible = false
             BaseCodexProvider.search = ""
+            searchableString = ""
+
+            // hide keyboard
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
             false
+        }
+
+        // --- Search button ---
+        searchFab.setOnClickListener {
+            searchItem.isVisible = true
+            searchView.isIconified = false
+            isSearchShowing = true
         }
 
         // --- Favorites button ---
@@ -159,19 +186,9 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
-        if (_savedInstanceState != null) {
-            if (_savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
-                isFavoritesShowing = _savedInstanceState!!.getBoolean(FAVORITES_KEY)
-                favoritesCheckBox.toggle()
-            }
-            if (_savedInstanceState!!.getBoolean(SEARCH_KEY)) {
-                searchableString = _savedInstanceState!!.getString(SEARCH_STRING)!!
-                searchView.isIconified = false
-                searchView.setQuery(searchableString, false)
-                searchView.clearFocus()
-                isSearchShowing = true
-            }
-        }
+        // TODO: remove this crutch
+        // Crutch: The main purpose of this line is to move favorites icon left :)
+        favoritesCheckBox.text = "   "
 
         if (isFavoritesShowing && !favoritesCheckBox.isChecked) {
             favoritesCheckBox.toggle()
@@ -181,14 +198,6 @@ class MainActivity : AppCompatActivity() {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.showFavorites = isChecked
             isFavoritesShowing = isChecked
-        }
-
-        // --- Search button ---
-        searchFab.setOnClickListener {
-            isSearchShowing = true
-            searchView.isIconified = false
-            searchFab.hide()
-            searchableString = searchView.query.toString()
         }
 
         // --- Theme switcher ---
