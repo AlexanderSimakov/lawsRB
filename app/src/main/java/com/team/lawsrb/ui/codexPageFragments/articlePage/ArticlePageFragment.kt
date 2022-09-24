@@ -17,11 +17,11 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 /**
  * [ArticlePageFragment] is a child of [Fragment] which represent **Article page** of any codex.
- * It use [codeProvider] to create ui list of elements which consist of Articles and Chapters.
+ * It use [codexProvider] to create ui list of elements which consist of Articles and Chapters.
  */
-class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() {
+class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
 
-    constructor() : this(BaseCodexProvider.UK)
+    constructor() : this(codexProvider)
 
     private lateinit var model: ArticlePageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
@@ -29,13 +29,17 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    init {
+        ArticlePageFragment.codexProvider = codexProvider
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, ArticlePageViewModelFactory(codeProvider))
+        model = ViewModelProvider(this, ArticlePageViewModelFactory(codexProvider))
             .get(ArticlePageViewModel::class.java)
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
@@ -46,7 +50,7 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
         val recycler = binding.codexFragmentRecyclerView
         val pageItems = model.pageItems.value as List<Any>
 
-        recycler.adapter = ArticlePageAdapter(pageItems, recycler, codeProvider.database.articlesDao())
+        recycler.adapter = ArticlePageAdapter(pageItems, recycler, codexProvider.database.articlesDao())
         recycler.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerWithItems(recycler, pageItems, PageNavigation.Page.ARTICLES)
 
@@ -60,10 +64,10 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
                 }
-                PageNavigation.adjustCurrentPageByItems(codeProvider)
+                PageNavigation.adjustCurrentPageByItems(codexProvider)
             }else{
                 binding.emptyMessage.visibility = View.GONE
-                recycler.adapter = ArticlePageAdapter(newPageItems, recycler, codeProvider.database.articlesDao())
+                recycler.adapter = ArticlePageAdapter(newPageItems, recycler, codexProvider.database.articlesDao())
                 PageNavigation.addRecyclerWithItems(recycler, newPageItems, PageNavigation.Page.ARTICLES)
             }
         }
@@ -87,5 +91,9 @@ class ArticlePageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }
             }
         })
+    }
+
+    companion object {
+        private lateinit var codexProvider: CodexProvider
     }
 }

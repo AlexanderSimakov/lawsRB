@@ -18,11 +18,11 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 /**
  * [ChapterPageFragment] is a child of [Fragment] which represent **Chapter page** of any codex.
- * It use [codeProvider] to create ui list of elements which consist of Chapters and Sections.
+ * It use [codexProvider] to create ui list of elements which consist of Chapters and Sections.
  */
-class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() {
+class ChapterPageFragment(codexProvider: CodexProvider) : Fragment() {
 
-    constructor() : this(BaseCodexProvider.UK)
+    constructor() : this(codexProvider)
 
     private lateinit var model: ChapterPageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
@@ -30,13 +30,17 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    init {
+        ChapterPageFragment.codexProvider = codexProvider
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, ChapterPageViewModelFactory(codeProvider))
+        model = ViewModelProvider(this, ChapterPageViewModelFactory(codexProvider))
             .get(ChapterPageViewModel::class.java)
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
@@ -61,7 +65,7 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
                 }
-                PageNavigation.adjustCurrentPageByItems(codeProvider)
+                PageNavigation.adjustCurrentPageByItems(codexProvider)
             }else{
                 binding.emptyMessage.visibility = View.GONE
                 recycler.adapter = ChapterPageAdapter(newPageItems)
@@ -89,5 +93,9 @@ class ChapterPageFragment(private val codeProvider: CodexProvider) : Fragment() 
             }
         })
 
+    }
+
+    companion object {
+        private lateinit var codexProvider: CodexProvider
     }
 }

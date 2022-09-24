@@ -18,11 +18,11 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 
 /**
  * [SectionPageFragment] is a child of [Fragment] which represent **Section page** of any codex.
- * It use [codeProvider] to create ui list of elements which consist of Sections and Parts.
+ * It use [codexProvider] to create ui list of elements which consist of Sections and Parts.
  */
-class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() {
+class SectionPageFragment(codexProvider: CodexProvider) : Fragment() {
 
-    constructor() : this(BaseCodexProvider.UK)
+    constructor() : this(codexProvider)
 
     private lateinit var model: SectionPageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
@@ -30,13 +30,17 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    init {
+        SectionPageFragment.codexProvider = codexProvider
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, SectionPageViewModelFactory(codeProvider))
+        model = ViewModelProvider(this, SectionPageViewModelFactory(codexProvider))
             .get(SectionPageViewModel::class.java)
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
@@ -61,7 +65,7 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)
                 }
-                PageNavigation.adjustCurrentPageByItems(codeProvider)
+                PageNavigation.adjustCurrentPageByItems(codexProvider)
             } else{
                 binding.emptyMessage.visibility = View.GONE
                 recycler.adapter = SectionPageAdapter(newPageItems)
@@ -88,5 +92,9 @@ class SectionPageFragment(private val codeProvider: CodexProvider) : Fragment() 
                 }
             }
         })
+    }
+
+    companion object {
+        private lateinit var codexProvider: CodexProvider
     }
 }
