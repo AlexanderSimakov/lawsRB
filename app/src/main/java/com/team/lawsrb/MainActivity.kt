@@ -186,6 +186,10 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
+        // TODO: remove this crutch
+        // Crutch: The main purpose of this line is to move favorites icon left :)
+        favoritesCheckBox.text = "   "
+
         if (isFavoritesShowing && !favoritesCheckBox.isChecked) {
             favoritesCheckBox.toggle()
         }
