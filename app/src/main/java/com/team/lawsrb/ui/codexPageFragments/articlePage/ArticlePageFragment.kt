@@ -21,6 +21,7 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
  */
 class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
 
+    /** This constructor is called then app theme changes. */
     constructor() : this(codexProvider)
 
     private lateinit var model: ArticlePageViewModel
