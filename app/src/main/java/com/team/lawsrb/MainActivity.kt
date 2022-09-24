@@ -120,11 +120,25 @@ class MainActivity : AppCompatActivity() {
         
         Log.d(TAG, "$_savedInstanceState")
 
+        // restore instance state
+        _savedInstanceState?.let { savedState ->
+            isFavoritesShowing = savedState.getBoolean(FAVORITES_KEY)
+            isSearchShowing = savedState.getBoolean(SEARCH_KEY)
+            searchableString = savedState.getString(SEARCH_STRING) ?: ""
+        }
+
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
 
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+        searchItem.isVisible = true
+
         searchView.queryHint = getString(R.string.action_search)
+        searchView.isIconified = !isSearchShowing
+        if (searchableString.isNotEmpty()){
+            searchView.setQuery(searchableString, false)
+            searchView.clearFocus()
+        }
 
         searchView.setOnQueryTextListener( object : OnQueryTextListener{
             override fun onQueryTextChange(text: String?): Boolean {
@@ -151,6 +165,14 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
+        // --- Search button ---
+        searchFab.setOnClickListener {
+            isSearchShowing = true
+            searchView.isIconified = false
+            searchFab.hide()
+            searchableString = searchView.query.toString()
+        }
+
         // --- Favorites button ---
         val favoritesItem = menu.findItem(R.id.action_favorites)
         val favoritesCheckBox = favoritesItem.actionView as CheckBox
@@ -158,20 +180,6 @@ class MainActivity : AppCompatActivity() {
         favoritesCheckBox.buttonDrawable = applicationContext.getDrawable(R.drawable.card_checkbox_selector)
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
-
-        if (_savedInstanceState != null) {
-            if (_savedInstanceState!!.getBoolean(FAVORITES_KEY)) {
-                isFavoritesShowing = _savedInstanceState!!.getBoolean(FAVORITES_KEY)
-                favoritesCheckBox.toggle()
-            }
-            if (_savedInstanceState!!.getBoolean(SEARCH_KEY)) {
-                searchableString = _savedInstanceState!!.getString(SEARCH_STRING)!!
-                searchView.isIconified = false
-                searchView.setQuery(searchableString, false)
-                searchView.clearFocus()
-                isSearchShowing = true
-            }
-        }
 
         if (isFavoritesShowing && !favoritesCheckBox.isChecked) {
             favoritesCheckBox.toggle()
@@ -181,14 +189,6 @@ class MainActivity : AppCompatActivity() {
             val isChecked = (it as CheckBox).isChecked
             BaseCodexProvider.showFavorites = isChecked
             isFavoritesShowing = isChecked
-        }
-
-        // --- Search button ---
-        searchFab.setOnClickListener {
-            isSearchShowing = true
-            searchView.isIconified = false
-            searchFab.hide()
-            searchableString = searchView.query.toString()
         }
 
         // --- Theme switcher ---
