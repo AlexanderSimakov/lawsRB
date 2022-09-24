@@ -9,9 +9,11 @@ import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.NetworkCheck
@@ -25,6 +27,7 @@ import com.team.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.team.lawsrb.databinding.UpdateCodexButtonBinding
 import com.team.lawsrb.ui.NotificationBadge
 import kotlinx.coroutines.*
+import java.lang.NullPointerException
 
 /**
  * This class is a child of [Fragment] which represents **Update Codex Page** where user can:
@@ -64,6 +67,7 @@ class UpdateCodexFragment : Fragment() {
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
 
         clearMenuOptions()
+        fabVisibility(false)
 
         setUpCheckCodexUpdatesButton()
         setUpObservers()
@@ -327,8 +331,21 @@ class UpdateCodexFragment : Fragment() {
         }
     }
 
+    /**
+     * The method is responsible for hiding and showing the Floating Action Button.
+     * @param visibility button display state, pass false to hide, pass true to show
+     */
+    private fun fabVisibility(visibility: Boolean) {
+        val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
+        try { fab!!.isVisible = visibility }
+        catch (e: NullPointerException) {
+            Log.e(TAG, "Variable fab: ${e.message}")
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        fabVisibility(true)
         _binding = null
     }
 }
