@@ -1,6 +1,6 @@
 # Законы РБ
 
-<img src="doc/example1.jpg" width="200"/> <img src="doc/example2.jpg" width="200"/> <img src="doc/example4.jpg" width="200"/>
+<img src="doc/example1.jpg" width="250"/> <img src="doc/example2.jpg" width="250"/> <img src="doc/example4.jpg" width="250"/>
 
 
 
