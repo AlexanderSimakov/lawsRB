@@ -77,8 +77,7 @@ class ArticlePageAdapter (private val items: List<Any>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        var codex = ArticlePageFragment.codexProvider.codeType
-        Log.d("Code", "$codex")
+
         return when (viewType) {
             isArticle -> {
                 val lightCardView = inflater.inflate(R.layout.article_card, parent, false)
@@ -111,15 +110,18 @@ class ArticlePageAdapter (private val items: List<Any>,
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
 
+        var codeType = ArticlePageFragment.codexProvider.codeType
+        Log.d(TAG, "Current code type is: $codeType")
+
         viewHolder.card.setOnClickListener {
             TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
             if (viewHolder.expandable.visibility == View.VISIBLE) {
                 viewHolder.expandable.visibility = View.GONE
-                openedCodeArticles.getOrElse(ArticlePageFragment.codexProvider.codeType) { mutableSetOf() }.remove(article.id)
+                openedCodeArticles.getOrElse(codeType) { mutableSetOf() }.remove(article.id)
                 Log.d(TAG, "$openedCodeArticles")
             } else {
                 viewHolder.expandable.visibility = View.VISIBLE
-                openedCodeArticles.getOrPut(ArticlePageFragment.codexProvider.codeType) { mutableSetOf() }.add(article.id)
+                openedCodeArticles.getOrPut(codeType) { mutableSetOf() }.add(article.id)
                 Log.d(TAG, "$openedCodeArticles")
             }
         }
@@ -129,7 +131,7 @@ class ArticlePageAdapter (private val items: List<Any>,
             articlesDao.update(article)
         }
 
-        if (article.id in openedCodeArticles.getOrElse(ArticlePageFragment.codexProvider.codeType) { mutableSetOf() }) {
+        if (article.id in openedCodeArticles.getOrElse(codeType) { mutableSetOf() }) {
             viewHolder.expandable.visibility = View.VISIBLE
         } else {
             viewHolder.expandable.visibility = View.GONE
