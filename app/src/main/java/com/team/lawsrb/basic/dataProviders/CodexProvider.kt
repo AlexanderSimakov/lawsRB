@@ -43,8 +43,6 @@ interface CodexProvider{
      */
     fun getArticlePageItems(): LiveData<List<Any>>
 
-    //fun getCodexType(): Codex
-
     val isSectionPageItemsEmpty: Boolean
     val isChapterPageItemsEmpty: Boolean
     val isArticlePageItemsEmpty: Boolean

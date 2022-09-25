@@ -78,19 +78,21 @@ object BaseCodexProvider {
         _PIKoAP.setDefaultPageItems()
     }
 
-    private val _UK = getCodex(BaseCodexDatabase.UK, Codex.UK)
-    private val _UPK = getCodex(BaseCodexDatabase.UPK, Codex.UPK)
-    private val _KoAP = getCodex(BaseCodexDatabase.KoAP, Codex.KoAP)
-    private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP, Codex.PIKoAP)
+    private val _UK = getCodex(Codex.UK)
+    private val _UPK = getCodex(Codex.UPK)
+    private val _KoAP = getCodex(Codex.KoAP)
+    private val _PIKoAP = getCodex(Codex.PIKoAP)
 
     /**
      * This method initialize and return [CodexProvider] for given [CodexDatabase].
+     * @param _codeType type of returned code
      */
-    private fun getCodex(_database: CodexDatabase, _codexType: Codex) = object: CodexProvider  {
+    private fun getCodex(_codeType: Codex) = object: CodexProvider  {
 
-        override val codeType: Codex = _codexType
+        /** Code type corresponding to code database */
+        override val codeType: Codex = _codeType
 
-        override val database = _database
+        override val database = BaseCodexDatabase.get(_codeType)
 
         /**
          * [codex] contain all codex lists: parts, sections, chapters and articles.
@@ -340,8 +342,6 @@ object BaseCodexProvider {
             }
             return articlePage
         }
-
-        //override fun getCodexType(): Codex = codeType
     }
 }
 
