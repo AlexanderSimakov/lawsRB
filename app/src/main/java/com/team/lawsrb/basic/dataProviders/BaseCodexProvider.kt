@@ -2,6 +2,7 @@ package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexLists
 import com.team.lawsrb.basic.roomDatabase.*
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
@@ -77,15 +78,18 @@ object BaseCodexProvider {
         _PIKoAP.setDefaultPageItems()
     }
 
-    private val _UK = getCodex(BaseCodexDatabase.UK)
-    private val _UPK = getCodex(BaseCodexDatabase.UPK)
-    private val _KoAP = getCodex(BaseCodexDatabase.KoAP)
-    private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP)
+    private val _UK = getCodex(BaseCodexDatabase.UK, Codex.UK)
+    private val _UPK = getCodex(BaseCodexDatabase.UPK, Codex.UPK)
+    private val _KoAP = getCodex(BaseCodexDatabase.KoAP, Codex.KoAP)
+    private val _PIKoAP = getCodex(BaseCodexDatabase.PIKoAP, Codex.PIKoAP)
 
     /**
      * This method initialize and return [CodexProvider] for given [CodexDatabase].
      */
-    private fun getCodex(_database: CodexDatabase) = object: CodexProvider  {
+    private fun getCodex(_database: CodexDatabase, _codexType: Codex) = object: CodexProvider  {
+
+        override val codeType: Codex = _codexType
+
         override val database = _database
 
         /**
@@ -336,5 +340,8 @@ object BaseCodexProvider {
             }
             return articlePage
         }
+
+        //override fun getCodexType(): Codex = codeType
     }
 }
+

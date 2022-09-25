@@ -1,6 +1,7 @@
 package com.team.lawsrb.basic.dataProviders
 
 import androidx.lifecycle.LiveData
+import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.roomDatabase.CodexDatabase
 
 /**
@@ -14,6 +15,9 @@ interface CodexProvider{
 
     /** Provides access to simple [CodexDatabase] methods. */
     val database: CodexDatabase
+
+    /** Storing code type from [Codex] */
+    val codeType: Codex
 
     /**
      * This method return **Section Page** [LiveData] items.
@@ -38,6 +42,8 @@ interface CodexProvider{
      * and consist of Chapters and Articles.
      */
     fun getArticlePageItems(): LiveData<List<Any>>
+
+    //fun getCodexType(): Codex
 
     val isSectionPageItemsEmpty: Boolean
     val isChapterPageItemsEmpty: Boolean
