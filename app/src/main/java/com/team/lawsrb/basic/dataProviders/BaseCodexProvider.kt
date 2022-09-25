@@ -84,8 +84,7 @@ object BaseCodexProvider {
     private val _PIKoAP = getCodex(Codex.PIKoAP)
 
     /**
-     * This method initialize and return [CodexProvider] for given [CodexDatabase].
-     * @param _codeType type of returned code
+     * This method initialize and return [CodexProvider] for given [Codex].
      */
     private fun getCodex(_codeType: Codex) = object: CodexProvider  {
 
