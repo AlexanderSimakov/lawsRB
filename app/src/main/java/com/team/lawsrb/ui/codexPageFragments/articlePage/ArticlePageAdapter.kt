@@ -111,11 +111,6 @@ class ArticlePageAdapter (private val items: List<Any>,
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
 
-        // ? Зачем этот код
-        /*if (articlesIds.isNotEmpty()){
-            viewHolder.expandable.visibility = View.VISIBLE
-        }*/
-
         viewHolder.card.setOnClickListener {
             TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
             if (viewHolder.expandable.visibility == View.VISIBLE) {
@@ -155,7 +150,6 @@ class ArticlePageAdapter (private val items: List<Any>,
     }
 
     companion object {
-        //private val articlesIds = mutableSetOf<Int>()
         private val openedCodeArticles = mutableMapOf(
             Codex.UK to mutableSetOf<Int>(),
             Codex.UPK to mutableSetOf<Int>(),
