@@ -9,13 +9,13 @@ import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.team.lawsrb.basic.NetworkCheck
@@ -134,6 +134,8 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
 
+        val toolbarLayout = findViewById<AppBarLayout>(R.id.app_bar_layout)
+
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
@@ -157,6 +159,8 @@ class MainActivity : AppCompatActivity() {
                 BaseCodexProvider.search = text
                 searchableString = text
                 isSentRequest = true
+                // Allows the AppBarLayout to open with animation if it was hidden
+                toolbarLayout.setExpanded(true, true)
                 return false
             }
         })

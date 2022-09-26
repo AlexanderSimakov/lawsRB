@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.team.lawsrb.R
@@ -65,6 +66,10 @@ class UpdateCodexFragment : Fragment() {
         val root: View = binding.root
 
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
+
+        // Allows the AppBarLayout to open with animation if it was hidden on transition to the fragment
+        val toolbarLayout = requireActivity().findViewById<AppBarLayout>(R.id.app_bar_layout)
+        toolbarLayout.setExpanded(true, true)
 
         clearMenuOptions()
         fabVisibility(false)
