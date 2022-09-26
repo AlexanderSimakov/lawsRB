@@ -45,7 +45,8 @@ object CodexVersionParser {
         )
 
     /**
-     * The function for updating values in maps, works async.
+     * The function for updating values of last change date and count of changes.
+     * Connects asynchronously to each code's web page
      * @exception CodexVersionParser - can throw an exception?, NetworkException
      */
     fun update() = scope.launch {

@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
 /** The class receives a code from the web resource for write to the database */
+
 class CodexParser {
     /** Log tag field. */
     private val TAG = "CodexParser"
@@ -22,7 +23,6 @@ class CodexParser {
      */
     private data class CodexContent(val parentId: Int, val contentText: String)
 
-    /** [CodexLists] instance. */
     private var codexLists = CodexLists()
 
     /**
@@ -37,9 +37,9 @@ class CodexParser {
      */
     private var articlesList = mutableListOf<CodexContent>()
 
-    /** [Jsoup] instance. */
     private lateinit var document: Document
-    /** Array of elements obtained from the [Jsoup] [document] instance */
+
+    /** Array of elements retrieved from a web page using [Jsoup] */
     private lateinit var documentElements: Elements
 
     /**
@@ -72,7 +72,11 @@ class CodexParser {
         articlesWithContent()
     }
 
-    /** The function selects parts titles from [documentElements] array. */
+    /**
+     * The function parses html into parts titles
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parsePartsTitles() {
         var partId = 1
         for (element in documentElements) {
@@ -86,7 +90,11 @@ class CodexParser {
         }
     }
 
-    /** The function selects sections titles from [documentElements] array. */
+    /**
+     * The function parses html into sections titles
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseSectionsTitles() {
         var (parentId, sectionId) = List(2) { 0 }
 
@@ -105,7 +113,11 @@ class CodexParser {
         }
     }
 
-    /** The function selects chapters titles from [documentElements] array. */
+    /**
+     * The function parses html into chapters titles
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseChaptersTitles() {
         var (parentId, chapterId) = List(2) { 0 }
 
@@ -130,7 +142,11 @@ class CodexParser {
         }
     }
 
-    /** The function selects articles titles from [documentElements] array. */
+    /**
+     * The function parses html into article titles
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseArticlesTitles() {
         var parentId = 0
 
@@ -163,7 +179,11 @@ class CodexParser {
         }
     }
 
-    /** The function selects articles content from [documentElements] array. */
+    /**
+     * The function parses html into article content
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseArticlesContent() {
         val indices = mutableListOf<Int>()
 
