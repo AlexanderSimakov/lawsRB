@@ -42,9 +42,11 @@ class MainActivity : AppCompatActivity() {
     private val FAVORITES_KEY = "is_favorites_showing"
     private val SEARCH_KEY = "is_search_showing"
     private val SEARCH_STRING = "search_string"
+    private val SENT_REQUEST_KEY = "is_sent_request"
     private var searchableString = ""
     private var isFavoritesShowing = false
     private var isSearchShowing = false
+    private var isSentRequest = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init NetworkAvailable class
@@ -120,6 +122,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         isFavoritesShowing = savedInstanceState.getBoolean(FAVORITES_KEY)
         isSearchShowing = savedInstanceState.getBoolean(SEARCH_KEY)
+        isSentRequest = savedInstanceState.getBoolean(SENT_REQUEST_KEY)
         searchableString = savedInstanceState.getString(SEARCH_STRING) ?: ""
 
         Log.d(TAG, "Restored state: isFavoritesShowing=$isFavoritesShowing, " +
@@ -134,7 +137,6 @@ class MainActivity : AppCompatActivity() {
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        var isSentRequest = false
 
         searchItem.isVisible = isSearchShowing
         searchView.queryHint = getString(R.string.action_search)
@@ -231,6 +233,7 @@ class MainActivity : AppCompatActivity() {
         outState.putString(SEARCH_STRING, searchableString)
         outState.putBoolean(FAVORITES_KEY, isFavoritesShowing)
         outState.putBoolean(SEARCH_KEY, isSearchShowing)
+        outState.putBoolean(SENT_REQUEST_KEY, isSentRequest)
     }
 
     override fun onSupportNavigateUp(): Boolean {
