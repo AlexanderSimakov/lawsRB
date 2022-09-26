@@ -20,32 +20,32 @@ interface PartsDao {
      * This method return a [List] of all [Part]s sorted by id.
      */
     @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} ORDER BY id ASC")
-    fun getAll(): List<Part>
+    suspend fun getAll(): List<Part>
 
     /**
      * This method return a [List] of [Part]s whose *id* contained in given [ids].
      */
     @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
-    fun getByIds(ids: List<Int>): List<Part>
+    suspend fun getByIds(ids: List<Int>): List<Part>
 
     /**
      * This method return a [List] of [Part]s whose *title* contain [search] text,
      * sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.PARTS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Part>
+    suspend fun findAll(search: String): List<Part>
 
     /**
      * This method insert a [part] into the parts table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(part: Part)
+    suspend fun insert(part: Part)
 
     /**
      * This method insert [parts] into the parts table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(parts: List<Part>)
+    suspend fun insert(parts: List<Part>)
 
     /**
      * This method remove all fields from the parts table.
@@ -53,6 +53,6 @@ interface PartsDao {
      * **Attention:** this changes cannot be undone.
      */
     @Query("DELETE FROM ${CodexDatabase.PARTS_NAME}")
-    fun clearAll()
+    suspend fun clearAll()
 
 }

@@ -20,32 +20,32 @@ interface SectionsDao {
      * This method return a [List] of all [Section]s sorted by id.
      */
     @Query("SELECT * FROM ${CodexDatabase.SECTIONS_NAME} ORDER BY id ASC")
-    fun getAll(): List<Section>
+    suspend fun getAll(): List<Section>
 
     /**
      * This method return a [List] of [Section]s whose *id* contained in given [ids].
      */
     @Query("SELECT * FROM ${CodexDatabase.SECTIONS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
-    fun getByIds(ids: List<Int>): List<Section>
+    suspend fun getByIds(ids: List<Int>): List<Section>
 
     /**
      * This method return a [List] of [Section]s whose *title* contain [search] text,
      * sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.SECTIONS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Section>
+    suspend fun findAll(search: String): List<Section>
 
     /**
      * This method insert a [section] into the section table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(section: Section)
+    suspend fun insert(section: Section)
 
     /**
      * This method insert [sections] into the section table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(sections: List<Section>)
+    suspend fun insert(sections: List<Section>)
 
     /**
      * This method remove all fields from the section table.
@@ -53,6 +53,6 @@ interface SectionsDao {
      * **Attention:** this changes cannot be undone.
      */
     @Query("DELETE FROM ${CodexDatabase.SECTIONS_NAME}")
-    fun clearAll()
+    suspend fun clearAll()
 
 }
