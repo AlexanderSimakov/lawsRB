@@ -73,7 +73,7 @@ class CodexParser {
     }
 
     /**
-     * The function parses html into parts titles
+     * The function parses html into parts titles.
      *
      * Html code is taken from [documentElements] array.
      */
@@ -91,7 +91,7 @@ class CodexParser {
     }
 
     /**
-     * The function parses html into sections titles
+     * The function parses html into sections titles.
      *
      * Html code is taken from [documentElements] array.
      */
@@ -114,7 +114,7 @@ class CodexParser {
     }
 
     /**
-     * The function parses html into chapters titles
+     * The function parses html into chapters titles.
      *
      * Html code is taken from [documentElements] array.
      */
@@ -143,7 +143,7 @@ class CodexParser {
     }
 
     /**
-     * The function parses html into article titles
+     * The function parses html into article titles.
      *
      * Html code is taken from [documentElements] array.
      */
@@ -180,7 +180,7 @@ class CodexParser {
     }
 
     /**
-     * The function parses html into article content
+     * The function parses html into article content.
      *
      * Html code is taken from [documentElements] array.
      */
