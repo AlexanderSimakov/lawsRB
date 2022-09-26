@@ -35,3 +35,5 @@
 - [tokyolem](https://github.com/tokyolem) ( [LinkedIn](https://www.linkedin.com/in/heenworker/) )
 
 ## Лицензионное соглашение
+
+[GNU General Public License v3.0](LICENSE.md)
