@@ -3,6 +3,9 @@ package com.team.lawsrb.basic.roomDatabase
 import android.content.Context
 import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.htmlParser.CodexLists
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * [BaseCodexDatabase] is a *object* class that initialize
@@ -12,6 +15,9 @@ import com.team.lawsrb.basic.htmlParser.CodexLists
  * @see [CodexDatabase]
  */
 object BaseCodexDatabase {
+
+    /** [CoroutineScope] for executing async operations */
+    private val coroutine = CoroutineScope(Dispatchers.Main)
 
     /** Contain file names for each [CodexDatabase]. */
     private val databaseNames: MutableMap<Codex, String> = mutableMapOf()
@@ -132,17 +138,19 @@ object BaseCodexDatabase {
      * It transfer all favorites from old database to new.
      */
     fun update(codex: Codex, codexLists: CodexLists){
-        val favorites = get(codex).articlesDao().getFavorites()
-        val articles = codexLists.articles
+        coroutine.launch {
+            val favorites = get(codex).articlesDao().getFavorites()
+            val articles = codexLists.articles
 
-        for (article in articles){
-            if (article.title in favorites.map { it.title }){
-                article.isLiked = true
+            for (article in articles){
+                if (article.title in favorites.map { it.title }){
+                    article.isLiked = true
+                }
             }
-        }
 
-        codexLists.articles = articles
-        insertCodexLists(codex, codexLists)
+            codexLists.articles = articles
+            insertCodexLists(codex, codexLists)
+        }
     }
 
     /**
@@ -150,10 +158,12 @@ object BaseCodexDatabase {
      */
     private fun insertCodexLists(codex: Codex, codexLists: CodexLists){
         val db = get(codex)
-        db.partsDao().insert(codexLists.parts)
-        db.sectionsDao().insert(codexLists.sections)
-        db.chaptersDao().insert(codexLists.chapters)
-        db.articlesDao().insert(codexLists.articles)
+        coroutine.launch {
+            db.partsDao().insert(codexLists.parts)
+            db.sectionsDao().insert(codexLists.sections)
+            db.chaptersDao().insert(codexLists.chapters)
+            db.articlesDao().insert(codexLists.articles)
+        }
     }
 
     /**
@@ -163,10 +173,12 @@ object BaseCodexDatabase {
      */
     fun clear(codex: Codex){
         val db = get(codex)
-        db.articlesDao().clearAll()
-        db.chaptersDao().clearAll()
-        db.sectionsDao().clearAll()
-        db.partsDao().clearAll()
+        coroutine.launch {
+            db.articlesDao().clearAll()
+            db.chaptersDao().clearAll()
+            db.sectionsDao().clearAll()
+            db.partsDao().clearAll()
+        }
     }
 
     /**
