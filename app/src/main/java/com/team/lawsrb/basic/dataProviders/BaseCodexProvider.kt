@@ -137,23 +137,23 @@ object BaseCodexProvider {
         override fun getArticlePageItems() = articlePageItems as LiveData<List<Any>>
 
         override val isSectionPageItemsEmpty: Boolean
-            get() = getSectionPageItems().value?.isEmpty() == true
+            get() = sectionPageItems.value?.isEmpty() == true
 
         override val isChapterPageItemsEmpty: Boolean
-            get() = getChapterPageItems().value?.isEmpty() == true
+            get() = chapterPageItems.value?.isEmpty() == true
 
         override val isArticlePageItemsEmpty: Boolean
-            get() = getArticlePageItems().value?.isEmpty() == true
+            get() = articlePageItems.value?.isEmpty() == true
 
 
         override val isSectionPageItemsNotEmpty: Boolean
-            get() = getSectionPageItems().value?.isNotEmpty() == true
+            get() = sectionPageItems.value?.isNotEmpty() == true
 
         override val isChapterPageItemsNotEmpty: Boolean
-            get() = getChapterPageItems().value?.isNotEmpty() == true
+            get() = chapterPageItems.value?.isNotEmpty() == true
 
         override val isArticlePageItemsNotEmpty: Boolean
-            get() = getArticlePageItems().value?.isNotEmpty() == true
+            get() = articlePageItems.value?.isNotEmpty() == true
 
 
         /**
