@@ -163,7 +163,9 @@ class MainActivity : AppCompatActivity() {
             isSearchShowing = false
             searchItem.isVisible = false
             if (isSentRequest) {
-                BaseCodexProvider.search = ""
+                CoroutineScope(Dispatchers.Main).launch {
+                    BaseCodexProvider.search = ""
+                }
                 isSentRequest = false
             }
             searchableString = ""
