@@ -278,19 +278,6 @@ object BaseCodexProvider {
         }
 
         /**
-         * This method form page items from codex lists and update them.
-         *
-         * @see getFormedArticlePageItems
-         * @see getFormedChapterPageItems
-         * @see getFormedSectionPageItems
-         */
-        private fun formPageItems(){
-            sectionPageItems.value = getFormedSectionPageItems()
-            chapterPageItems.value = getFormedChapterPageItems()
-            articlePageItems.value = getFormedArticlePageItems()
-        }
-
-        /**
          * This method form page items from codex lists and
          * update them using `postValue()`.
          *
