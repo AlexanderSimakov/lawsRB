@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
         val searchFab = findViewById<FloatingActionButton>(R.id.fab)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+        var isSentRequest = false
 
         searchItem.isVisible = isSearchShowing
         searchView.queryHint = getString(R.string.action_search)
@@ -153,6 +154,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(text: String): Boolean {
                 BaseCodexProvider.search = text
                 searchableString = text
+                isSentRequest = true
                 return false
             }
         })
@@ -160,7 +162,10 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnCloseListener {
             isSearchShowing = false
             searchItem.isVisible = false
-            BaseCodexProvider.search = ""
+            if (isSentRequest) {
+                BaseCodexProvider.search = ""
+                isSentRequest = false
+            }
             searchableString = ""
 
             // hide keyboard
