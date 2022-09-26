@@ -95,6 +95,6 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
     }
 
     companion object {
-        private lateinit var codexProvider: CodexProvider
+        lateinit var codexProvider: CodexProvider
     }
 }

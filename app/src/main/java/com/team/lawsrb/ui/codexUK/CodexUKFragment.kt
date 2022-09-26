@@ -50,4 +50,9 @@ class CodexUKFragment : Fragment() {
             }
         }.attach()
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UK, this)
+    }
 }

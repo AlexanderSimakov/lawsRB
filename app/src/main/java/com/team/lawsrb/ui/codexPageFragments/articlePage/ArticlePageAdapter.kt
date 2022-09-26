@@ -2,6 +2,7 @@ package com.team.lawsrb.ui.codexPageFragments.articlePage
 
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.team.lawsrb.R
 import com.team.lawsrb.basic.dataProviders.BaseCodexProvider
+import com.team.lawsrb.basic.htmlParser.Codex
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Article
 import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
@@ -32,6 +34,8 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val TAG = "ArticlePageAdapter"
 
     private val isArticle = 1
     private val isChapter = 2
@@ -73,6 +77,7 @@ class ArticlePageAdapter (private val items: List<Any>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
+
         return when (viewType) {
             isArticle -> {
                 val lightCardView = inflater.inflate(R.layout.article_card, parent, false)
@@ -105,18 +110,19 @@ class ArticlePageAdapter (private val items: List<Any>,
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
 
-        if (openedArticleIds.isNotEmpty()){
-            viewHolder.expandable.visibility = View.VISIBLE
-        }
+        var codeType = ArticlePageFragment.codexProvider.codeType
+        Log.d(TAG, "Current code type is: $codeType")
 
         viewHolder.card.setOnClickListener {
             TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
             if (viewHolder.expandable.visibility == View.VISIBLE) {
                 viewHolder.expandable.visibility = View.GONE
-                openedArticleIds.remove(article.id)
+                openedCodeArticles.getOrElse(codeType) { mutableSetOf() }.remove(article.id)
+                Log.d(TAG, "$openedCodeArticles")
             } else {
                 viewHolder.expandable.visibility = View.VISIBLE
-                openedArticleIds.add(article.id)
+                openedCodeArticles.getOrPut(codeType) { mutableSetOf() }.add(article.id)
+                Log.d(TAG, "$openedCodeArticles")
             }
         }
 
@@ -125,7 +131,7 @@ class ArticlePageAdapter (private val items: List<Any>,
             articlesDao.update(article)
         }
 
-        if (article.id in openedArticleIds) {
+        if (article.id in openedCodeArticles.getOrElse(codeType) { mutableSetOf() }) {
             viewHolder.expandable.visibility = View.VISIBLE
         } else {
             viewHolder.expandable.visibility = View.GONE
@@ -146,6 +152,11 @@ class ArticlePageAdapter (private val items: List<Any>,
     }
 
     companion object {
-        private val openedArticleIds = mutableSetOf<Int>()
+        private val openedCodeArticles = mutableMapOf(
+            Codex.UK to mutableSetOf<Int>(),
+            Codex.UPK to mutableSetOf<Int>(),
+            Codex.KoAP to mutableSetOf<Int>(),
+            Codex.PIKoAP to mutableSetOf<Int>()
+        )
     }
 }
