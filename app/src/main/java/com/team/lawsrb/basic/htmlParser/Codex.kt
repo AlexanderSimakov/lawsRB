@@ -1,5 +1,6 @@
 package com.team.lawsrb.basic.htmlParser
 
+/** The enumeration stores a link to the web resource of each code and his name in Cyrillic */
 enum class Codex(
     val URL: String,
     val rusName: String

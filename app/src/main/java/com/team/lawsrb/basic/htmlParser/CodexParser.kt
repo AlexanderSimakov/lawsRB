@@ -9,18 +9,45 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
+/** The class receives a code from the web resource for write to the database */
+
 class CodexParser {
+    /** Log tag field. */
     private val TAG = "CodexParser"
 
+    /**
+     * Data class, passed as a data type to the collection.
+     *
+     * Used in the collection that storing the titles of the articles
+     * and in the collection that string the content of the articles.
+     */
     private data class CodexContent(val parentId: Int, val contentText: String)
 
     private var codexLists = CodexLists()
+
+    /**
+     * List for storing articles content.
+     * @see CodexContent
+     */
     private var contentList = mutableListOf<CodexContent>()
+
+    /**
+     * List for storing articles titles.
+     * @see CodexContent
+     */
     private var articlesList = mutableListOf<CodexContent>()
 
     private lateinit var document: Document
+
+    /** Array of elements retrieved from a web page using [Jsoup] */
     private lateinit var documentElements: Elements
 
+    /**
+     * [Jsoup] instance initialization function to parse html from web resource.
+     * @param codex certain code from enum [Codex]
+     * @return the code obtained from the web resource in [CodexLists] instance
+     * @exception CodexParser can throw an exception?, NetworkException
+     */
     fun get(codex: Codex): CodexLists {
         Log.i(TAG, "Start parse ${codex.name}")
         try {
@@ -45,6 +72,11 @@ class CodexParser {
         articlesWithContent()
     }
 
+    /**
+     * The function parses html into parts titles.
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parsePartsTitles() {
         var partId = 1
         for (element in documentElements) {
@@ -58,6 +90,11 @@ class CodexParser {
         }
     }
 
+    /**
+     * The function parses html into sections titles.
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseSectionsTitles() {
         var (parentId, sectionId) = List(2) { 0 }
 
@@ -76,6 +113,11 @@ class CodexParser {
         }
     }
 
+    /**
+     * The function parses html into chapters titles.
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseChaptersTitles() {
         var (parentId, chapterId) = List(2) { 0 }
 
@@ -100,6 +142,11 @@ class CodexParser {
         }
     }
 
+    /**
+     * The function parses html into article titles.
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseArticlesTitles() {
         var parentId = 0
 
@@ -132,6 +179,11 @@ class CodexParser {
         }
     }
 
+    /**
+     * The function parses html into article content.
+     *
+     * Html code is taken from [documentElements] array.
+     */
     private fun parseArticlesContent() {
         val indices = mutableListOf<Int>()
 
@@ -185,6 +237,7 @@ class CodexParser {
         }
     }
 
+    /** Function connects articles titles and articles content. */
     private fun articlesWithContent() {
         var contentText = ""
         var countIterations = 0
@@ -210,8 +263,12 @@ class CodexParser {
         }
     }
 
-    private fun formatText(text: String): String {
-        var formattedText = text
+    /**
+     * The function converts the passed html into the finished text.
+     * @param htmlCode received from a web resource
+     */
+    private fun formatText(htmlCode: String): String {
+        var formattedText = htmlCode
 
         if (formattedText.contains("<sup></sup>"))
             formattedText = formattedText.replace("<sup></sup>", "")
