@@ -21,21 +21,18 @@ import kotlinx.coroutines.launch
  * @see [CodexProvider]
  */
 object BaseCodexProvider {
+
     /** This is a [CodexDatabase] which provide access to the UK codex tables. */
-    val UK: CodexProvider
-        get() = _UK
+    val UK: CodexProvider get() = _UK
 
     /** This is a [CodexDatabase] which provide access to the UPK codex tables. */
-    val UPK: CodexProvider
-        get() = _UPK
+    val UPK: CodexProvider get() = _UPK
 
     /** This is a [CodexDatabase] which provide access to the KoAP codex tables. */
-    val KoAP: CodexProvider
-        get() = _KoAP
+    val KoAP: CodexProvider get() = _KoAP
 
     /** This is a [CodexDatabase] which provide access to the PIKoAP codex tables. */
-    val PIKoAP: CodexProvider
-        get() = _PIKoAP
+    val PIKoAP: CodexProvider get() = _PIKoAP
 
     /**
      * This field updates page items for each codex to show matching [search] query
