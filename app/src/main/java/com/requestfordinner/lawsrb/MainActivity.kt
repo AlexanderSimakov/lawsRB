@@ -1,7 +1,6 @@
 package com.requestfordinner.lawsrb
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.inputmethod.InputMethodManager
@@ -33,10 +32,8 @@ import com.requestfordinner.lawsrb.ui.codexFragments.CodexPIKoAPFragment
 import com.requestfordinner.lawsrb.ui.codexFragments.CodexUKFragment
 import com.requestfordinner.lawsrb.ui.codexFragments.CodexUPKFragment
 import com.requestfordinner.lawsrb.ui.codexPageFragments.Highlighter
-import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageAdapter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import kotlinx.coroutines.*
-import java.lang.Runnable
 import kotlin.NullPointerException
 
 class MainActivity : AppCompatActivity() {
