@@ -113,7 +113,6 @@ object BaseCodexDatabase {
                 databaseNames[codex]!!
             ).createFromAsset(assetPaths[codex]!!)
                 .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
                 .build()
         }
     }
