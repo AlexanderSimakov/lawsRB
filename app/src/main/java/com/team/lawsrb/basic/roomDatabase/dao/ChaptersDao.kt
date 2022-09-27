@@ -20,32 +20,32 @@ interface ChaptersDao {
      * This method return a [List] of all [Chapter]s sorted by id.
      */
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} ORDER BY id ASC")
-    fun getAll(): List<Chapter>
+    suspend fun getAll(): List<Chapter>
 
     /**
      * This method return a [List] of [Chapter]s whose *id* contained in given [ids].
      */
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE id IN (:ids) ORDER BY id ASC ")
-    fun getByIds(ids: List<Int>): List<Chapter>
+    suspend fun getByIds(ids: List<Int>): List<Chapter>
 
     /**
      * This method return a [List] of [Chapter]s whose *title* contain [search] text,
      * sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.CHAPTERS_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Chapter>
+    suspend fun findAll(search: String): List<Chapter>
 
     /**
      * This method insert a [chapter] into the chapters table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(chapter: Chapter)
+    suspend fun insert(chapter: Chapter)
 
     /**
      * This method insert [chapters] into the chapters table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(chapters: List<Chapter>)
+    suspend fun insert(chapters: List<Chapter>)
 
     /**
      * This method remove all fields from the chapters table.
@@ -53,6 +53,6 @@ interface ChaptersDao {
      * **Attention:** this changes cannot be undone.
      */
     @Query("DELETE FROM ${CodexDatabase.CHAPTERS_NAME}")
-    fun clearAll()
+    suspend fun clearAll()
 
 }

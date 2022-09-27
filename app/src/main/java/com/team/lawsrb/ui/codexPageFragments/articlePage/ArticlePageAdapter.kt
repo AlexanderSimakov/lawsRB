@@ -19,6 +19,9 @@ import com.team.lawsrb.basic.roomDatabase.codexObjects.Chapter
 import com.team.lawsrb.basic.roomDatabase.dao.ArticlesDao
 import com.team.lawsrb.ui.codexPageFragments.Highlighter
 import com.team.lawsrb.ui.codexPageFragments.PageNavigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * [ArticlePageAdapter] is a child of [RecyclerView.Adapter] which is used for creating
@@ -34,6 +37,9 @@ import com.team.lawsrb.ui.codexPageFragments.PageNavigation
 class ArticlePageAdapter (private val items: List<Any>,
                           private val rvView: View,
                           private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    /** [CoroutineScope] for executing async operations */
+    private val coroutine = CoroutineScope(Dispatchers.Main)
 
     private val TAG = "ArticlePageAdapter"
 
@@ -128,7 +134,7 @@ class ArticlePageAdapter (private val items: List<Any>,
 
         viewHolder.checkBox.setOnClickListener {
             article.isLiked = viewHolder.checkBox.isChecked
-            articlesDao.update(article)
+            coroutine.launch { articlesDao.update(article) }
         }
 
         if (article.id in openedCodeArticles.getOrElse(codeType) { mutableSetOf() }) {

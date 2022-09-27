@@ -25,5 +25,6 @@
     <string name="check_updates_button">Проверить наличие обновлений</string>
     <string name="empty_search_message">По вашему запросу ничего не найдено</string>
     <string name="empty_favorites">Вы еще не добавили ни одной статьи в избранное</string>
+    <string name="empty_page">Ожидание...</string>
 
 </resources>

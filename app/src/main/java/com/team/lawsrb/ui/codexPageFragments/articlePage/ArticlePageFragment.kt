@@ -60,7 +60,10 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
         model.pageItems.observe(viewLifecycleOwner) { newPageItems ->
             if (newPageItems.isEmpty()){
                 binding.emptyMessage.visibility = View.VISIBLE
-                if (BaseCodexProvider.search.isEmpty()){
+                if (BaseCodexProvider.search.isEmpty() && !BaseCodexProvider.showFavorites){
+                    binding.emptyMessage.text = resources.getString(R.string.empty_page)
+                }
+                else if (BaseCodexProvider.search.isEmpty()){
                     binding.emptyMessage.text = resources.getString(R.string.empty_favorites)
                 }else{
                     binding.emptyMessage.text = resources.getString(R.string.empty_search_message)

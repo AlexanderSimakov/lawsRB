@@ -17,52 +17,52 @@ interface ArticlesDao {
      * This method return a [List] of all [Article]s sorted by id.
      */
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} ORDER BY id ASC")
-    fun getAll(): List<Article>
+    suspend fun getAll(): List<Article>
 
     /**
      * This method return a [List] of all favorites [Article]s sorted by id.
      */
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE isLiked = 1 ORDER BY id ASC")
-    fun getFavorites(): List<Article>
+    suspend fun getFavorites(): List<Article>
 
     /**
      * This method return a [List] of [Article]s whose *title* or *content*
      * contain [search] text, sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE title LIKE :search OR content LIKE :search ORDER BY id ASC")
-    fun findAll(search: String): List<Article>
+    suspend fun findAll(search: String): List<Article>
 
     /**
      * This method return a [List] of [Article]s whose *title* contain [search] text,
      * sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE title LIKE :search ORDER BY id ASC")
-    fun findByTitle(search: String): List<Article>
+    suspend fun findByTitle(search: String): List<Article>
 
     /**
      * This method return a [List] of [Article]s whose *content* contain [search] text,
      * sorted by *id*.
      */
     @Query("SELECT * FROM ${CodexDatabase.ARTICLES_NAME} WHERE content LIKE :search ORDER BY id ASC")
-    fun findByContent(search: String): List<Article>
+    suspend fun findByContent(search: String): List<Article>
 
     /**
      * This method replace existing [Article] with [article], found by *id*.
      */
     @Update
-    fun update(article: Article)
+    suspend fun update(article: Article)
 
     /**
      * This method insert a [Article] into the articles table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(article: Article)
+    suspend fun insert(article: Article)
 
     /**
      * This method insert [articles] into the articles table.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(articles: List<Article>)
+    suspend fun insert(articles: List<Article>)
 
     /**
      * This method remove all fields from the articles table.
@@ -70,6 +70,6 @@ interface ArticlesDao {
      * **Attention:** this changes cannot be undone.
      */
     @Query("DELETE FROM ${CodexDatabase.ARTICLES_NAME}")
-    fun clearAll()
+    suspend fun clearAll()
 
 }
