@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.team.lawsrb">
+    package="com.requestfordinner.lawsrb">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -17,7 +17,7 @@
         android:theme="@style/Theme.LawsRB"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.requestfordinner.lawsrb.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LawsRB.NoActionBar">
