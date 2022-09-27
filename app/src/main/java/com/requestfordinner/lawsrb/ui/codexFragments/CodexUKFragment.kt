@@ -1,4 +1,4 @@
-package com.requestfordinner.lawsrb.ui.codexUPK
+package com.requestfordinner.lawsrb.ui.codexFragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,18 +9,24 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
-import com.requestfordinner.lawsrb.databinding.FragmentUpkBinding
+import com.requestfordinner.lawsrb.databinding.FragmentUkBinding
 import com.requestfordinner.lawsrb.ui.CollectionAdapter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
-class CodexUPKFragment : Fragment() {
+/**
+ * [CodexUKFragment] is a child of [Fragment] that represents UK codex page with
+ * **Section**, **Chapter** and **Article** pages using [ViewPager2].
+ *
+ * @see Fragment
+ * @see ViewPager2
+ */
+class CodexUKFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
 
-    private var _binding: FragmentUpkBinding? = null
+    private var _binding: FragmentUkBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -29,18 +35,18 @@ class CodexUPKFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentUpkBinding.inflate(inflater, container, false)
+        _binding = FragmentUkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewPager = binding.upkPager
-        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
+        viewPager = binding.ukPager
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UK, this)
         viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        val tabLayout = binding.upkTabLayout
+        val tabLayout = binding.ukTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)
@@ -53,6 +59,6 @@ class CodexUPKFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UK, this)
     }
 }

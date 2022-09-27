@@ -1,4 +1,4 @@
-package com.requestfordinner.lawsrb.ui.codexPIKoAP
+package com.requestfordinner.lawsrb.ui.codexFragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,18 +9,24 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
-import com.requestfordinner.lawsrb.databinding.FragmentPikoapBinding
+import com.requestfordinner.lawsrb.databinding.FragmentUpkBinding
 import com.requestfordinner.lawsrb.ui.CollectionAdapter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
-class CodexPIKoAPFragment : Fragment() {
+/**
+ * [CodexUPKFragment] is a child of [Fragment] that represents UPK codex page with
+ * **Section**, **Chapter** and **Article** pages using [ViewPager2].
+ *
+ * @see Fragment
+ * @see ViewPager2
+ */
+class CodexUPKFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
 
-    private var _binding: FragmentPikoapBinding? = null
+    private var _binding: FragmentUpkBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -29,18 +35,18 @@ class CodexPIKoAPFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentPikoapBinding.inflate(inflater, container, false)
+        _binding = FragmentUpkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewPager = binding.pikoapPager
-        viewPager.adapter = CollectionAdapter(BaseCodexProvider.PIKoAP, this)
+        viewPager = binding.upkPager
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
         viewPager.offscreenPageLimit = 2
         PageNavigation.clear()
         PageNavigation.viewPager = viewPager
 
-        val tabLayout = binding.pikoapTabLayout
+        val tabLayout = binding.upkTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position){
                 0 -> getString(R.string.pager_item_sections)
@@ -53,6 +59,6 @@ class CodexPIKoAPFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewPager.adapter = CollectionAdapter(BaseCodexProvider.PIKoAP, this)
+        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
     }
 }
