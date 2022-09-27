@@ -1,4 +1,4 @@
-package com.requestfordinner.lawsrb.ui.codexUK
+package com.requestfordinner.lawsrb.ui.codexFragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
