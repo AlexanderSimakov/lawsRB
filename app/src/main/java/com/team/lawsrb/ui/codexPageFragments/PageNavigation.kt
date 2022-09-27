@@ -1,5 +1,6 @@
 package com.team.lawsrb.ui.codexPageFragments
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.team.lawsrb.basic.dataProviders.CodexProvider
@@ -52,7 +53,7 @@ object PageNavigation {
 
     /** This method smooth move to given [page]. */
     fun moveTo(page: Page){
-        viewPager!!.setCurrentItem(page.itemIndex, true)
+        viewPager?.setCurrentItem(page.itemIndex, true)
     }
 
     /**
@@ -60,7 +61,7 @@ object PageNavigation {
      * and smooth scroll it to [codexObject].
      */
     fun moveLeftTo(codexObject: Any) {
-        viewPager!!.setCurrentItem(currentPage.itemIndex - 1, true)
+        viewPager?.setCurrentItem(currentPage.itemIndex - 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING){
             scrollPageTo(codexObject)
         }
@@ -71,7 +72,7 @@ object PageNavigation {
      * and smooth scroll it to [codexObject].
      */
     fun moveRightTo(codexObject: Any) {
-        viewPager!!.setCurrentItem(currentPage.itemIndex + 1, true)
+        viewPager?.setCurrentItem(currentPage.itemIndex + 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING){
             scrollPageTo(codexObject)
         }
@@ -81,7 +82,9 @@ object PageNavigation {
     private fun scrollPageTo(codexObject: Any){
         recyclerWithItemsMap[currentPage]?.let { recycler ->
             val position = recycler.items.indexOfFirst { it == codexObject }
-            recycler.recycler.smoothScrollToPosition(position)
+            if (position != -1){
+                recycler.recycler.smoothScrollToPosition(position)
+            }
         }
     }
 
