@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
@@ -56,16 +55,10 @@ class CodexUKFragment : Fragment() {
                 else -> throw IllegalArgumentException("Position was $position")
             }
         }.attach()
-
-        currentTabLayout = tabLayout
     }
 
     override fun onStart() {
         super.onStart()
         viewPager.adapter = CollectionAdapter(BaseCodexProvider.UK, this)
-    }
-
-    companion object {
-        lateinit var currentTabLayout: TabLayout
     }
 }

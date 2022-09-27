@@ -18,7 +18,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
 import com.requestfordinner.lawsrb.basic.NetworkCheck
 import com.requestfordinner.lawsrb.basic.Preferences
 import com.requestfordinner.lawsrb.basic.dataProviders.*
@@ -27,14 +26,9 @@ import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.basic.roomDatabase.*
 import com.requestfordinner.lawsrb.databinding.ActivityMainBinding
 import com.requestfordinner.lawsrb.ui.NotificationBadge
-import com.requestfordinner.lawsrb.ui.codexFragments.CodexKoAPFragment
-import com.requestfordinner.lawsrb.ui.codexFragments.CodexPIKoAPFragment
-import com.requestfordinner.lawsrb.ui.codexFragments.CodexUKFragment
-import com.requestfordinner.lawsrb.ui.codexFragments.CodexUPKFragment
 import com.requestfordinner.lawsrb.ui.codexPageFragments.Highlighter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import kotlinx.coroutines.*
-import kotlin.NullPointerException
 
 class MainActivity : AppCompatActivity() {
 
@@ -187,9 +181,7 @@ class MainActivity : AppCompatActivity() {
             isSearchShowing = false
             searchItem.isVisible = false
             if (isSentRequest) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    BaseCodexProvider.search = ""
-                }
+                BaseCodexProvider.search = ""
                 isSentRequest = false
             }
             searchableString = ""
@@ -253,7 +245,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCurrentCodeType(): Codex = ArticlePageFragment.codexProvider.codeType
 
-    /** This method returns the [Fragment] the user is currently on  */
+    /** This method returns the [Fragment] the user is currently on.  */
     private fun getCurrentFragment(): Fragment? {
         val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
         navHost?.let { navFragment ->
@@ -264,17 +256,7 @@ class MainActivity : AppCompatActivity() {
         return null
     }
 
-    /** This method returns the fragment's current [TabLayout] on the fragment. */
-    private fun getCurrentTabLayout(): TabLayout {
-        return when (getCurrentCodeType()) {
-            Codex.UK -> CodexUKFragment.currentTabLayout
-            Codex.UPK -> CodexUPKFragment.currentTabLayout
-            Codex.KoAP -> CodexKoAPFragment.currentTabLayout
-            Codex.PIKoAP -> CodexPIKoAPFragment.currentTabLayout
-        }
-    }
-
-    /** This method returns true if the current fragment is the first navigation fragment, in other false */
+    /** This method returns true if the current fragment is the first navigation fragment, in other false. */
     private fun isFirstNavHostFragment(): Boolean {
         return when (getCurrentCodeType()) {
             Codex.UK -> true
@@ -282,7 +264,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment */
+    /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment. */
     private fun openExitDialog() {
         if (isFirstNavHostFragment()) {
             if (doubleBackToExitPressedOnce){
@@ -302,25 +284,54 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
     }
 
-    override fun onBackPressed() {
-        val currentTabLayout = getCurrentTabLayout()
+    /** This method is used to handle pressing the BACK button when the favorites tab is enabled. */
+    private fun toDefaultFavoritesItemState() {
+        val favoritesItem = findViewById<CheckBox>(R.id.action_favorites)
+
+        BaseCodexProvider.showFavorites = false
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(300)
+            favoritesItem.toggle()
+            favoritesItem.isChecked = false
+            isFavoritesShowing = false
+        }
+    }
+
+    /** This method is used to handle pressing the BACK button when search is enabled. */
+    private fun toDefaultSearchViewState() {
+        val searchView = findViewById<SearchView>(R.id.action_search)
+
+        while (searchView.isShown) {
+            //hide keyboard
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            searchView.isIconified = true
+        }
+    }
+
+    /** This method handles all situations when the BACK button is pressed. */
+    private fun backButtonHandling() {
         val currentFragment = getCurrentFragment()
         val containingAttribute = currentFragment.toString()
 
-        try {
-            if (containingAttribute.contains("UpdateCodexFragment")) {
-                super.onBackPressed()
-            }
-            else {
-                when (currentTabLayout.selectedTabPosition) {
-                    0 -> openExitDialog()
-                    1 -> currentTabLayout.getTabAt(0)!!.select()
-                    2 -> currentTabLayout.getTabAt(1)!!.select()
-                }
-            }
-        } catch (e:NullPointerException) {
-            Log.e(TAG,"Current tab layout is null: ${e.message}")
+        if (isFavoritesShowing) {
+            toDefaultFavoritesItemState()
+        } else if (isSearchShowing) {
+            toDefaultSearchViewState()
+        } else if (containingAttribute.contains("UpdateCodexFragment")
+            && !isFavoritesShowing && !isSearchShowing) {
+            super.onBackPressed()
+        } else if (!containingAttribute.contains("UpdateCodexFragment")
+            && !isFavoritesShowing && !isSearchShowing){
+            openExitDialog()
         }
+    }
+
+    override fun onBackPressed() {
+        backButtonHandling()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
