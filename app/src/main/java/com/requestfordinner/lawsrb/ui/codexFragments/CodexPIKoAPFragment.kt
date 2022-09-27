@@ -1,11 +1,13 @@
 package com.requestfordinner.lawsrb.ui.codexFragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
@@ -55,10 +57,17 @@ class CodexPIKoAPFragment : Fragment() {
                 else -> throw IllegalArgumentException("Position was $position")
             }
         }.attach()
+
+        currentTabLayout = tabLayout
+        Log.d("TEST", "$currentTabLayout")
     }
 
     override fun onStart() {
         super.onStart()
         viewPager.adapter = CollectionAdapter(BaseCodexProvider.PIKoAP, this)
+    }
+
+    companion object {
+        lateinit var currentTabLayout: TabLayout
     }
 }
