@@ -13,14 +13,20 @@ import com.requestfordinner.lawsrb.databinding.FragmentUkBinding
 import com.requestfordinner.lawsrb.ui.CollectionAdapter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
+/**
+ * [CodexUKFragment] is a child of [Fragment] that represents UK codex page with
+ * **Section**, **Chapter** and **Article** pages using [ViewPager2].
+ *
+ * @see Fragment
+ * @see ViewPager2
+ */
 class CodexUKFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
 
     private var _binding: FragmentUkBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
