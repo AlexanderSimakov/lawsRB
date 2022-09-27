@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
 
             this.doubleBackToExitPressedOnce = true
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@MainActivity, "Please click BACK again to exit", Toast.LENGTH_SHORT)
+                Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти...", Toast.LENGTH_SHORT)
                     .show()
                 delay(2000)
                 doubleBackToExitPressedOnce = false
