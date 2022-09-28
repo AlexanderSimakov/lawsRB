@@ -1,5 +1,6 @@
 package com.requestfordinner.lawsrb
 
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -301,13 +302,14 @@ class MainActivity : AppCompatActivity() {
     private fun toDefaultSearchViewState() {
         val searchView = findViewById<SearchView>(R.id.action_search)
 
-        while(searchView.isShown) {
+        if (searchView.isShown) {
             //hide keyboard
             this.currentFocus?.let { view ->
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
 
+            searchView.setQuery("", false)
             searchView.isIconified = true
 
             if (!searchView.isShown) {
