@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     //Class name keywords used in log, tag separation required
     private val TAG = "MainActivityLog"
 
+    private val coroutine = CoroutineScope(Dispatchers.Main)
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var _savedInstanceState: Bundle? = null
@@ -264,22 +265,22 @@ class MainActivity : AppCompatActivity() {
     /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment. */
     private fun openExitDialog() {
         if (isFirstNavHostFragment()) {
-            if (doubleBackToExitPressedOnce){
+            if (doubleBackToExitPressedOnce) {
                 System.gc()
                 super.onBackPressed()
                 return
             }
 
-            doubleBackToExitPressedOnce = true
-            CoroutineScope(Dispatchers.Main).launch {
+            coroutine.launch {
+                doubleBackToExitPressedOnce = true
                 Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
                     .show()
                 delay(2000)
                 doubleBackToExitPressedOnce = false
             }
-        }
-        else
+        } else {
             super.onBackPressed()
+        }
     }
 
     /** This method is used to handle pressing the BACK button when the favorites tab is enabled. */
@@ -288,7 +289,7 @@ class MainActivity : AppCompatActivity() {
 
         BaseCodexProvider.showFavorites = false
 
-        CoroutineScope(Dispatchers.Main).launch {
+        coroutine.launch {
             delay(300)
             favoritesItem.toggle()
             favoritesItem.isChecked = false
