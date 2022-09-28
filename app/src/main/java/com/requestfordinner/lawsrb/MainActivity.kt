@@ -309,11 +309,12 @@ class MainActivity : AppCompatActivity() {
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
 
-            isSentRequest = false
             searchView.isIconified = true
 
-            if (!searchView.isShown)
+            if (!searchView.isShown) {
+                isSentRequest = false
                 isSearchShowing = false
+            }
         }
     }
 
