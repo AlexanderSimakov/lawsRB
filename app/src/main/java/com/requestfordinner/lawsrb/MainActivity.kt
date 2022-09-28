@@ -258,10 +258,7 @@ class MainActivity : AppCompatActivity() {
 
     /** This method returns true if the current fragment is the first navigation fragment, in other false. */
     private fun isFirstNavHostFragment(): Boolean {
-        return when (getCurrentCodeType()) {
-            Codex.UK -> true
-            else -> false
-        }
+        return getCurrentCodeType() == Codex.UK
     }
 
     /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment. */
