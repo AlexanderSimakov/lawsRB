@@ -9,6 +9,7 @@ import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,10 +24,10 @@ import com.requestfordinner.lawsrb.basic.dataProviders.*
 import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.basic.roomDatabase.*
+import com.requestfordinner.lawsrb.databinding.ActivityMainBinding
 import com.requestfordinner.lawsrb.ui.NotificationBadge
 import com.requestfordinner.lawsrb.ui.codexPageFragments.Highlighter
-import com.requestfordinner.lawsrb.databinding.ActivityMainBinding
-import com.requestfordinner.lawsrb.R
+import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     private var isFavoritesShowing = false
     private var isSearchShowing = false
     private var isSentRequest = false
+
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init NetworkAvailable class
@@ -71,17 +74,20 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
                 R.id.nav_criminal_code, R.id.nav_code_of_criminal_procedure,
-                R.id.nav_koap, R.id.nav_pikoap), drawerLayout)
+                R.id.nav_koap, R.id.nav_pikoap
+            ), drawerLayout
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        if (NetworkCheck.isAvailable){
+        if (NetworkCheck.isAvailable) {
             CodexVersionParser.update()
         }
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             _savedInstanceState = savedInstanceState
         }
 
@@ -90,15 +96,14 @@ class MainActivity : AppCompatActivity() {
         if (Preferences.isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             Highlighter.isDarkMode = true
-        }
-        else {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             Highlighter.isDarkMode = false
         }
 
         // init codex info
         Preferences.apply {
-            if (isRunFirst){
+            if (isRunFirst) {
                 setCodexInfo(Codex.UK, 82, "От 13 мая 2022")
                 setCodexInfo(Codex.UPK, 61, "От 20 июля 2022")
                 setCodexInfo(Codex.KoAP, 1, "От 4 января 2022")
@@ -110,7 +115,12 @@ class MainActivity : AppCompatActivity() {
         // update notification badge
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
         val notificationImage = item.actionView as ImageView
-        notificationImage.setImageDrawable(resources.getDrawable(R.drawable.notification_badge, applicationContext.theme))
+        notificationImage.setImageDrawable(
+            resources.getDrawable(
+                R.drawable.notification_badge,
+                applicationContext.theme
+            )
+        )
         NotificationBadge.setImage(notificationImage)
 
         // show notification if have changes
@@ -125,9 +135,11 @@ class MainActivity : AppCompatActivity() {
         isSentRequest = savedInstanceState.getBoolean(SENT_REQUEST_KEY)
         searchableString = savedInstanceState.getString(SEARCH_STRING) ?: ""
 
-        Log.d(TAG, "Restored state: isFavoritesShowing=$isFavoritesShowing, " +
-                        "isSearchShowing=$isSearchShowing, " +
-                        "searchableString=$searchableString")
+        Log.d(
+            TAG, "Restored state: isFavoritesShowing=$isFavoritesShowing, " +
+                    "isSearchShowing=$isSearchShowing, " +
+                    "searchableString=$searchableString"
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -144,12 +156,12 @@ class MainActivity : AppCompatActivity() {
         searchView.queryHint = getString(R.string.action_search)
         searchView.isIconified = !isSearchShowing
 
-        if (searchableString.isNotEmpty()){
+        if (searchableString.isNotEmpty()) {
             searchView.setQuery(searchableString, false)
             searchView.clearFocus()
         }
 
-        searchView.setOnQueryTextListener( object : OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
                 searchableString = text ?: ""
                 return false
@@ -169,9 +181,7 @@ class MainActivity : AppCompatActivity() {
             isSearchShowing = false
             searchItem.isVisible = false
             if (isSentRequest) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    BaseCodexProvider.search = ""
-                }
+                BaseCodexProvider.search = ""
                 isSentRequest = false
             }
             searchableString = ""
@@ -195,7 +205,8 @@ class MainActivity : AppCompatActivity() {
         val favoritesItem = menu.findItem(R.id.action_favorites)
         val favoritesCheckBox = favoritesItem.actionView as CheckBox
 
-        favoritesCheckBox.buttonDrawable = applicationContext.getDrawable(R.drawable.card_checkbox_selector)
+        favoritesCheckBox.buttonDrawable =
+            applicationContext.getDrawable(R.drawable.card_checkbox_selector)
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
@@ -217,7 +228,7 @@ class MainActivity : AppCompatActivity() {
         val themeSwitcher = findViewById<ToggleButton>(R.id.theme_switcher)
         themeSwitcher.isChecked = Preferences.isDarkTheme
         themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
-            if (isDarkMode){
+            if (isDarkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 Preferences.isDarkTheme = true
                 Highlighter.isDarkMode = true
@@ -230,6 +241,102 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun getCurrentCodeType(): Codex = ArticlePageFragment.codexProvider.codeType
+
+    /** This method returns the [Fragment] the user is currently on.  */
+    private fun getCurrentFragment(): Fragment? {
+        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+        navHost?.let { navFragment ->
+            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                return fragment
+            }
+        }
+        return null
+    }
+
+    /** This method returns true if the current fragment is the first navigation fragment, in other false. */
+    private fun isFirstNavHostFragment(): Boolean {
+        return getCurrentCodeType() == Codex.UK
+    }
+
+    /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment. */
+    private fun openExitDialog() {
+        if (isFirstNavHostFragment()) {
+            if (doubleBackToExitPressedOnce){
+                System.gc()
+                super.onBackPressed()
+            }
+
+            doubleBackToExitPressedOnce = true
+            if (doubleBackToExitPressedOnce) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
+                        .show()
+                    delay(2000)
+                    doubleBackToExitPressedOnce = false
+                }
+            }
+        }
+        else
+            super.onBackPressed()
+    }
+
+    /** This method is used to handle pressing the BACK button when the favorites tab is enabled. */
+    private fun toDefaultFavoritesItemState() {
+        val favoritesItem = findViewById<CheckBox>(R.id.action_favorites)
+
+        BaseCodexProvider.showFavorites = false
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(300)
+            favoritesItem.toggle()
+            favoritesItem.isChecked = false
+            isFavoritesShowing = false
+        }
+    }
+
+    /** This method is used to handle pressing the BACK button when search is enabled. */
+    private fun toDefaultSearchViewState() {
+        val searchView = findViewById<SearchView>(R.id.action_search)
+
+        while(searchView.isShown) {
+            //hide keyboard
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+
+            searchView.isIconified = true
+
+            if (!searchView.isShown) {
+                isSentRequest = false
+                isSearchShowing = false
+            }
+        }
+    }
+
+    /** This method handles all situations when the BACK button is pressed. */
+    override fun onBackPressed() {
+        val currentFragment = getCurrentFragment()
+        val containingAttribute = currentFragment.toString()
+
+        if (containingAttribute.contains("UpdateCodexFragment")) {
+            super.onBackPressed()
+            isSearchShowing = false
+            isFavoritesShowing = false
+        } else {
+            if (!isSearchShowing && !isFavoritesShowing) {
+                openExitDialog()
+            }
+            if (isSearchShowing) {
+                toDefaultSearchViewState()
+            }
+            if (!isSearchShowing && isFavoritesShowing) {
+                toDefaultFavoritesItemState()
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
