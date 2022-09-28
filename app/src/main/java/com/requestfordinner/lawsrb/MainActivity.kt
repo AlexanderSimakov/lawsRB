@@ -267,16 +267,15 @@ class MainActivity : AppCompatActivity() {
             if (doubleBackToExitPressedOnce){
                 System.gc()
                 super.onBackPressed()
+                return
             }
 
             doubleBackToExitPressedOnce = true
-            if (doubleBackToExitPressedOnce) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
-                        .show()
-                    delay(2000)
-                    doubleBackToExitPressedOnce = false
-                }
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
+                    .show()
+                delay(2000)
+                doubleBackToExitPressedOnce = false
             }
         }
         else
