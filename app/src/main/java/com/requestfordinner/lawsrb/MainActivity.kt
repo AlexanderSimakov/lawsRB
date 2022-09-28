@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
 
             this.doubleBackToExitPressedOnce = true
             CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти...", Toast.LENGTH_SHORT)
+                Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
                     .show()
                 delay(2000)
                 doubleBackToExitPressedOnce = false
@@ -302,36 +302,41 @@ class MainActivity : AppCompatActivity() {
     private fun toDefaultSearchViewState() {
         val searchView = findViewById<SearchView>(R.id.action_search)
 
-        while (searchView.isShown) {
+        while(searchView.isShown) {
             //hide keyboard
             this.currentFocus?.let { view ->
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
+
+            isSentRequest = false
             searchView.isIconified = true
+
+            if (!searchView.isShown)
+                isSearchShowing = false
         }
     }
 
     /** This method handles all situations when the BACK button is pressed. */
-    private fun backButtonHandling() {
+    override fun onBackPressed() {
         val currentFragment = getCurrentFragment()
         val containingAttribute = currentFragment.toString()
 
-        if (isFavoritesShowing) {
-            toDefaultFavoritesItemState()
-        } else if (isSearchShowing) {
-            toDefaultSearchViewState()
-        } else if (containingAttribute.contains("UpdateCodexFragment")
-            && !isFavoritesShowing && !isSearchShowing) {
+        if (containingAttribute.contains("UpdateCodexFragment")) {
             super.onBackPressed()
-        } else if (!containingAttribute.contains("UpdateCodexFragment")
-            && !isFavoritesShowing && !isSearchShowing){
-            openExitDialog()
+            isSearchShowing = false
+            isFavoritesShowing = false
+        } else {
+            if (!isSearchShowing && !isFavoritesShowing) {
+                openExitDialog()
+            }
+            if (isSearchShowing) {
+                toDefaultSearchViewState()
+            }
+            if (!isSearchShowing && isFavoritesShowing) {
+                toDefaultFavoritesItemState()
+            }
         }
-    }
-
-    override fun onBackPressed() {
-        backButtonHandling()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
