@@ -268,6 +268,7 @@ class MainActivity : AppCompatActivity() {
     private fun openExitDialog() {
         if (isFirstNavHostFragment()) {
             if (doubleBackToExitPressedOnce){
+                System.gc()
                 super.onBackPressed()
             }
 
