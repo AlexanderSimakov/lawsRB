@@ -269,15 +269,16 @@ class MainActivity : AppCompatActivity() {
         if (isFirstNavHostFragment()) {
             if (doubleBackToExitPressedOnce){
                 super.onBackPressed()
-                super.onDestroy()
             }
 
-            this.doubleBackToExitPressedOnce = true
-            CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
-                    .show()
-                delay(2000)
-                doubleBackToExitPressedOnce = false
+            doubleBackToExitPressedOnce = true
+            if (doubleBackToExitPressedOnce) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(this@MainActivity, "Нажмите снова, чтобы выйти", Toast.LENGTH_SHORT)
+                        .show()
+                    delay(2000)
+                    doubleBackToExitPressedOnce = false
+                }
             }
         }
         else
