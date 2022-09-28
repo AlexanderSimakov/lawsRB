@@ -3,23 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_criminal_code">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.team.lawsrb.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_criminal_code"
+        android:name="com.requestfordinner.lawsrb.ui.codexFragments.CodexUKFragment"
+        android:label="@string/menu_criminal_code"
+        tools:layout="@layout/fragment_uk" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.team.lawsrb.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_code_of_criminal_procedure"
+        android:name="com.requestfordinner.lawsrb.ui.codexFragments.CodexUPKFragment"
+        android:label="@string/menu_code_of_criminal_proсedure"
+        tools:layout="@layout/fragment_upk" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.team.lawsrb.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_koap"
+        android:name="com.requestfordinner.lawsrb.ui.codexFragments.CodexKoAPFragment"
+        android:label="@string/menu_KoAP"
+        tools:layout="@layout/fragment_koap" />
+
+    <fragment
+        android:id="@+id/nav_pikoap"
+        android:name="com.requestfordinner.lawsrb.ui.codexFragments.CodexPIKoAPFragment"
+        android:label="@string/menu_PIKoAP"
+        tools:layout="@layout/fragment_pikoap" />
+
+    <fragment
+        android:id="@+id/nav_update_codex"
+        android:name="com.requestfordinner.lawsrb.ui.updateCodex.UpdateCodexFragment"
+        android:label="@string/menu_update_codex"
+        tools:layout="@layout/fragment_update_codex" />
 </navigation>

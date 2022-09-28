@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_criminal_codex"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_criminal_code"
+            android:icon="@drawable/ic_book"
+            android:title="@string/menu_criminal_code" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_code_of_criminal_procedure"
+            android:icon="@drawable/ic_book"
+            android:title="@string/menu_code_of_criminal_proсedure" />
     </group>
+
+    <group
+        android:id="@+id/group_koap"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_koap"
+            android:icon="@drawable/ic_book"
+            android:title="@string/menu_KoAP" />
+        <item
+            android:id="@+id/nav_pikoap"
+            android:icon="@drawable/ic_book"
+            android:title="@string/menu_PIKoAP" />
+    </group>
+
+    <group
+        android:id="@+id/group_settings_and_update"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_update_codex"
+            app:actionViewClass="android.widget.ImageView"
+            android:icon="@drawable/ic_refresh_36"
+            android:title="@string/menu_update_codex" />
+    </group>
+
 </menu>
