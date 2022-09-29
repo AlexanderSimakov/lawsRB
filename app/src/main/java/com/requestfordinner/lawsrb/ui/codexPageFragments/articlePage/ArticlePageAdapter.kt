@@ -116,7 +116,7 @@ class ArticlePageAdapter (private val items: List<Any>,
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
 
-        var codeType = ArticlePageFragment.codexProvider.codeType
+        var codeType = ArticlePageFragment.currentCodeType
         Log.d(TAG, "Current code type is: $codeType")
 
         viewHolder.card.setOnClickListener {
