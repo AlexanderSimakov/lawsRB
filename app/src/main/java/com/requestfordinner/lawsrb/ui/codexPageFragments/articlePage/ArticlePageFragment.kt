@@ -90,7 +90,6 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
         super.onStart()
 
         currentCodeType = getCurrentCodeType()
-        Log.d(TAG, "$currentCodeType")
 
         // scroll down - hide fab
         // scroll up   - show fab
