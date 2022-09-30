@@ -56,9 +56,4 @@ class CodexUPKFragment : Fragment() {
             }
         }.attach()
     }
-
-    override fun onStart() {
-        super.onStart()
-        viewPager.adapter = CollectionAdapter(BaseCodexProvider.UPK, this)
-    }
 }
