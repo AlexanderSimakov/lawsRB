@@ -1,6 +1,7 @@
 package com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
 
     /** This constructor is called then app theme changes. */
     constructor() : this(codexProvider)
+
+    private val TAG = "ArticlePageFragment"
 
     private lateinit var model: ArticlePageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
@@ -87,6 +90,7 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
         super.onStart()
 
         currentCodeType = getCurrentCodeType()
+        Log.d(TAG, "$currentCodeType")
 
         // scroll down - hide fab
         // scroll up   - show fab
@@ -106,26 +110,29 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
     }
 
     private fun getCurrentFragment(): Fragment? {
-        val navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
-        navHost?.let { navFragment ->
-            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                return fragment
+        return try {
+            val navHost =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+            navHost?.let { navFragment ->
+                navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                    Log.i(TAG, "The fragment is: $fragment")
+                    return fragment
+                }
             }
+        } catch (e: NullPointerException) {
+            Log.e(TAG, "Returnable value is null: ${e.message}")
+            return null
         }
-        return null
     }
 
     private fun getCurrentCodeType(): Codex {
         val containingAttribute: String = getCurrentFragment().toString()
 
-        return when (containingAttribute.isNotEmpty()) {
-            containingAttribute.contains("UK") -> Codex.UK
-            containingAttribute.contains("UPK") -> Codex.UPK
-            containingAttribute.contains("KoAP") -> Codex.KoAP
-            containingAttribute.contains("PIKoAP") -> Codex.PIKoAP
-            else -> throw Exception("Code type not defined!")
-        }
+        return if (containingAttribute.contains("UK")) Codex.UK
+        else if (containingAttribute.contains("UPK")) Codex.UPK
+        else if (containingAttribute.contains("KoAP")) Codex.KoAP
+        else if (containingAttribute.contains("PIKoAP")) Codex.PIKoAP
+        else throw Exception("The code type is not defined!")
     }
 
     companion object {
