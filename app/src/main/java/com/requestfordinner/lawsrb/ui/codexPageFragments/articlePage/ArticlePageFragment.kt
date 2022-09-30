@@ -14,6 +14,7 @@ import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
 import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 import com.requestfordinner.lawsrb.databinding.FragmentCodexViewerBinding
+import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
@@ -89,7 +90,8 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        currentCodeType = getCurrentCodeType()
+        val fragmentNavigation = FragmentNavigation(requireActivity())
+        currentCodeType = fragmentNavigation.getOpenedCode()
 
         // scroll down - hide fab
         // scroll up   - show fab
@@ -106,32 +108,6 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
                     }
                 }
             })
-    }
-
-    private fun getCurrentFragment(): Fragment? {
-        return try {
-            val navHost =
-                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
-            navHost?.let { navFragment ->
-                navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                    Log.i(TAG, "The fragment is: $fragment")
-                    return fragment
-                }
-            }
-        } catch (e: NullPointerException) {
-            Log.e(TAG, "Returnable value is null: ${e.message}")
-            return null
-        }
-    }
-
-    private fun getCurrentCodeType(): Codex {
-        val containingAttribute: String = getCurrentFragment().toString()
-
-        return if (containingAttribute.contains("UK")) Codex.UK
-        else if (containingAttribute.contains("UPK")) Codex.UPK
-        else if (containingAttribute.contains("KoAP")) Codex.KoAP
-        else if (containingAttribute.contains("PIKoAP")) Codex.PIKoAP
-        else throw Exception("The code type is not defined!")
     }
 
     companion object {

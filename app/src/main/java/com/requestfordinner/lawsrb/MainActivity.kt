@@ -26,6 +26,7 @@ import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.basic.roomDatabase.*
 import com.requestfordinner.lawsrb.databinding.ActivityMainBinding
+import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.NotificationBadge
 import com.requestfordinner.lawsrb.ui.codexPageFragments.Highlighter
 import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
@@ -245,22 +246,11 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getCurrentCodeType(): Codex = ArticlePageFragment.codexProvider.codeType
-
-    /** This method returns the [Fragment] the user is currently on.  */
-    private fun getCurrentFragment(): Fragment? {
-        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
-        navHost?.let { navFragment ->
-            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
-                return fragment
-            }
-        }
-        return null
-    }
-
     /** This method returns true if the current fragment is the first navigation fragment, in other false. */
     private fun isFirstNavHostFragment(): Boolean {
-        return getCurrentCodeType() == Codex.UK
+        val fragmentNavigation = FragmentNavigation(this)
+
+        return fragmentNavigation.getOpenedCode() == Codex.UK
     }
 
     /** Method fires a dialog box if the user clicked the BACK button from the main navigation fragment. */
@@ -321,7 +311,8 @@ class MainActivity : AppCompatActivity() {
 
     /** This method handles all situations when the BACK button is pressed. */
     override fun onBackPressed() {
-        val currentFragment = getCurrentFragment()
+        val fragmentNavigation = FragmentNavigation(this)
+        val currentFragment = fragmentNavigation.getOpenedFragment()
         val containingAttribute = currentFragment.toString()
 
         if (containingAttribute.contains("UpdateCodexFragment")) {
