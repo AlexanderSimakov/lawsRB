@@ -20,7 +20,7 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
 @Entity(
     tableName = CodexDatabase.ARTICLES_NAME,
     foreignKeys = [
-        ForeignKey (
+        ForeignKey(
             entity = Chapter::class,
             parentColumns = ["id"],
             childColumns = ["chapter_id"]
@@ -33,4 +33,4 @@ data class Article(
     @ColumnInfo(name = "chapter_id") val parentId: Int,
     var isLiked: Boolean = false,
     var content: String = ""
-    )
+)
