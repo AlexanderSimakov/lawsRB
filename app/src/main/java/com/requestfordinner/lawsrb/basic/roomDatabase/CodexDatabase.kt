@@ -20,16 +20,18 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.dao.SectionsDao
  * @see SectionsDao
  * @see PartsDao
  */
-@Database(entities =
-[
-    Part::class,
-    Section::class,
-    Chapter::class,
-    Article::class
-],
+@Database(
+    entities =
+    [
+        Part::class,
+        Section::class,
+        Chapter::class,
+        Article::class
+    ],
     version = 1,
-    exportSchema = false)
-abstract class CodexDatabase : RoomDatabase(){
+    exportSchema = false
+)
+abstract class CodexDatabase : RoomDatabase() {
     /** This method give access to parts table by return [PartsDao]. */
     abstract fun partsDao(): PartsDao
 

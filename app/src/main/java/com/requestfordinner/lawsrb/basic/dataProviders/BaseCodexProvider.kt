@@ -42,7 +42,7 @@ object BaseCodexProvider {
      * But using [search] with [showFavorites] = `true` will save hierarchy.
      */
     var search: String = ""
-        set(value){
+        set(value) {
             field = value
 
             _UK.search = value
@@ -71,7 +71,7 @@ object BaseCodexProvider {
      * This method load and set page items from database for each codex
      * without influence of [search] and [showFavorites].
      */
-    fun setDefaultPageItems(){
+    fun setDefaultPageItems() {
         _UK.setDefaultPageItems()
         _UPK.setDefaultPageItems()
         _KoAP.setDefaultPageItems()
@@ -86,7 +86,7 @@ object BaseCodexProvider {
     /**
      * This method initialize and return [CodexProvider] for given [Codex].
      */
-    private fun getCodex(_codeType: Codex) = object: CodexProvider  {
+    private fun getCodex(_codeType: Codex) = object : CodexProvider {
 
         /** A [CoroutineScope] for executing async operations  */
         private val coroutine = CoroutineScope(Dispatchers.Main)
@@ -195,7 +195,7 @@ object BaseCodexProvider {
          * This method load and set page items from database
          * without influence of [search] and [showFavorites].
          */
-        fun setDefaultPageItems(){
+        fun setDefaultPageItems() {
             coroutine.launch {
                 loadCodexLists()
                 formPageItemsAsync()
@@ -205,14 +205,14 @@ object BaseCodexProvider {
         /**
          * This method update page items using [search] and [showFavorites].
          */
-        private suspend fun update(){
-            if (search.isNotBlank() && !showFavorites){
+        private suspend fun update() {
+            if (search.isNotBlank() && !showFavorites) {
                 loadAndSetPageItemsBySearchQuery()
-            }else{
-                if (search.isNotBlank() && showFavorites){
+            } else {
+                if (search.isNotBlank() && showFavorites) {
                     loadFavoritesCodexLists()
                     adjustCodexListsBySearchQuery()
-                } else if (showFavorites){
+                } else if (showFavorites) {
                     loadFavoritesCodexLists()
                 } else {
                     loadCodexLists()
@@ -225,7 +225,7 @@ object BaseCodexProvider {
          * This method load only [Article]s, [Chapter]s and [Section]s
          * which matching [search] query. Write them to codex page items.
          */
-        private suspend fun loadAndSetPageItemsBySearchQuery(){
+        private suspend fun loadAndSetPageItemsBySearchQuery() {
             val articlesByTitle = database.articlesDao().findByTitle("%$search%")
             val articlesByContent = database.articlesDao().findByContent("%$search%")
             val articles = articlesByTitle.toMutableList()
@@ -242,11 +242,13 @@ object BaseCodexProvider {
          * This method load favorites [Article]s from [database]
          * and load this [Article]'s [Chapter]s, [Section]s and [Part]s. Save hierarchy.
          */
-        private suspend fun loadFavoritesCodexLists(){
+        private suspend fun loadFavoritesCodexLists() {
             codex.apply {
                 articles = database.articlesDao().getFavorites() as MutableList
-                chapters = database.chaptersDao().getByIds(articles.map { it.parentId }) as MutableList
-                sections = database.sectionsDao().getByIds(chapters.map { it.parentId }) as MutableList
+                chapters = database.chaptersDao()
+                    .getByIds(articles.map { it.parentId }) as MutableList
+                sections = database.sectionsDao()
+                    .getByIds(chapters.map { it.parentId }) as MutableList
                 parts = database.partsDao().getByIds(sections.map { it.parentId }) as MutableList
             }
         }
@@ -256,19 +258,30 @@ object BaseCodexProvider {
          * Use it before [loadFavoritesCodexLists], because this method save
          * codex hierarchy.
          */
-        private fun adjustCodexListsBySearchQuery(){
+        private fun adjustCodexListsBySearchQuery() {
             val pattern = search.toRegex(RegexOption.IGNORE_CASE)
 
             codex.apply {
-                articles = articles.filter { pattern.containsMatchIn(it.title) || pattern.containsMatchIn(it.content) } as MutableList
-                chapters = chapters.filter { it.id in articles.map { article -> article.parentId } } as MutableList
-                sections = sections.filter { it.id in chapters.map { chapter -> chapter.parentId } } as MutableList
-                parts = parts.filter { it.id in sections.map { section -> section.parentId } } as MutableList
+                articles = articles.filter {
+                    pattern.containsMatchIn(it.title) || pattern.containsMatchIn(it.content)
+                } as MutableList
+
+                chapters = chapters.filter {
+                    it.id in articles.map { article -> article.parentId }
+                } as MutableList
+
+                sections = sections.filter {
+                    it.id in chapters.map { chapter -> chapter.parentId }
+                } as MutableList
+
+                parts = parts.filter {
+                    it.id in sections.map { section -> section.parentId }
+                } as MutableList
             }
         }
 
         /** This method load codex lists from [database] and update [codex]. */
-        private suspend fun loadCodexLists(){
+        private suspend fun loadCodexLists() {
             codex.apply {
                 parts = database.partsDao().getAll() as MutableList
                 sections = database.sectionsDao().getAll() as MutableList
@@ -285,7 +298,7 @@ object BaseCodexProvider {
          * @see getFormedChapterPageItems
          * @see getFormedSectionPageItems
          */
-        private fun formPageItemsAsync(){
+        private fun formPageItemsAsync() {
             sectionPageItems.postValue(getFormedSectionPageItems())
             chapterPageItems.postValue(getFormedChapterPageItems())
             articlePageItems.postValue(getFormedArticlePageItems())
@@ -297,7 +310,7 @@ object BaseCodexProvider {
          *
          * @see sectionPageItems
          */
-        private fun getFormedSectionPageItems(): MutableList<Any>{
+        private fun getFormedSectionPageItems(): MutableList<Any> {
             val sectionPage = mutableListOf<Any>()
             for (part in codex.parts) {
                 sectionPage.add(part)
@@ -312,9 +325,9 @@ object BaseCodexProvider {
          *
          * @see chapterPageItems
          */
-        private fun getFormedChapterPageItems(): MutableList<Any>{
+        private fun getFormedChapterPageItems(): MutableList<Any> {
             val chapterPage = mutableListOf<Any>()
-            for (section in codex.sections){
+            for (section in codex.sections) {
                 chapterPage.add(section)
                 chapterPage.addAll(codex.chapters.filter { it.parentId == section.id })
             }
@@ -327,9 +340,9 @@ object BaseCodexProvider {
          *
          * @see articlePageItems
          */
-        private fun getFormedArticlePageItems(): MutableList<Any>{
+        private fun getFormedArticlePageItems(): MutableList<Any> {
             val articlePage = mutableListOf<Any>()
-            for (chapter in codex.chapters){
+            for (chapter in codex.chapters) {
                 articlePage.add(chapter)
                 articlePage.addAll(codex.articles.filter { it.parentId == chapter.id })
             }
@@ -337,4 +350,3 @@ object BaseCodexProvider {
         }
     }
 }
-

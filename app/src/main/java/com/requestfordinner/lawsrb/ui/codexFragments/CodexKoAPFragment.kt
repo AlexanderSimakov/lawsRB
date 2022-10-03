@@ -48,7 +48,7 @@ class CodexKoAPFragment : Fragment() {
 
         val tabLayout = binding.koapTabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when (position){
+            tab.text = when (position) {
                 0 -> getString(R.string.pager_item_sections)
                 1 -> getString(R.string.pager_item_chapters)
                 2 -> getString(R.string.pager_item_articles)

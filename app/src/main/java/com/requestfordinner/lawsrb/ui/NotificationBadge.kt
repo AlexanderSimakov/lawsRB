@@ -16,7 +16,7 @@ object NotificationBadge {
             else image?.visibility = View.GONE
         }
 
-    fun setImage(image: ImageView){
+    fun setImage(image: ImageView) {
         this.image = image
         isVisible = false
     }

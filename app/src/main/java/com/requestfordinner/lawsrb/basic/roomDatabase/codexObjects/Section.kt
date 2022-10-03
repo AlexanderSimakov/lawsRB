@@ -19,7 +19,7 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
 @Entity(
     tableName = CodexDatabase.SECTIONS_NAME,
     foreignKeys = [
-        ForeignKey (
+        ForeignKey(
             entity = Part::class,
             parentColumns = ["id"],
             childColumns = ["part_id"]

@@ -7,13 +7,14 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePage
 import com.requestfordinner.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
 import com.requestfordinner.lawsrb.ui.codexPageFragments.sectionPage.SectionPageFragment
 
-class CollectionAdapter(private val codexProvider: CodexProvider, fragment: Fragment) : FragmentStateAdapter(fragment) {
+class CollectionAdapter(private val codexProvider: CodexProvider, fragment: Fragment) :
+    FragmentStateAdapter(fragment) {
     private val itemCount: Int = 3
 
     override fun getItemCount(): Int = itemCount
 
     override fun createFragment(position: Int): Fragment {
-        return when (position){
+        return when (position) {
             0 -> SectionPageFragment(codexProvider)
             1 -> ChapterPageFragment(codexProvider)
             2 -> ArticlePageFragment(codexProvider)
