@@ -45,8 +45,10 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        model = ViewModelProvider(this, ArticlePageViewModelFactory(codexProvider))
-            .get(ArticlePageViewModel::class.java)
+        model = ViewModelProvider(
+            this,
+            ArticlePageViewModelFactory(codexProvider)
+        )[ArticlePageViewModel::class.java]
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
         return binding.root
