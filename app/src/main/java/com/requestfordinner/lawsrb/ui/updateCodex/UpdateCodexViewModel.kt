@@ -26,6 +26,7 @@ class UpdateCodexViewModel : ViewModel() {
     /** Equals `true`, if PIKoAP codex have changes. */
     private val isPIKoAPUpdateEnabled = MutableLiveData<Boolean>()
 
+    /** Equals `true` if **CheckUpdateButton** enabled. */
     var isCheckUpdateButtonEnabled = MutableLiveData<Boolean>()
 
     init {
