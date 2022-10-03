@@ -1,6 +1,5 @@
 package com.requestfordinner.lawsrb
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -9,8 +8,8 @@ import android.widget.*
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -29,7 +28,6 @@ import com.requestfordinner.lawsrb.databinding.ActivityMainBinding
 import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.NotificationBadge
 import com.requestfordinner.lawsrb.ui.codexPageFragments.Highlighter
-import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -119,7 +117,8 @@ class MainActivity : AppCompatActivity() {
         val item = binding.navView.menu.findItem(R.id.nav_update_codex)
         val notificationImage = item.actionView as ImageView
         notificationImage.setImageDrawable(
-            resources.getDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
                 R.drawable.notification_badge,
                 applicationContext.theme
             )
@@ -208,8 +207,12 @@ class MainActivity : AppCompatActivity() {
         val favoritesItem = menu.findItem(R.id.action_favorites)
         val favoritesCheckBox = favoritesItem.actionView as CheckBox
 
-        favoritesCheckBox.buttonDrawable =
-            applicationContext.getDrawable(R.drawable.card_checkbox_selector)
+        favoritesCheckBox.buttonDrawable = ResourcesCompat.getDrawable(
+            resources,
+            R.drawable.card_checkbox_selector,
+            applicationContext.theme
+        )
+
         favoritesCheckBox.scaleX = 0.8F
         favoritesCheckBox.scaleY = 0.8F
 
