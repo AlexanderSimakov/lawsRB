@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 
-
 /** The class provides information about the currently used fragment and code. */
 class FragmentNavigation(private val activity: FragmentActivity) {
 
@@ -39,5 +38,4 @@ class FragmentNavigation(private val activity: FragmentActivity) {
         else if (containingAttribute.contains("PIKoAP")) Codex.PIKoAP
         else throw Exception("The code type is not defined!")
     }
-
 }
