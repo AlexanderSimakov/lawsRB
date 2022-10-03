@@ -16,8 +16,9 @@ class FragmentNavigation(private val activity: FragmentActivity) {
     fun getOpenedFragment(): Fragment? {
         var openedFragment: Fragment? = null
 
-        val navHost =
-            activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+        val navHost = activity.supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main)
+
         navHost?.let { navFragment ->
             navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
                 Log.i(TAG, "The current fragment is: $fragment")
@@ -29,13 +30,13 @@ class FragmentNavigation(private val activity: FragmentActivity) {
 
     /** The method returns the code displayed on the current open fragment */
     fun getOpenedCode(): Codex {
-        val containingAttribute: String = getOpenedFragment().toString()
+        val fragmentName: String = getOpenedFragment().toString()
 
         //TODO: try to find a better solution
-        return if (containingAttribute.contains("UK")) Codex.UK
-        else if (containingAttribute.contains("UPK")) Codex.UPK
-        else if (containingAttribute.contains("KoAP")) Codex.KoAP
-        else if (containingAttribute.contains("PIKoAP")) Codex.PIKoAP
+        return if (fragmentName.contains("UK")) Codex.UK
+        else if (fragmentName.contains("UPK")) Codex.UPK
+        else if (fragmentName.contains("KoAP")) Codex.KoAP
+        else if (fragmentName.contains("PIKoAP")) Codex.PIKoAP
         else throw Exception("The code type is not defined!")
     }
 }
