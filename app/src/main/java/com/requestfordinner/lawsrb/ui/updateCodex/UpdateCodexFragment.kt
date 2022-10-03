@@ -356,10 +356,11 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun fabVisibility(visibility: Boolean) {
         val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
-        try {
-            fab!!.isVisible = visibility
-        } catch (e: NullPointerException) {
-            Log.e(TAG, "Variable fab: ${e.message}")
+
+        if (fab != null) {
+            fab.isVisible = visibility
+        } else {
+            Log.e(TAG, "FAB is null: Cannot change it visibility")
         }
     }
 
