@@ -7,6 +7,11 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Article
 
 /**
  * Class for storing and represent code data received from a web resource.
+ *
+ * @property parts The [MutableList] of codex [Part]s.
+ * @property sections The [MutableList] of codex [Section]s.
+ * @property chapters The [MutableList] of codex [Chapter]s.
+ * @property articles The [MutableList] of codex [Article]s.
  * @constructor stores lists for data
  */
 data class CodexLists(
