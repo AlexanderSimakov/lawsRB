@@ -37,10 +37,19 @@ object PageNavigation {
             }
         }
 
-    /** [Page] is an `enum` class which represents codex ui pages. */
-    enum class Page(val itemIndex: Int) {
+    /**
+     * [Page] is an `enum` class which represents codex ui pages.
+     *
+     * @property index The index of specific page.
+     */
+    enum class Page(val index: Int) {
+        /** Left page, contains parts and sections. */
         SECTIONS(0),
+
+        /** Middle page, contains sections and chapters. */
         CHAPTERS(1),
+
+        /** Right page, contains chapters and articles. */
         ARTICLES(2)
     }
 
@@ -51,7 +60,7 @@ object PageNavigation {
 
     /** This method smooth move to given [page]. */
     fun moveTo(page: Page) {
-        viewPager?.setCurrentItem(page.itemIndex, true)
+        viewPager?.setCurrentItem(page.index, true)
     }
 
     /**
@@ -59,7 +68,7 @@ object PageNavigation {
      * and smooth scroll it to [codexObject].
      */
     fun moveLeftTo(codexObject: Any) {
-        viewPager?.setCurrentItem(currentPage.itemIndex - 1, true)
+        viewPager?.setCurrentItem(currentPage.index - 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING) {
             scrollPageTo(codexObject)
         }
@@ -70,7 +79,7 @@ object PageNavigation {
      * and smooth scroll it to [codexObject].
      */
     fun moveRightTo(codexObject: Any) {
-        viewPager?.setCurrentItem(currentPage.itemIndex + 1, true)
+        viewPager?.setCurrentItem(currentPage.index + 1, true)
         Timer().schedule(DELAY_BEFORE_SCROLLING) {
             scrollPageTo(codexObject)
         }
