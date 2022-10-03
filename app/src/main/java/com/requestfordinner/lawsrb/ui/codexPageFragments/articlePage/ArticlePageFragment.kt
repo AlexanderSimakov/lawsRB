@@ -1,7 +1,6 @@
 package com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
-import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 import com.requestfordinner.lawsrb.databinding.FragmentCodexViewerBinding
 import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
@@ -20,30 +18,25 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
 /**
  * [ArticlePageFragment] is a child of [Fragment] which represent **Article page** of any codex.
- * It use [codexProvider] to create ui list of elements which consist of Articles and Chapters.
  */
-class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
+class ArticlePageFragment : Fragment() {
 
-    /** This constructor is called then app theme changes. */
-    constructor() : this(codexProvider)
-
-    private val TAG = "ArticlePageFragment"
-
+    private lateinit var fragmentNav: FragmentNavigation
+    private lateinit var codexProvider: CodexProvider
     private lateinit var model: ArticlePageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    init {
-        ArticlePageFragment.codexProvider = codexProvider
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        fragmentNav = FragmentNavigation(requireActivity())
+        codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
         model = ViewModelProvider(
             this,
@@ -58,8 +51,14 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
         val recycler = binding.codexFragmentRecyclerView
         val pageItems = model.pageItems.value as List<Any>
 
-        recycler.adapter =
-            ArticlePageAdapter(pageItems, recycler, codexProvider.database.articlesDao())
+        codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
+
+        recycler.adapter = ArticlePageAdapter(
+            pageItems,
+            recycler,
+            codexProvider.database.articlesDao(),
+            codexProvider.codeType
+        )
         recycler.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerWithItems(recycler, pageItems, PageNavigation.Page.ARTICLES)
 
@@ -79,7 +78,12 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
             } else {
                 binding.emptyMessage.visibility = View.GONE
                 recycler.adapter =
-                    ArticlePageAdapter(newPageItems, recycler, codexProvider.database.articlesDao())
+                    ArticlePageAdapter(
+                        newPageItems,
+                        recycler,
+                        codexProvider.database.articlesDao(),
+                        codexProvider.codeType
+                    )
                 PageNavigation.addRecyclerWithItems(
                     recycler,
                     newPageItems,
@@ -91,9 +95,6 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
-        val fragmentNavigation = FragmentNavigation(requireActivity())
-        currentCodeType = fragmentNavigation.getOpenedCode()
 
         // scroll down - hide fab
         // scroll up   - show fab
@@ -110,10 +111,5 @@ class ArticlePageFragment(codexProvider: CodexProvider) : Fragment() {
                     }
                 }
             })
-    }
-
-    companion object {
-        lateinit var codexProvider: CodexProvider
-        lateinit var currentCodeType: Codex
     }
 }
