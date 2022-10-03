@@ -18,14 +18,14 @@ object Highlighter {
         get() {
             // TODO: adjust colors
             return if (isDarkMode) Color.parseColor("#413F42")
-                   else Color.parseColor("#EBD671")
+            else Color.parseColor("#EBD671")
         }
 
     /** [isDarkMode] used to determine highlight color. It should always match app theme. */
     var isDarkMode = false
 
     /** This method highlight [textToHighlight] in a given [textView]. */
-    fun applyTo(textView: TextView, textToHighlight: String){
+    fun applyTo(textView: TextView, textToHighlight: String) {
         if (textToHighlight.isEmpty()) return
 
         // TODO: change variable names
