@@ -48,8 +48,8 @@ object Preferences {
         get() {
             return !sharedPref!!.contains(IS_RUN_FIRST_KEY)
         }
-        set(value){
-            if (isRunFirst){
+        set(value) {
+            if (isRunFirst) {
                 sharedPref?.edit()?.apply {
                     putBoolean(IS_RUN_FIRST_KEY, value)
                     apply()
@@ -60,14 +60,14 @@ object Preferences {
     /**
      * This method set or update local instance of [SharedPreferences].
      */
-    fun update(context: Context){
+    fun update(context: Context) {
         sharedPref = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
     }
 
     /**
      * This method set [changesCount] for given [codex].
      */
-    fun setCodexChangesCount(codex: Codex, changesCount: Int){
+    fun setCodexChangesCount(codex: Codex, changesCount: Int) {
         sharedPref!!.edit().apply {
             putInt(getChangesCountKey(codex), changesCount)
             apply()
@@ -77,7 +77,7 @@ object Preferences {
     /**
      * This method set [date] of the last update for given [codex]
      */
-    fun setCodexUpdateDate(codex: Codex, date: String){
+    fun setCodexUpdateDate(codex: Codex, date: String) {
         sharedPref!!.edit().apply {
             putString(getUpdateDateKey(codex), date)
             apply()
@@ -87,7 +87,7 @@ object Preferences {
     /**
      * This method set [changesCount] and last update [date] for given [codex].
      */
-    fun setCodexInfo(codex: Codex, changesCount: Int, date: String){
+    fun setCodexInfo(codex: Codex, changesCount: Int, date: String) {
         sharedPref!!.edit().apply {
             putInt(getChangesCountKey(codex), changesCount)
             putString(getUpdateDateKey(codex), date)
@@ -98,14 +98,14 @@ object Preferences {
     /**
      * This method return count of changes for given [codex].
      */
-    fun getCodexChangesCount(codex: Codex): Int{
+    fun getCodexChangesCount(codex: Codex): Int {
         return sharedPref!!.getInt(getChangesCountKey(codex), -1)
     }
 
     /**
      * This method return date of the last update for given [codex].
      */
-    fun getCodexUpdateDate(codex: Codex): String{
+    fun getCodexUpdateDate(codex: Codex): String {
         return sharedPref!!.getString(getUpdateDateKey(codex), "")!!
     }
 
