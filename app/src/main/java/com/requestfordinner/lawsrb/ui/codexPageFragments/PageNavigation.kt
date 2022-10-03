@@ -29,7 +29,7 @@ object PageNavigation {
     /** Return current [Page] from [viewPager]. */
     val currentPage: Page
         get() {
-            return when(viewPager!!.currentItem){
+            return when (viewPager!!.currentItem) {
                 0 -> Page.SECTIONS
                 1 -> Page.CHAPTERS
                 2 -> Page.ARTICLES
@@ -44,14 +44,13 @@ object PageNavigation {
         ARTICLES(2)
     }
 
-
     /** This method set up given [page] with given [recycler] and [items]. */
     fun addRecyclerWithItems(recycler: RecyclerView, items: List<Any>, page: Page) {
         recyclerWithItemsMap[page] = RecyclerWithItems(recycler, items)
     }
 
     /** This method smooth move to given [page]. */
-    fun moveTo(page: Page){
+    fun moveTo(page: Page) {
         viewPager?.setCurrentItem(page.itemIndex, true)
     }
 
@@ -61,7 +60,7 @@ object PageNavigation {
      */
     fun moveLeftTo(codexObject: Any) {
         viewPager?.setCurrentItem(currentPage.itemIndex - 1, true)
-        Timer().schedule(DELAY_BEFORE_SCROLLING){
+        Timer().schedule(DELAY_BEFORE_SCROLLING) {
             scrollPageTo(codexObject)
         }
     }
@@ -72,16 +71,16 @@ object PageNavigation {
      */
     fun moveRightTo(codexObject: Any) {
         viewPager?.setCurrentItem(currentPage.itemIndex + 1, true)
-        Timer().schedule(DELAY_BEFORE_SCROLLING){
+        Timer().schedule(DELAY_BEFORE_SCROLLING) {
             scrollPageTo(codexObject)
         }
     }
 
     /** This method smooth scroll current page to [codexObject]. */
-    private fun scrollPageTo(codexObject: Any){
+    private fun scrollPageTo(codexObject: Any) {
         recyclerWithItemsMap[currentPage]?.let { recycler ->
             val position = recycler.items.indexOfFirst { it == codexObject }
-            if (position != -1){
+            if (position != -1) {
                 recycler.recycler.smoothScrollToPosition(position)
             }
         }
@@ -96,7 +95,7 @@ object PageNavigation {
      *  3. if current page is empty, but two others are not, then move to nearest (**Article page**
      *  in priority).
      */
-    fun adjustCurrentPageByItems(codeProvider: CodexProvider){
+    fun adjustCurrentPageByItems(codeProvider: CodexProvider) {
         /*
             s - section, c - chapter, a - Article (S/C/A - current page)
             0 - empty page
@@ -128,7 +127,8 @@ object PageNavigation {
             currentPage == Page.CHAPTERS &&
             codeProvider.isChapterPageItemsNotEmpty ||
             currentPage == Page.ARTICLES &&
-            codeProvider.isArticlePageItemsNotEmpty){
+            codeProvider.isArticlePageItemsNotEmpty
+        ) {
             return
         }
 
@@ -142,7 +142,8 @@ object PageNavigation {
          */
         if (codeProvider.isSectionPageItemsEmpty &&
             codeProvider.isChapterPageItemsEmpty &&
-            codeProvider.isArticlePageItemsEmpty){
+            codeProvider.isArticlePageItemsEmpty
+        ) {
             return
         }
 
@@ -154,34 +155,33 @@ object PageNavigation {
          */
         if (codeProvider.isSectionPageItemsNotEmpty &&
             codeProvider.isChapterPageItemsEmpty &&
-            codeProvider.isArticlePageItemsEmpty){
+            codeProvider.isArticlePageItemsEmpty
+        ) {
             moveTo(Page.SECTIONS)
-        }
-        else if (codeProvider.isSectionPageItemsEmpty &&
+        } else if (codeProvider.isSectionPageItemsEmpty &&
             codeProvider.isChapterPageItemsNotEmpty &&
-            codeProvider.isArticlePageItemsEmpty){
+            codeProvider.isArticlePageItemsEmpty
+        ) {
             moveTo(Page.CHAPTERS)
-        }
-        else if (codeProvider.isSectionPageItemsEmpty &&
+        } else if (codeProvider.isSectionPageItemsEmpty &&
             codeProvider.isChapterPageItemsEmpty &&
-            codeProvider.isArticlePageItemsNotEmpty){
+            codeProvider.isArticlePageItemsNotEmpty
+        ) {
             moveTo(Page.ARTICLES)
         }
 
         // (4) solve last variations
-        else if (currentPage == Page.SECTIONS){
+        else if (currentPage == Page.SECTIONS) {
             moveTo(Page.CHAPTERS)
-        }
-        else if (currentPage == Page.CHAPTERS){
+        } else if (currentPage == Page.CHAPTERS) {
             moveTo(Page.ARTICLES)
-        }
-        else if (currentPage == Page.ARTICLES){
+        } else if (currentPage == Page.ARTICLES) {
             moveTo(Page.CHAPTERS)
         }
     }
 
     /** This method clear [viewPager], [RecyclerView]s and page items. */
-    fun clear(){
+    fun clear() {
         viewPager = null
         recyclerWithItemsMap.clear()
     }
