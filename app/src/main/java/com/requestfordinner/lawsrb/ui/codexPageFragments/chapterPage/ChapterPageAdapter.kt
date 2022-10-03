@@ -35,8 +35,8 @@ class ChapterPageAdapter(private val items: List<Any>) :
      */
     inner class SectionViewHolder(sectionCardView: View) :
         RecyclerView.ViewHolder(sectionCardView) {
-        val card: MaterialCardView = sectionCardView.findViewById(R.id.title_card)
-        val title: TextView = sectionCardView.findViewById(R.id.title_card_title)
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.card)
+        val title: TextView = sectionCardView.findViewById(R.id.title)
     }
 
     /**
@@ -47,8 +47,8 @@ class ChapterPageAdapter(private val items: List<Any>) :
      */
     inner class ChapterViewHolder(chapterCardView: View) :
         RecyclerView.ViewHolder(chapterCardView) {
-        val card: MaterialCardView = chapterCardView.findViewById(R.id.item_card)
-        val title: TextView = chapterCardView.findViewById(R.id.item_card_title)
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.card)
+        val title: TextView = chapterCardView.findViewById(R.id.title)
     }
 
     override fun getItemViewType(position: Int): Int {

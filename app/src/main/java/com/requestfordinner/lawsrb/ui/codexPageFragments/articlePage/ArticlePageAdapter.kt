@@ -56,11 +56,11 @@ class ArticlePageAdapter(
      */
     inner class ArticleViewHolder(articleCardView: View) :
         RecyclerView.ViewHolder(articleCardView) {
-        val card: MaterialCardView = articleCardView.findViewById(R.id.article_card)
-        val title: TextView = articleCardView.findViewById(R.id.article_card_title)
-        val checkBox: CheckBox = articleCardView.findViewById(R.id.article_card_checkbox)
-        val expandable: LinearLayout = articleCardView.findViewById(R.id.article_card_expandable_layout)
-        val expandableText: TextView = articleCardView.findViewById(R.id.article_card_content)
+        val card: MaterialCardView = articleCardView.findViewById(R.id.card)
+        val title: TextView = articleCardView.findViewById(R.id.title)
+        val checkBox: CheckBox = articleCardView.findViewById(R.id.checkbox)
+        val expandable: LinearLayout = articleCardView.findViewById(R.id.expandable_layout)
+        val expandableText: TextView = articleCardView.findViewById(R.id.content)
     }
 
     /**
@@ -71,8 +71,8 @@ class ArticlePageAdapter(
      */
     inner class ChapterViewHolder(chapterCardView: View) :
         RecyclerView.ViewHolder(chapterCardView) {
-        val card: MaterialCardView = chapterCardView.findViewById(R.id.title_card)
-        val title: TextView = chapterCardView.findViewById(R.id.title_card_title)
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.card)
+        val title: TextView = chapterCardView.findViewById(R.id.title)
     }
 
     override fun getItemViewType(position: Int): Int {
