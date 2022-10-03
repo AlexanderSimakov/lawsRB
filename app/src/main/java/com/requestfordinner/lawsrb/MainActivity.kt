@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                 applicationContext.theme
             )
         )
-        NotificationBadge.setImage(notificationImage)
+        NotificationBadge.image = notificationImage
 
         // show notification if have changes
         notificationImage.postDelayed({
