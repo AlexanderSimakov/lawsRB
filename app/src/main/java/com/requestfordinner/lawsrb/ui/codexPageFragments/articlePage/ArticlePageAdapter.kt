@@ -54,7 +54,7 @@ class ArticlePageAdapter(
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class ArticleViewHolder(articleCardView: View) :
+    class ArticleViewHolder(articleCardView: View) :
         RecyclerView.ViewHolder(articleCardView) {
         val card: MaterialCardView = articleCardView.findViewById(R.id.card)
         val title: TextView = articleCardView.findViewById(R.id.title)
@@ -69,7 +69,7 @@ class ArticlePageAdapter(
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class ChapterViewHolder(chapterCardView: View) :
+    class ChapterViewHolder(chapterCardView: View) :
         RecyclerView.ViewHolder(chapterCardView) {
         val card: MaterialCardView = chapterCardView.findViewById(R.id.card)
         val title: TextView = chapterCardView.findViewById(R.id.title)
