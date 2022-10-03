@@ -83,7 +83,7 @@ object BaseCodexDatabase {
         }
 
     init {
-        for (codex in Codex.values()){
+        for (codex in Codex.values()) {
             databaseNames[codex] = "${codex.name}_database.db"
             assetPaths[codex] = "database/${codex.name}_database.db"
         }
@@ -94,7 +94,7 @@ object BaseCodexDatabase {
      *
      * Call it before using any other methods.
      */
-    fun init(context: Context){
+    fun init(context: Context) {
         if (UKInstance == null) UKInstance = getCodexDatabase(context, Codex.UK)
         if (UPKInstance == null) UPKInstance = getCodexDatabase(context, Codex.UPK)
         if (KoAPInstance == null) KoAPInstance = getCodexDatabase(context, Codex.KoAP)
@@ -105,7 +105,7 @@ object BaseCodexDatabase {
      * Build and return [CodexDatabase] by given [Codex],
      * also it use [Context] for [androidx.room.Room.databaseBuilder].
      */
-    private fun getCodexDatabase(context: Context, codex: Codex): CodexDatabase{
+    private fun getCodexDatabase(context: Context, codex: Codex): CodexDatabase {
         synchronized(this) {
             return androidx.room.Room.databaseBuilder(
                 context.applicationContext,
@@ -123,8 +123,8 @@ object BaseCodexDatabase {
      * You can also use [BaseCodexDatabase] property [UK], [UPK], [KoAP], [PIKoAP]
      * for this purpose.
      */
-    fun get(codex: Codex): CodexDatabase{
-        return when(codex){
+    fun get(codex: Codex): CodexDatabase {
+        return when (codex) {
             Codex.UK -> UK
             Codex.UPK -> UPK
             Codex.KoAP -> KoAP
@@ -136,13 +136,13 @@ object BaseCodexDatabase {
      * Update [CodexDatabase] chosen by given [Codex] with given [CodexLists].
      * It transfer all favorites from old database to new.
      */
-    fun update(codex: Codex, codexLists: CodexLists){
+    fun update(codex: Codex, codexLists: CodexLists) {
         coroutine.launch {
             val favorites = get(codex).articlesDao().getFavorites()
             val articles = codexLists.articles
 
-            for (article in articles){
-                if (article.title in favorites.map { it.title }){
+            for (article in articles) {
+                if (article.title in favorites.map { it.title }) {
                     article.isLiked = true
                 }
             }
@@ -155,7 +155,7 @@ object BaseCodexDatabase {
     /**
      * Insert given [CodexLists] to [CodexDatabase] chosen by [Codex].
      */
-    private fun insertCodexLists(codex: Codex, codexLists: CodexLists){
+    private fun insertCodexLists(codex: Codex, codexLists: CodexLists) {
         val db = get(codex)
         coroutine.launch {
             db.partsDao().insert(codexLists.parts)
@@ -170,7 +170,7 @@ object BaseCodexDatabase {
      *
      * **Attention:** this changes cannot be undone.
      */
-    fun clear(codex: Codex){
+    fun clear(codex: Codex) {
         val db = get(codex)
         coroutine.launch {
             db.articlesDao().clearAll()
@@ -185,7 +185,7 @@ object BaseCodexDatabase {
      *
      * **Attention:** this changes cannot be undone.
      */
-    fun clearAll(){
+    fun clearAll() {
         clear(Codex.UK)
         clear(Codex.UPK)
         clear(Codex.KoAP)
