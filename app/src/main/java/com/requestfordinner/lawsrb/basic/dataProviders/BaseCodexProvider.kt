@@ -35,6 +35,21 @@ object BaseCodexProvider {
     val PIKoAP: CodexProvider get() = _PIKoAP
 
     /**
+     * Return [CodexProvider] by given [Codex].
+     *
+     * You can also use [BaseCodexProvider] property [UK], [UPK], [KoAP], [PIKoAP]
+     * for this purpose.
+     */
+    fun get(codex: Codex): CodexProvider {
+        return when (codex) {
+            Codex.UK -> UK
+            Codex.UPK -> UPK
+            Codex.KoAP -> KoAP
+            Codex.PIKoAP -> PIKoAP
+        }
+    }
+
+    /**
      * This field updates page items for each codex to show matching [search] query
      * [Article]s, [Chapter]s and [Section]s.
      *

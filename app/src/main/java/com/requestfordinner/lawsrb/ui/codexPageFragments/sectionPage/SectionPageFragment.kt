@@ -12,33 +12,31 @@ import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
 import com.requestfordinner.lawsrb.databinding.FragmentCodexViewerBinding
+import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 
 /**
  * [SectionPageFragment] is a child of [Fragment] which represent **Section page** of any codex.
- * It use [codexProvider] to create ui list of elements which consist of Sections and Parts.
  */
-class SectionPageFragment(codexProvider: CodexProvider) : Fragment() {
+class SectionPageFragment : Fragment() {
 
-    /** This constructor is called then app theme changes. */
-    constructor() : this(codexProvider)
-
+    private lateinit var fragmentNav: FragmentNavigation
+    private lateinit var codexProvider: CodexProvider
     private lateinit var model: SectionPageViewModel
     private var _binding: FragmentCodexViewerBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    init {
-        SectionPageFragment.codexProvider = codexProvider
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        fragmentNav = FragmentNavigation(requireActivity())
+        codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
         model = ViewModelProvider(
             this,
@@ -52,6 +50,8 @@ class SectionPageFragment(codexProvider: CodexProvider) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recycler = binding.codexFragmentRecyclerView
         val pageItems = model.pageItems.value as List<Any>
+
+        codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
         recycler.adapter = SectionPageAdapter(pageItems)
         recycler.layoutManager = context?.let { CenterLayoutManager(it) }
@@ -100,9 +100,5 @@ class SectionPageFragment(codexProvider: CodexProvider) : Fragment() {
                     }
                 }
             })
-    }
-
-    companion object {
-        private lateinit var codexProvider: CodexProvider
     }
 }

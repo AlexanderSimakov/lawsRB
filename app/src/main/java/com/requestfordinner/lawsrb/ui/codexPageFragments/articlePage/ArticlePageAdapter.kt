@@ -37,7 +37,8 @@ import kotlinx.coroutines.launch
 class ArticlePageAdapter(
     private val items: List<Any>,
     private val rvView: View,
-    private val articlesDao: ArticlesDao
+    private val articlesDao: ArticlesDao,
+    private val codeType: Codex
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /** [CoroutineScope] for executing async operations */
@@ -119,9 +120,6 @@ class ArticlePageAdapter(
         (viewHolder as ArticleViewHolder).title.text = article.title
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
-
-        var codeType = ArticlePageFragment.currentCodeType
-        Log.d(TAG, "Current code type is: $codeType")
 
         viewHolder.card.setOnClickListener {
             TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
