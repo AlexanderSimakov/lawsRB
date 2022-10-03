@@ -11,7 +11,7 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
  * @see BaseCodexProvider
  * @see CodexDatabase
  */
-interface CodexProvider{
+interface CodexProvider {
 
     /** Provides access to simple [CodexDatabase] methods. */
     val database: CodexDatabase
@@ -43,12 +43,21 @@ interface CodexProvider{
      */
     fun getArticlePageItems(): LiveData<List<Any>>
 
+    /** Return `true` if section page item list is empty. */
     val isSectionPageItemsEmpty: Boolean
+
+    /** Return `true` if chapter page item list is empty. */
     val isChapterPageItemsEmpty: Boolean
+
+    /** Return `true` if articles page item list is empty. */
     val isArticlePageItemsEmpty: Boolean
 
+    /** Return `true` if section page item list is **not** empty. */
     val isSectionPageItemsNotEmpty: Boolean
-    val isChapterPageItemsNotEmpty: Boolean
-    val isArticlePageItemsNotEmpty: Boolean
 
+    /** Return `true` if chapter page item list is **not** empty. */
+    val isChapterPageItemsNotEmpty: Boolean
+
+    /** Return `true` if article page item list is **not** empty. */
+    val isArticlePageItemsNotEmpty: Boolean
 }

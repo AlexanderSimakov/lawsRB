@@ -157,7 +157,7 @@ class UpdateCodexFragment : Fragment() {
             setUpUpdateButton(
                 binding.updateUk,
                 Codex.UK,
-                getString(R.string.menu_criminal_code)
+                getString(R.string.menu_UK)
             )
             NotificationBadge.isVisible = model.isUpdateEnabled()
         }
@@ -166,7 +166,7 @@ class UpdateCodexFragment : Fragment() {
             setUpUpdateButton(
                 binding.updateUpk,
                 Codex.UPK,
-                getString(R.string.menu_code_of_criminal_proсedure)
+                getString(R.string.menu_UPK)
             )
             NotificationBadge.isVisible = model.isUpdateEnabled()
         }
@@ -197,8 +197,8 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun setUpUpdateButtons() {
         binding.apply {
-            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_criminal_code))
-            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_code_of_criminal_proсedure))
+            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_UK))
+            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_UPK))
             setUpUpdateButton(updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
             setUpUpdateButton(updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
         }
@@ -356,10 +356,11 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun fabVisibility(visibility: Boolean) {
         val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
-        try {
-            fab!!.isVisible = visibility
-        } catch (e: NullPointerException) {
-            Log.e(TAG, "Variable fab: ${e.message}")
+
+        if (fab != null) {
+            fab.isVisible = visibility
+        } else {
+            Log.e(TAG, "FAB is null: Cannot change it visibility")
         }
     }
 

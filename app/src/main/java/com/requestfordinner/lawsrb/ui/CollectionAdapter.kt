@@ -6,7 +6,18 @@ import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
 import com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage.ArticlePageFragment
 import com.requestfordinner.lawsrb.ui.codexPageFragments.chapterPage.ChapterPageFragment
 import com.requestfordinner.lawsrb.ui.codexPageFragments.sectionPage.SectionPageFragment
+import androidx.viewpager2.widget.ViewPager2
 
+/**
+ * [CollectionAdapter] is a child of [FragmentStateAdapter] which is used as adapter in [ViewPager2]
+ * to create codex [SectionPageFragment], [ChapterPageFragment], [ArticlePageFragment].
+ *
+ * @see FragmentStateAdapter
+ * @see ViewPager2
+ * @see SectionPageFragment
+ * @see ChapterPageFragment
+ * @see ArticlePageFragment
+ */
 class CollectionAdapter(private val codexProvider: CodexProvider, fragment: Fragment) :
     FragmentStateAdapter(fragment) {
     private val itemCount: Int = 3

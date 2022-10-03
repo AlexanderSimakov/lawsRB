@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/article_card"
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Theme.LawsRB.CardView.Article">
@@ -19,7 +19,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/article_card_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="35dp"
@@ -27,7 +27,7 @@
 
             <!-- Expandable part -->
             <LinearLayout
-                android:id="@+id/article_card_expandable_layout"
+                android:id="@+id/expandable_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -35,7 +35,7 @@
                 android:paddingTop="15dp">
 
                 <TextView
-                    android:id="@+id/article_card_content"
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Theme.LawsRB.CardView.Article.Content"/>
@@ -52,7 +52,7 @@
             android:gravity="right">
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/article_card_checkbox"
+                android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/card_checkbox_selector"

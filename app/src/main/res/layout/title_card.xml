@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/title_card"
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Theme.LawsRB.CardView.Item.Dark">
@@ -19,7 +19,7 @@
             android:padding="16dp">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/title_card_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Theme.LawsRB.CardView.Title"/>
