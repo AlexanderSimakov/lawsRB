@@ -53,8 +53,7 @@ class CodexParser {
         try {
             document = Jsoup.connect(codex.URL).maxBodySize(4_194_304).get()
             documentElements = document.select("main").select("p")
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.e(TAG, "Getting document's error(${codex.name}): ${e.message}")
         }
 
@@ -81,7 +80,8 @@ class CodexParser {
         var partId = 1
         for (element in documentElements) {
             if (element.attr("class").equals("contenttext")
-                && element.text().contains("ЧАСТЬ")) {
+                && element.text().contains("ЧАСТЬ")
+            ) {
                 codexLists.parts.add(
                     Part(element.text(), partId, false)
                 )
@@ -105,8 +105,7 @@ class CodexParser {
                     codexLists.sections.add(
                         Section(element.text(), sectionId, parentId, false)
                     )
-                }
-                else if (element.text().contains("ЧАСТЬ")) {
+                } else if (element.text().contains("ЧАСТЬ")) {
                     parentId++
                 }
             }
@@ -128,14 +127,18 @@ class CodexParser {
                     codexLists.chapters.add(
                         Chapter(element.text(), chapterId, parentId, false)
                     )
-                }
-                else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
-                    && !element.nextElementSibling()!!.text().contains("ГЛАВА")) {
+                } else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
+                    && !element.nextElementSibling()!!.text().contains("ГЛАВА")
+                ) {
                     codexLists.chapters.add(
-                        Chapter("ГЛАВА. Заключительные положения", chapterId + 1, parentId + 1, false)
+                        Chapter(
+                            "ГЛАВА. Заключительные положения",
+                            chapterId + 1,
+                            parentId + 1,
+                            false
+                        )
                     )
-                }
-                else if (element.text().contains("РАЗДЕЛ")) {
+                } else if (element.text().contains("РАЗДЕЛ")) {
                     parentId++
                 }
             }
@@ -160,19 +163,18 @@ class CodexParser {
                     }
 
                     if (element.text().contains("в действие настоящего Кодекса")
-                        && !element.previousElementSibling()!!.text().contains("ГЛАВА")) {
+                        && !element.previousElementSibling()!!.text().contains("ГЛАВА")
+                    ) {
                         parentId++
                         articlesList.add(
                             CodexContent(parentId, element.text())
                         )
-                    }
-                    else if (!element.attr("id").contains("/")) {
+                    } else if (!element.attr("id").contains("/")) {
                         articlesList.add(
                             CodexContent(parentId, element.text())
                         )
                     }
-                }
-                else if (element.text().contains("ГЛАВА")) {
+                } else if (element.text().contains("ГЛАВА")) {
                     parentId++
                 }
             }
@@ -209,7 +211,8 @@ class CodexParser {
             }
 
             if (element.text().contains("Настоящий Кодекс вводится в действие специальным законом.")
-                && !element.previousElementSibling()!!.attr("class").equals("article")) {
+                && !element.previousElementSibling()!!.attr("class").equals("article")
+            ) {
 
                 val parentId = articlesList[articlesList.size - 1].parentId
                 articlesList.add(
@@ -222,14 +225,13 @@ class CodexParser {
             val elementClass = element.attr("class")
             if (!elementClass.equals("article") && !elementClass.equals("nonumheader") &&
                 !elementClass.equals("zagrazdel") && !elementClass.equals("chapter") &&
-                !elementClass.equals("part") && element.text() != "") {
-
+                !elementClass.equals("part") && element.text() != ""
+            ) {
                 val content = element.toString()
                 if (content.contains("<sup>")) {
                     //Log.d(TAG, formatText(content))
                     contentList.add(CodexContent(currentId, formatText(content)))
-                }
-                else {
+                } else {
                     //Log.d(TAG, element.text())
                     contentList.add(CodexContent(currentId, element.text()))
                 }
@@ -247,7 +249,7 @@ class CodexParser {
             for (content in contentList) {
                 if (content.parentId == id + 1) {
                     countIterations++
-                    contentText += when (countIterations){
+                    contentText += when (countIterations) {
                         1 -> content.contentText
                         else -> "\n" + content.contentText
                     }
