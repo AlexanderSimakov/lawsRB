@@ -32,11 +32,13 @@ class FragmentNavigation(private val activity: FragmentActivity) {
     fun getOpenedCode(): Codex {
         val fragmentName: String = getOpenedFragment().toString()
 
+        // PIKoAP should be always before KoAP because 'FragmentPIKoAP'
+        // contains 'KoAP' and 'PIKoAP' both, but should return Codex.PIKoAP
         //TODO: try to find a better solution
         return if (fragmentName.contains("UK")) Codex.UK
         else if (fragmentName.contains("UPK")) Codex.UPK
-        else if (fragmentName.contains("KoAP")) Codex.KoAP
         else if (fragmentName.contains("PIKoAP")) Codex.PIKoAP
+        else if (fragmentName.contains("KoAP")) Codex.KoAP
         else throw Exception("The code type is not defined!")
     }
 }
