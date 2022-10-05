@@ -79,7 +79,7 @@ class UpdateCodexFragment : Fragment() {
         setUpUpdateButtons()
         setOnClickListenerForUpdateButtons()
 
-        if (IS_DEBUG){
+        if (IS_DEBUG) {
             setUpClearAllButton()
         }
 
@@ -106,10 +106,10 @@ class UpdateCodexFragment : Fragment() {
     }
 
     /** This method configure **CheckCodexUpdates** button and set it listener. */
-    private fun setUpCheckCodexUpdatesButton(){
+    private fun setUpCheckCodexUpdatesButton() {
         // TODO: use string.xml for text messages
         binding.checkUpdatesButton.setOnClickListener {
-            if (NetworkCheck.isNotAvailable){
+            if (NetworkCheck.isNotAvailable) {
                 Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -125,13 +125,20 @@ class UpdateCodexFragment : Fragment() {
 
                 if (CodexVersionParser.isHaveChanges()) {
                     model.updateIsUpdateEnabled()
-
                     view?.let {
-                        Snackbar.make(it, "Доступны обновления кодексов", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            it,
+                            "Доступны обновления кодексов",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
-                }else{
+                } else {
                     view?.let {
-                        Snackbar.make(it, "На данный момент обновлений нет", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            it,
+                            "На данный момент обновлений нет",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -141,7 +148,7 @@ class UpdateCodexFragment : Fragment() {
     }
 
     /** This method set up *observes* for view model's button state variables. */
-    private fun setUpObservers(){
+    private fun setUpObservers() {
         model.isCheckUpdateButtonEnabled.observe(viewLifecycleOwner) {
             binding.checkUpdatesButton.isEnabled = it
         }
@@ -150,7 +157,7 @@ class UpdateCodexFragment : Fragment() {
             setUpUpdateButton(
                 binding.updateUk,
                 Codex.UK,
-                getString(R.string.menu_criminal_code)
+                getString(R.string.menu_UK)
             )
             NotificationBadge.isVisible = model.isUpdateEnabled()
         }
@@ -159,7 +166,7 @@ class UpdateCodexFragment : Fragment() {
             setUpUpdateButton(
                 binding.updateUpk,
                 Codex.UPK,
-                getString(R.string.menu_code_of_criminal_proсedure)
+                getString(R.string.menu_UPK)
             )
             NotificationBadge.isVisible = model.isUpdateEnabled()
         }
@@ -188,23 +195,24 @@ class UpdateCodexFragment : Fragment() {
      *
      * @see setUpUpdateButton
      */
-    private fun setUpUpdateButtons(){
+    private fun setUpUpdateButtons() {
         binding.apply {
-            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_criminal_code))
-            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_code_of_criminal_proсedure))
+            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_UK))
+            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_UPK))
             setUpUpdateButton(updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
             setUpUpdateButton(updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
         }
     }
 
     /** This method configure **Update [button]** using given [codex] and [title]. */
-    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex, title: String?){
-        if (model.isUpdateEnabled(codex).value == true){
+    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex, title: String?) {
+        if (model.isUpdateEnabled(codex).value == true) {
             button.updateCodexButton.setCardBackgroundColor(
                 ContextCompat.getColor(requireContext(), R.color.refresh_card_background_active)
             )
 
-            val activeRefreshButtonImageColor = ContextCompat.getColor(requireContext(), R.color.refresh_image_active)
+            val activeRefreshButtonImageColor = ContextCompat
+                .getColor(requireContext(), R.color.refresh_image_active)
 
             button.image.setColorFilter(activeRefreshButtonImageColor)
             button.title.setTextColor(activeRefreshButtonImageColor)
@@ -214,12 +222,13 @@ class UpdateCodexFragment : Fragment() {
             button.subtitle.text = CodexVersionParser.getChangeDate(codex)
             button.updateCodexButton.isEnabled = true
             button.updateCodexButton.cardElevation = 20F
-        }else{
+        } else {
             button.updateCodexButton.setCardBackgroundColor(
                 ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
             )
 
-            val activeRefreshButtonImageColor = ContextCompat.getColor(requireContext(), R.color.refresh_image)
+            val activeRefreshButtonImageColor = ContextCompat
+                .getColor(requireContext(), R.color.refresh_image)
 
             button.image.setColorFilter(activeRefreshButtonImageColor)
             button.title.setTextColor(activeRefreshButtonImageColor)
@@ -237,7 +246,7 @@ class UpdateCodexFragment : Fragment() {
      *
      * @see executeUpdatingFor
      */
-    private fun setOnClickListenerForUpdateButtons(){
+    private fun setOnClickListenerForUpdateButtons() {
         binding.apply {
             updateUk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UK) }
             updateUpk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UPK) }
@@ -251,13 +260,14 @@ class UpdateCodexFragment : Fragment() {
      *
      * Also it manage state of given [codex]'s update button.
      */
-    private fun executeUpdatingFor(codex: Codex){
-        if (NetworkCheck.isNotAvailable){
+    private fun executeUpdatingFor(codex: Codex) {
+        if (NetworkCheck.isNotAvailable) {
             Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
             return
         }
 
-        val rotateAnimation = RotateAnimation(0F, 360F,
+        val rotateAnimation = RotateAnimation(
+            0F, 360F,
             Animation.RELATIVE_TO_SELF, 0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f
         )
@@ -279,7 +289,11 @@ class UpdateCodexFragment : Fragment() {
             model.isUpdateEnabled(codex).postValue(true)
         }
         CoroutineScope(Dispatchers.Default).launch(handler) {
-            Snackbar.make(requireView(), "Обновление ${codex.rusName}", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                requireView(),
+                "Обновление ${codex.rusName}",
+                Snackbar.LENGTH_SHORT
+            ).show()
 
             val codexLists = CodexParser().get(codex)
             BaseCodexDatabase.update(codex, codexLists)
@@ -301,15 +315,15 @@ class UpdateCodexFragment : Fragment() {
     }
 
     /** This method returns **Update Codex Button** image by given [codex]. */
-    private fun getCodexImage(codex: Codex): View?{
-        return if (_binding != null){
-            when(codex){
+    private fun getCodexImage(codex: Codex): View? {
+        return if (_binding != null) {
+            when (codex) {
                 Codex.UK -> binding.updateUk.image
                 Codex.UPK -> binding.updateUpk.image
                 Codex.KoAP -> binding.updateKoap.image
                 Codex.PIKoAP -> binding.updatePikoap.image
             }
-        }else{
+        } else {
             null
         }
     }
@@ -319,7 +333,7 @@ class UpdateCodexFragment : Fragment() {
      *
      * **Note:** This is a *debug* method which will be executed only if [IS_DEBUG] equals `true`.
      */
-    private fun setUpClearAllButton(){
+    private fun setUpClearAllButton() {
         binding.debugClearAllButton.visibility = View.VISIBLE
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
@@ -342,9 +356,11 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun fabVisibility(visibility: Boolean) {
         val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
-        try { fab!!.isVisible = visibility }
-        catch (e: NullPointerException) {
-            Log.e(TAG, "Variable fab: ${e.message}")
+
+        if (fab != null) {
+            fab.isVisible = visibility
+        } else {
+            Log.e(TAG, "FAB is null: Cannot change it visibility")
         }
     }
 

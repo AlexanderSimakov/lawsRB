@@ -16,7 +16,7 @@ object CodexVersionParser {
     private const val TAG = "CodexVersionParser"
 
     /** Custom coroutine creation field. */
-    private val scope = CoroutineScope (Dispatchers.IO + SupervisorJob ())
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /**
      * Map storing the count of code changes.
@@ -68,7 +68,7 @@ object CodexVersionParser {
      * Updates the values of the maps of a certain code.
      * @param codex certain code from enum [Codex]
      */
-    private fun parse(codex: Codex){
+    private fun parse(codex: Codex) {
         val document = Jsoup.connect(codex.URL).get()
         val elements = document.select("main").select("p")
 
@@ -106,7 +106,8 @@ object CodexVersionParser {
         var lastChangeDate = ""
         for (element in elements) {
             if (element.attr("class").equals("changeadd")
-                && !element.nextElementSibling()!!.attr("class").equals("changeadd")) {
+                && !element.nextElementSibling()!!.attr("class").equals("changeadd")
+            ) {
                 lastChangeDate = formatDate(element.text())
             }
         }
@@ -142,9 +143,9 @@ object CodexVersionParser {
      */
     fun isHaveChanges(): Boolean {
         return isHaveChanges(Codex.UK) ||
-               isHaveChanges(Codex.UPK) ||
-               isHaveChanges(Codex.KoAP) ||
-               isHaveChanges(Codex.PIKoAP)
+                isHaveChanges(Codex.UPK) ||
+                isHaveChanges(Codex.KoAP) ||
+                isHaveChanges(Codex.PIKoAP)
     }
 
     /**

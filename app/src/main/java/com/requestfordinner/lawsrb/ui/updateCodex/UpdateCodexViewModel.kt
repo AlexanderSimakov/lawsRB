@@ -26,6 +26,7 @@ class UpdateCodexViewModel : ViewModel() {
     /** Equals `true`, if PIKoAP codex have changes. */
     private val isPIKoAPUpdateEnabled = MutableLiveData<Boolean>()
 
+    /** Equals `true` if **CheckUpdateButton** enabled. */
     var isCheckUpdateButtonEnabled = MutableLiveData<Boolean>()
 
     init {
@@ -34,8 +35,8 @@ class UpdateCodexViewModel : ViewModel() {
     }
 
     /** This method return `true` if given [codex] have changes. */
-    fun isUpdateEnabled(codex: Codex): MutableLiveData<Boolean>{
-        return when(codex){
+    fun isUpdateEnabled(codex: Codex): MutableLiveData<Boolean> {
+        return when (codex) {
             Codex.UK -> isUKUpdateEnabled
             Codex.UPK -> isUPKUpdateEnabled
             Codex.KoAP -> isKoAPUpdateEnabled
@@ -44,7 +45,7 @@ class UpdateCodexViewModel : ViewModel() {
     }
 
     /** This method return `true` if at least one codex have changes. */
-    fun isUpdateEnabled(): Boolean{
+    fun isUpdateEnabled(): Boolean {
         // '== true' because .value can be null
         return isUKUpdateEnabled.value == true ||
                 isUPKUpdateEnabled.value == true ||
@@ -53,7 +54,7 @@ class UpdateCodexViewModel : ViewModel() {
     }
 
     /** This method update information about codex's changes */
-    fun updateIsUpdateEnabled(){
+    fun updateIsUpdateEnabled() {
         isUKUpdateEnabled.postValue(CodexVersionParser.isHaveChanges(Codex.UK))
         isUPKUpdateEnabled.postValue(CodexVersionParser.isHaveChanges(Codex.UPK))
         isKoAPUpdateEnabled.postValue(CodexVersionParser.isHaveChanges(Codex.KoAP))

@@ -34,9 +34,12 @@ import kotlinx.coroutines.launch
  * @see RecyclerView
  * @see RecyclerView.Adapter
  */
-class ArticlePageAdapter (private val items: List<Any>,
-                          private val rvView: View,
-                          private val articlesDao: ArticlesDao) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticlePageAdapter(
+    private val items: List<Any>,
+    private val rvView: View,
+    private val articlesDao: ArticlesDao,
+    private val codeType: Codex
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /** [CoroutineScope] for executing async operations */
     private val coroutine = CoroutineScope(Dispatchers.Main)
@@ -52,12 +55,13 @@ class ArticlePageAdapter (private val items: List<Any>,
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class ArticleViewHolder(articleCardView: View) : RecyclerView.ViewHolder(articleCardView) {
-        val card: MaterialCardView = articleCardView.findViewById(R.id.article_card)
-        val title: TextView = articleCardView.findViewById(R.id.article_card_title)
-        val checkBox: CheckBox = articleCardView.findViewById(R.id.article_card_checkbox)
-        val expandable: LinearLayout = articleCardView.findViewById(R.id.article_card_expandable_layout)
-        val expandableText: TextView = articleCardView.findViewById(R.id.article_card_content)
+    class ArticleViewHolder(articleCardView: View) :
+        RecyclerView.ViewHolder(articleCardView) {
+        val card: MaterialCardView = articleCardView.findViewById(R.id.card)
+        val title: TextView = articleCardView.findViewById(R.id.title)
+        val checkBox: CheckBox = articleCardView.findViewById(R.id.checkbox)
+        val expandable: LinearLayout = articleCardView.findViewById(R.id.expandable_layout)
+        val expandableText: TextView = articleCardView.findViewById(R.id.content)
     }
 
     /**
@@ -66,13 +70,14 @@ class ArticlePageAdapter (private val items: List<Any>,
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class ChapterViewHolder(chapterCardView: View) : RecyclerView.ViewHolder(chapterCardView) {
-        val card: MaterialCardView = chapterCardView.findViewById(R.id.title_card)
-        val title: TextView = chapterCardView.findViewById(R.id.title_card_title)
+    class ChapterViewHolder(chapterCardView: View) :
+        RecyclerView.ViewHolder(chapterCardView) {
+        val card: MaterialCardView = chapterCardView.findViewById(R.id.card)
+        val title: TextView = chapterCardView.findViewById(R.id.title)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]::class){
+        return when (items[position]::class) {
             Article::class -> isArticle
             Chapter::class -> isChapter
             else -> throw IllegalArgumentException("items: List<Any> contain class ${items[position]::class.simpleName}, expected Article or Chapter")
@@ -111,13 +116,10 @@ class ArticlePageAdapter (private val items: List<Any>,
         }
 
     /** This method set up given Article [viewHolder] with given [article]. */
-    private fun setUpArticleView(article: Article, viewHolder: RecyclerView.ViewHolder){
+    private fun setUpArticleView(article: Article, viewHolder: RecyclerView.ViewHolder) {
         (viewHolder as ArticleViewHolder).title.text = article.title
         viewHolder.checkBox.isChecked = article.isLiked
         viewHolder.expandableText.text = article.content
-
-        var codeType = ArticlePageFragment.codexProvider.codeType
-        Log.d(TAG, "Current code type is: $codeType")
 
         viewHolder.card.setOnClickListener {
             TransitionManager.beginDelayedTransition(rvView as ViewGroup?, AutoTransition())
@@ -148,7 +150,7 @@ class ArticlePageAdapter (private val items: List<Any>,
     }
 
     /** This method set up given Chapter [viewHolder] with given [chapter]. */
-    private fun setUpChapterView(chapter: Chapter, viewHolder: RecyclerView.ViewHolder){
+    private fun setUpChapterView(chapter: Chapter, viewHolder: RecyclerView.ViewHolder) {
         (viewHolder as ChapterViewHolder).title.text = chapter.title
         viewHolder.card.setOnClickListener {
             PageNavigation.moveLeftTo(chapter)

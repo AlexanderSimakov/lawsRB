@@ -15,7 +15,9 @@ import java.net.SocketAddress
 class NetworkCheck(context: Context) {
     private val TAG = "NetworkCheck"
 
-    private val connectivityManager = getSystemService(context, ConnectivityManager::class.java) as ConnectivityManager
+    private val connectivityManager =
+        getSystemService(context, ConnectivityManager::class.java) as ConnectivityManager
+
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
@@ -37,7 +39,8 @@ class NetworkCheck(context: Context) {
             networkCapabilities: NetworkCapabilities
         ) {
             super.onCapabilitiesChanged(network, networkCapabilities)
-            val isChanges = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            val isChanges = networkCapabilities
+                .hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
             Log.d(TAG, "$isChanges")
         }
 
@@ -53,8 +56,7 @@ class NetworkCheck(context: Context) {
     fun subscribeForUpdates() {
         try {
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             Log.e(TAG, "${e.message}")
         }
     }
@@ -62,8 +64,7 @@ class NetworkCheck(context: Context) {
     fun unsubscribeForUpdates() {
         try {
             connectivityManager.unregisterNetworkCallback(networkCallback)
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             Log.e(TAG, "${e.message}")
         }
     }
@@ -76,8 +77,7 @@ class NetworkCheck(context: Context) {
             socket.connect(socketAddr, timeoutMs)
             socket.close()
             true
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             false
         }
     }
@@ -89,4 +89,3 @@ class NetworkCheck(context: Context) {
         val isNotAvailable get() = !_isAvailable
     }
 }
-

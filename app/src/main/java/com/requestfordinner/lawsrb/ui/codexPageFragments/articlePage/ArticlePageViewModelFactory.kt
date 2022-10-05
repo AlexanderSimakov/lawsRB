@@ -10,7 +10,9 @@ import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
  *
  * @see ArticlePageViewModel
  */
-class ArticlePageViewModelFactory(private val codexProvider: CodexProvider) : ViewModelProvider.Factory{
+class ArticlePageViewModelFactory(private val codexProvider: CodexProvider) :
+    ViewModelProvider.Factory {
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return ArticlePageViewModel(codexProvider) as T

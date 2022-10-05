@@ -13,6 +13,6 @@ import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
  * @see ChapterPageViewModelFactory
  * @see ChapterPageFragment
  */
-class ChapterPageViewModel(codexProvider: CodexProvider) :ViewModel(){
+class ChapterPageViewModel(codexProvider: CodexProvider) : ViewModel() {
     val pageItems: LiveData<List<Any>> = codexProvider.getChapterPageItems()
 }

@@ -22,7 +22,8 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
  * @see RecyclerView
  * @see RecyclerView.Adapter
  */
-class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SectionPageAdapter(private val items: List<Any>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val isSection = 1
     private val isPart = 2
 
@@ -32,8 +33,8 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class PartViewHolder(partCardView: View) : RecyclerView.ViewHolder(partCardView) {
-        val title: TextView = partCardView.findViewById(R.id.title_card_title)
+    class PartViewHolder(partCardView: View) : RecyclerView.ViewHolder(partCardView) {
+        val title: TextView = partCardView.findViewById(R.id.title)
     }
 
     /**
@@ -42,13 +43,14 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
      *
      * @see RecyclerView.ViewHolder
      */
-    inner class SectionViewHolder(sectionCardView: View) : RecyclerView.ViewHolder(sectionCardView) {
-        val card: MaterialCardView = sectionCardView.findViewById(R.id.item_card)
-        val title: TextView = sectionCardView.findViewById(R.id.item_card_title)
+    class SectionViewHolder(sectionCardView: View) :
+        RecyclerView.ViewHolder(sectionCardView) {
+        val card: MaterialCardView = sectionCardView.findViewById(R.id.card)
+        val title: TextView = sectionCardView.findViewById(R.id.title)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]::class){
+        return when (items[position]::class) {
             Section::class -> isSection
             Part::class -> isPart
             else -> throw IllegalArgumentException("items: List<Any> contain class ${items[position]::class.simpleName}, expected Section or Part")
@@ -73,7 +75,7 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) =
-        when (viewHolder.itemViewType){
+        when (viewHolder.itemViewType) {
             isSection -> {
                 val section: Section = items[position] as Section
                 setUpSectionView(section, viewHolder)
@@ -86,7 +88,7 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
         }
 
     /** This method set up given Section [viewHolder] with given [section]. */
-    private fun setUpSectionView(section: Section, viewHolder: RecyclerView.ViewHolder){
+    private fun setUpSectionView(section: Section, viewHolder: RecyclerView.ViewHolder) {
         (viewHolder as SectionViewHolder).title.text = section.title
         viewHolder.card.setOnClickListener {
             PageNavigation.moveRightTo(section)
@@ -96,7 +98,7 @@ class SectionPageAdapter (private val items: List<Any>) : RecyclerView.Adapter<R
     }
 
     /** This method set up given Part [viewHolder] with given [part]. */
-    private fun setUpPartView(part: Part, viewHolder: RecyclerView.ViewHolder){
+    private fun setUpPartView(part: Part, viewHolder: RecyclerView.ViewHolder) {
         (viewHolder as PartViewHolder).title.text = part.title
         Highlighter.applyTo(viewHolder.title, BaseCodexProvider.search)
     }
