@@ -125,7 +125,7 @@ class CodexParser {
                 if (element.text().contains("ГЛАВА")) {
                     chapterId++
                     codexLists.chapters.add(
-                        Chapter(element.text(), chapterId, parentId, false)
+                        Chapter(formatText(element.toString()), chapterId, parentId, false)
                     )
                 } else if (element.text().contains("ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ")
                     && !element.nextElementSibling()!!.text().contains("ГЛАВА")
@@ -275,7 +275,7 @@ class CodexParser {
         if (formattedText.contains("<sup></sup>"))
             formattedText = formattedText.replace("<sup></sup>", "")
 
-        formattedText = formattedText.replace("<sup>", "/")
+        formattedText = formattedText.replace("<sup>", "-")
             .replace("(<[^<]+>\\s*)".toRegex(), " ")
             .replace("&nbsp;", " ")
             .replace("  ", " ")
