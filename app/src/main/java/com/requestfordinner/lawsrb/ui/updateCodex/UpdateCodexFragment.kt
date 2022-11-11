@@ -51,19 +51,14 @@ class UpdateCodexFragment : Fragment() {
     private val IS_DEBUG: Boolean = false
 
     private lateinit var model: UpdateCodexViewModel
-
-    private var _binding: FragmentUpdateCodexBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentUpdateCodexBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
 
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
 
@@ -83,7 +78,7 @@ class UpdateCodexFragment : Fragment() {
             setUpClearAllButton()
         }
 
-        return root
+        return binding.root
     }
 
     /**
@@ -277,7 +272,7 @@ class UpdateCodexFragment : Fragment() {
             repeatCount = Animation.INFINITE
         }
 
-        getCodexImage(codex)?.startAnimation(rotateAnimation)
+        getCodexImage(codex).startAnimation(rotateAnimation)
 
         //The coroutine exception handler that will be called if the coroutine failed
         val handler = CoroutineExceptionHandler { _, exception ->
@@ -308,23 +303,19 @@ class UpdateCodexFragment : Fragment() {
                 Snackbar.make(it, "${codex.rusName} обновлен", Snackbar.LENGTH_SHORT).show()
             }
 
-            getCodexImage(codex)?.animation?.cancel()
+            getCodexImage(codex).animation?.cancel()
         }
 
         model.isUpdateEnabled(codex).value = false
     }
 
     /** This method returns **Update Codex Button** image by given [codex]. */
-    private fun getCodexImage(codex: Codex): View? {
-        return if (_binding != null) {
-            when (codex) {
-                Codex.UK -> binding.updateUk.image
-                Codex.UPK -> binding.updateUpk.image
-                Codex.KoAP -> binding.updateKoap.image
-                Codex.PIKoAP -> binding.updatePikoap.image
-            }
-        } else {
-            null
+    private fun getCodexImage(codex: Codex): View {
+        return when (codex) {
+            Codex.UK -> binding.updateUk.image
+            Codex.UPK -> binding.updateUpk.image
+            Codex.KoAP -> binding.updateKoap.image
+            Codex.PIKoAP -> binding.updatePikoap.image
         }
     }
 
@@ -367,6 +358,5 @@ class UpdateCodexFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         fabVisibility(true)
-        _binding = null
     }
 }
