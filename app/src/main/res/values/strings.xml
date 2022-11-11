@@ -27,4 +27,10 @@
     <string name="empty_favorites">Вы еще не добавили ни одной статьи в избранное</string>
     <string name="empty_page">Ожидание...</string>
 
+    <!-- Update Fragment -->
+    <string name="no_network_access">Нет доступа в Интернет</string>
+    <string name="no_codex_updates_available">На данный момент обновлений нет</string>
+    <string name="codex_updates_available">Доступны обновления кодексов</string>
+    <string name="start_update_codex_check">Проверка обновлений</string>
+
 </resources>
