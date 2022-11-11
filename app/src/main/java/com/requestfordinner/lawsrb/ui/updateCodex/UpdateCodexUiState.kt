@@ -52,18 +52,15 @@ data class UpdateCodexUiState(
 
     /** */
     fun copy(
-        states: List<Pair<Codex, ButtonState>>,
+        states: Map<Codex, ButtonState>,
         messageToShow: Int? = this.messageToShow
     ): UpdateCodexUiState {
         return UpdateCodexUiState(
-            UKButtonState = states.get(Codex.UK),
-            UPKButtonState = states.get(Codex.UPK),
-            KoAPButtonState = states.get(Codex.KoAP),
-            PIKoAPButtonState = states.get(Codex.PIKoAP),
+            UKButtonState = states[Codex.UK] ?: UKButtonState,
+            UPKButtonState = states[Codex.UPK] ?: UPKButtonState,
+            KoAPButtonState = states[Codex.KoAP] ?: KoAPButtonState,
+            PIKoAPButtonState = states[Codex.PIKoAP] ?: PIKoAPButtonState,
             messageToShow = messageToShow
         )
     }
-
-    private fun List<Pair<Codex, ButtonState>>.get(codex: Codex): ButtonState =
-        this.find { it.first == codex }?.second ?: getState(codex)
 }

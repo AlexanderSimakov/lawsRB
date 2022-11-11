@@ -85,7 +85,7 @@ class UpdateCodexViewModel : ViewModel() {
             _uiState.postValue(
                 _uiState.value?.copy(
                     messageToShow = getUpdatingMessage(codex),
-                    states = listOf(Pair(codex, ButtonState.UPDATING))
+                    states = mapOf(codex to ButtonState.UPDATING)
                 )
             )
 
@@ -97,7 +97,7 @@ class UpdateCodexViewModel : ViewModel() {
                 _uiState.postValue(
                     _uiState.value?.copy(
                         messageToShow = R.string.internet_connection_interrupted,
-                        states = listOf(Pair(codex, ButtonState.ENABLED))
+                        states = mapOf(codex to ButtonState.ENABLED)
                     )
                 )
             }.onSuccess {
@@ -110,7 +110,7 @@ class UpdateCodexViewModel : ViewModel() {
                 _uiState.postValue(
                     _uiState.value?.copy(
                         messageToShow = getUpdatedMessage(codex),
-                        states = listOf(Pair(codex, ButtonState.DISABLED))
+                        states = mapOf(codex to ButtonState.DISABLED)
                     )
                 )
             }

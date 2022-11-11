@@ -1,9 +1,7 @@
 package com.requestfordinner.lawsrb.ui.updateCodex
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -21,6 +19,7 @@ import com.requestfordinner.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.requestfordinner.lawsrb.databinding.UpdateCodexButtonBinding
 import com.requestfordinner.lawsrb.ui.updateCodex.UpdateCodexUiState.ButtonState
 import com.requestfordinner.lawsrb.ui.NotificationBadge
+import com.requestfordinner.lawsrb.utils.ImprovedToast
 
 /**
  * This class is a child of [Fragment] which represents **Update Codex Page** where user can:
@@ -32,7 +31,6 @@ import com.requestfordinner.lawsrb.ui.NotificationBadge
  * @see UpdateCodexViewModel
  */
 class UpdateCodexFragment : Fragment() {
-    private val TAG = "UpdateCodexFragment"
 
     /**
      * This variable is responsible for enabling and disabling some debug functions such as
@@ -44,8 +42,7 @@ class UpdateCodexFragment : Fragment() {
 
     private lateinit var model: UpdateCodexViewModel
     private lateinit var binding: FragmentUpdateCodexBinding
-
-    private var toast: Toast? = null
+    private lateinit var toast: ImprovedToast
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +52,7 @@ class UpdateCodexFragment : Fragment() {
 
         binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
+        toast = ImprovedToast(requireContext())
 
         // Allows the AppBarLayout to open with animation if it was hidden on transition to the fragment
         val toolbarLayout = requireActivity().findViewById<AppBarLayout>(R.id.app_bar_layout)
@@ -97,29 +95,16 @@ class UpdateCodexFragment : Fragment() {
     private fun setUpObservers() {
         model.uiState.observe(viewLifecycleOwner) {
             it.messageToShow?.let { messageId ->
-                showMessage(messageId)
+                toast.show(messageId)
                 it.messageToShow = null
             }
 
-            setUpUpdateButton(binding.updateUk, Codex.UK)
-            setUpUpdateButton(binding.updateUpk, Codex.UPK)
-            setUpUpdateButton(binding.updateKoap, Codex.KoAP)
-            setUpUpdateButton(binding.updatePikoap, Codex.PIKoAP)
+            Codex.forEach { codex -> setUpUpdateButton(binding.getButton(codex), codex) }
             binding.checkUpdatesButton.isEnabled =
                 it.checkUpdatesButtonState == ButtonState.ENABLED
 
             NotificationBadge.isVisible = model.uiState.value?.isUpdateEnabled() ?: false
         }
-    }
-
-    private fun showMessage(messageId: Int) {
-        toast?.cancel()
-        toast = Toast.makeText(
-            requireContext(),
-            messageId,
-            Toast.LENGTH_SHORT
-        )
-        toast?.show()
     }
 
     /**
@@ -128,12 +113,7 @@ class UpdateCodexFragment : Fragment() {
      * @see setUpUpdateButton
      */
     private fun setUpUpdateButtons() {
-        binding.apply {
-            setUpUpdateButton(updateUk, Codex.UK)
-            setUpUpdateButton(updateUpk, Codex.UPK)
-            setUpUpdateButton(updateKoap, Codex.KoAP)
-            setUpUpdateButton(updatePikoap, Codex.PIKoAP)
-        }
+        Codex.forEach { codex -> setUpUpdateButton(binding.getButton(codex), codex) }
     }
 
     /** This method configure **Update [button]** using given [codex] and [title]. */
@@ -152,21 +132,11 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun setUpListeners() {
         binding.checkUpdatesButton.setOnClickListener { model.checkCodexUpdates() }
-        binding.apply {
-            updateUk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UK) }
-            updateUpk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UPK) }
-            updateKoap.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.KoAP) }
-            updatePikoap.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.PIKoAP) }
+        Codex.forEach { codex ->
+            binding.getButton(codex).updateCodexButton.setOnClickListener {
+                model.executeCodexUpdating(codex)
+            }
         }
-    }
-
-    /**
-     * This method execute given [codex]'s database updating.
-     *
-     * Also it manage state of given [codex]'s update button.
-     */
-    private fun executeUpdatingFor(codex: Codex) {
-        model.executeCodexUpdating(codex)
     }
 
     /**
@@ -178,20 +148,11 @@ class UpdateCodexFragment : Fragment() {
         binding.debugClearAllButton.visibility = View.VISIBLE
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
-
             BaseCodexProvider.setDefaultPageItems()
-            Preferences.setCodexChangesCount(Codex.UK, -1)
-            Preferences.setCodexChangesCount(Codex.UPK, -1)
-            Preferences.setCodexChangesCount(Codex.KoAP, -1)
-            Preferences.setCodexChangesCount(Codex.PIKoAP, -1)
-
+            Codex.forEach { codex -> Preferences.setCodexChangesCount(codex, -1) }
             model.updateIsUpdateEnabled()
 
-            Toast.makeText(
-                requireContext(),
-                "Базы данных очищены",
-                Toast.LENGTH_SHORT
-            ).show()
+            toast.show("Базы данных очищены")
         }
     }
 
@@ -200,13 +161,8 @@ class UpdateCodexFragment : Fragment() {
      * @param visibility button display state, pass false to hide, pass true to show
      */
     private fun fabVisibility(visibility: Boolean) {
-        val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
-
-        if (fab != null) {
-            fab.isVisible = visibility
-        } else {
-            Log.e(TAG, "FAB is null: Cannot change it visibility")
-        }
+        requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+            ?.isVisible = visibility
     }
 
     override fun onDestroyView() {
@@ -214,4 +170,12 @@ class UpdateCodexFragment : Fragment() {
         fabVisibility(true)
     }
 
+    private fun FragmentUpdateCodexBinding.getButton(codex: Codex): UpdateCodexButtonBinding {
+        return when (codex) {
+            Codex.UK -> updateUk
+            Codex.UPK -> updateUpk
+            Codex.KoAP -> updateKoap
+            Codex.PIKoAP -> updatePikoap
+        }
+    }
 }
