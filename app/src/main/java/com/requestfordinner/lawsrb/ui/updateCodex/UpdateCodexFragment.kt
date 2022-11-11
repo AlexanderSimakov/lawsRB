@@ -48,7 +48,7 @@ class UpdateCodexFragment : Fragment() {
      *
      * **Attention:** make sure that you set it to `false` after using.
      */
-    private val IS_DEBUG: Boolean = false
+    private val IS_DEBUG: Boolean = true
 
     private lateinit var model: UpdateCodexViewModel
     private lateinit var binding: FragmentUpdateCodexBinding
