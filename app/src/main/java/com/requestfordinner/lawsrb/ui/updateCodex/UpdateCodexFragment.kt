@@ -3,11 +3,7 @@ package com.requestfordinner.lawsrb.ui.updateCodex
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -16,12 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.Preferences
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.htmlParser.Codex
-import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.requestfordinner.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.requestfordinner.lawsrb.databinding.UpdateCodexButtonBinding
@@ -107,11 +101,12 @@ class UpdateCodexFragment : Fragment() {
                 it.messageToShow = null
             }
 
-            setUpUpdateButton(binding.updateUk, Codex.UK, getString(R.string.menu_UK))
-            setUpUpdateButton(binding.updateUpk, Codex.UPK, getString(R.string.menu_UPK))
-            setUpUpdateButton(binding.updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
-            setUpUpdateButton(binding.updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
-            binding.checkUpdatesButton.isEnabled = it.checkUpdatesButtonState == ButtonState.ENABLED
+            setUpUpdateButton(binding.updateUk, Codex.UK)
+            setUpUpdateButton(binding.updateUpk, Codex.UPK)
+            setUpUpdateButton(binding.updateKoap, Codex.KoAP)
+            setUpUpdateButton(binding.updatePikoap, Codex.PIKoAP)
+            binding.checkUpdatesButton.isEnabled =
+                it.checkUpdatesButtonState == ButtonState.ENABLED
 
             NotificationBadge.isVisible = model.uiState.value?.isUpdateEnabled() ?: false
         }
@@ -134,71 +129,19 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun setUpUpdateButtons() {
         binding.apply {
-            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_UK))
-            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_UPK))
-            setUpUpdateButton(updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
-            setUpUpdateButton(updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
+            setUpUpdateButton(updateUk, Codex.UK)
+            setUpUpdateButton(updateUpk, Codex.UPK)
+            setUpUpdateButton(updateKoap, Codex.KoAP)
+            setUpUpdateButton(updatePikoap, Codex.PIKoAP)
         }
     }
 
     /** This method configure **Update [button]** using given [codex] and [title]. */
-    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex, title: String?) {
-        if (model.uiState.value!!.getState(codex) == ButtonState.ENABLED) {
-            button.updateCodexButton.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.refresh_card_background_active)
-            )
-
-            val activeRefreshButtonImageColor = ContextCompat
-                .getColor(requireContext(), R.color.refresh_image_active)
-
-            button.image.setColorFilter(activeRefreshButtonImageColor)
-            button.title.setTextColor(activeRefreshButtonImageColor)
-            button.subtitle.setTextColor(activeRefreshButtonImageColor)
-
-            button.title.text = "Обновить $title"
-            button.subtitle.text = CodexVersionParser.getChangeDate(codex)
-            button.updateCodexButton.isEnabled = true
-            button.updateCodexButton.cardElevation = 20F
-            getCodexImage(codex).animation?.cancel()
-        } else if (model.uiState.value!!.getState(codex) == ButtonState.DISABLED) {
-            button.updateCodexButton.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
-            )
-
-            val activeRefreshButtonImageColor = ContextCompat
-                .getColor(requireContext(), R.color.refresh_image)
-
-            button.image.setColorFilter(activeRefreshButtonImageColor)
-            button.title.setTextColor(activeRefreshButtonImageColor)
-            button.subtitle.setTextColor(activeRefreshButtonImageColor)
-
-            button.title.text = title
-            button.subtitle.text = Preferences.getCodexUpdateDate(codex)
-            button.updateCodexButton.isEnabled = false
-            button.updateCodexButton.cardElevation = 5F
-            getCodexImage(codex).animation?.cancel()
-        } else if (model.uiState.value!!.getState(codex) == ButtonState.UPDATING) {
-            button.updateCodexButton.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
-            )
-
-            val activeRefreshButtonImageColor = ContextCompat
-                .getColor(requireContext(), R.color.refresh_image)
-
-            button.image.setColorFilter(activeRefreshButtonImageColor)
-            button.title.setTextColor(activeRefreshButtonImageColor)
-            button.subtitle.setTextColor(activeRefreshButtonImageColor)
-
-            button.title.text = title
-            button.subtitle.text = Preferences.getCodexUpdateDate(codex)
-            button.updateCodexButton.isEnabled = false
-            button.updateCodexButton.cardElevation = 5F
-
-            getCodexImage(codex).let {
-                if (it.animation == null) {
-                    it.startAnimation(getInfinityRotateAnimation())
-                }
-            }
+    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex) {
+        when (model.uiState.value!!.getState(codex)) {
+            ButtonState.ENABLED -> button.makeEnabled(requireContext(), codex).cancelAnimation()
+            ButtonState.DISABLED -> button.makeDisabled(requireContext(), codex).cancelAnimation()
+            ButtonState.UPDATING -> button.makeDisabled(requireContext(), codex).continueAnimation()
         }
     }
 
@@ -224,16 +167,6 @@ class UpdateCodexFragment : Fragment() {
      */
     private fun executeUpdatingFor(codex: Codex) {
         model.executeCodexUpdating(codex)
-    }
-
-    /** This method returns **Update Codex Button** image by given [codex]. */
-    private fun getCodexImage(codex: Codex): View {
-        return when (codex) {
-            Codex.UK -> binding.updateUk.image
-            Codex.UPK -> binding.updateUpk.image
-            Codex.KoAP -> binding.updateKoap.image
-            Codex.PIKoAP -> binding.updatePikoap.image
-        }
     }
 
     /**
@@ -281,16 +214,4 @@ class UpdateCodexFragment : Fragment() {
         fabVisibility(true)
     }
 
-    private fun getInfinityRotateAnimation(): RotateAnimation {
-        return RotateAnimation(
-            0F, 360F,
-            Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f
-        ).apply {
-            duration = 2000
-            interpolator = LinearInterpolator()
-            repeatCount = Animation.INFINITE
-        }
-    }
 }
-
