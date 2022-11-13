@@ -69,4 +69,9 @@ dependencies {
 
     //Jsoup
     implementation 'org.jsoup:jsoup:1.14.3'
+
+    // Groupie
+    def groupie_version = "2.10.1"
+    implementation "com.github.lisawray.groupie:groupie:$groupie_version"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
 }
