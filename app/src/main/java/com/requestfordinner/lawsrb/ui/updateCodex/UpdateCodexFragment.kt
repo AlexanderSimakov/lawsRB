@@ -72,11 +72,7 @@ class UpdateCodexFragment : Fragment() {
         return binding.root
     }
 
-    /**
-     * Menu overriding.
-     *
-     * Allows to hide unnecessary menu items in the current fragment.
-     */
+    /** Hides unnecessary menu items in the current fragment */
     private fun clearMenuOptions() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             //Remove all existing items from the menu,
@@ -91,7 +87,7 @@ class UpdateCodexFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
 
-    /** This method set up *observes* for view model's button state variables. */
+    /** This method set up *observes* for view model's ui state. */
     private fun setUpObservers() {
         model.uiState.observe(viewLifecycleOwner) {
             it.messageToShow?.let { messageId ->
@@ -116,7 +112,7 @@ class UpdateCodexFragment : Fragment() {
         Codex.forEach { codex -> setUpUpdateButton(binding.getButton(codex), codex) }
     }
 
-    /** This method configure **Update [button]** using given [codex] and [title]. */
+    /** This method configure **Update [button]** using given [codex]. */
     private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex) {
         when (model.uiState.value!!.getState(codex)) {
             ButtonState.ENABLED -> button.makeEnabled(requireContext(), codex).cancelAnimation()
@@ -125,11 +121,7 @@ class UpdateCodexFragment : Fragment() {
         }
     }
 
-    /**
-     * This method set up *OnClickListener* for each update button using [executeUpdatingFor] method.
-     *
-     * @see executeUpdatingFor
-     */
+    /** This method set up *OnClickListener* for buttons. */
     private fun setUpListeners() {
         binding.checkUpdatesButton.setOnClickListener { model.checkCodexUpdates() }
         Codex.forEach { codex ->
@@ -157,7 +149,7 @@ class UpdateCodexFragment : Fragment() {
     }
 
     /**
-     * The method is responsible for hiding and showing the Floating Action Button.
+     * The method is responsible for hiding and showing the [FloatingActionButton].
      * @param visibility button display state, pass false to hide, pass true to show
      */
     private fun fabVisibility(visibility: Boolean) {
@@ -170,6 +162,7 @@ class UpdateCodexFragment : Fragment() {
         fabVisibility(true)
     }
 
+    /** This method returns [UpdateCodexButtonBinding] for given [codex]. */
     private fun FragmentUpdateCodexBinding.getButton(codex: Codex): UpdateCodexButtonBinding {
         return when (codex) {
             Codex.UK -> updateUk

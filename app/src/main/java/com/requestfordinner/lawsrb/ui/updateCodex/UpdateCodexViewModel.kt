@@ -18,10 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * This is a child class of [ViewModel] which is used in [UpdateCodexFragment].
- * It contain methods which helps to work with update buttons.
+ * This is a child class of [ViewModel] which manage [UpdateCodexFragment].
  *
- * @see ViewModel
  * @see [UpdateCodexFragment]
  */
 class UpdateCodexViewModel : ViewModel() {
@@ -30,14 +28,18 @@ class UpdateCodexViewModel : ViewModel() {
 
     private var _uiState = MutableLiveData(UpdateCodexUiState())
 
-    /** */
+    /**
+     * The state of [UpdateCodexFragment].
+     *
+     * @see [UpdateCodexUiState]
+     */
     val uiState: LiveData<UpdateCodexUiState> = _uiState
 
     init {
         updateIsUpdateEnabled()
     }
 
-    /** */
+    /** Check codexes for updates. If there are then updates buttons state. */
     fun checkCodexUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
             if (NetworkCheck.isNotAvailable) {
@@ -72,7 +74,7 @@ class UpdateCodexViewModel : ViewModel() {
         }
     }
 
-    /** */
+    /** Execute updating for given [codex]. */
     fun executeCodexUpdating(codex: Codex) {
         if (NetworkCheck.isNotAvailable) {
             _uiState.postValue(
@@ -117,6 +119,7 @@ class UpdateCodexViewModel : ViewModel() {
         }
     }
 
+    /** Returns a message about given [codex] **updating**. */
     private fun getUpdatingMessage(codex: Codex): Int {
         return when (codex) {
             Codex.UK -> R.string.UK_updating
@@ -126,6 +129,7 @@ class UpdateCodexViewModel : ViewModel() {
         }
     }
 
+    /** Returns a message about **updated** [codex]. */
     private fun getUpdatedMessage(codex: Codex): Int {
         return when (codex) {
             Codex.UK -> R.string.UK_updated
@@ -135,7 +139,7 @@ class UpdateCodexViewModel : ViewModel() {
         }
     }
 
-    /** This method update information about codex's changes */
+    /** Updates button state. */
     fun updateIsUpdateEnabled() {
         _uiState.postValue(
             _uiState.value?.copy(
@@ -148,6 +152,7 @@ class UpdateCodexViewModel : ViewModel() {
         )
     }
 
+    /** Returns [ButtonState] for given [codex] using [CodexVersionParser]. */
     private fun getButtonStateByChanges(codex: Codex): ButtonState {
         return if (CodexVersionParser.isHaveChanges(codex)) ButtonState.ENABLED
         else ButtonState.DISABLED

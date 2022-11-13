@@ -10,6 +10,7 @@ import com.requestfordinner.lawsrb.basic.htmlParser.Codex
 import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.databinding.UpdateCodexButtonBinding
 
+/** Set up *enabled* button style. */
 fun UpdateCodexButtonBinding.makeEnabled(context: Context, codex: Codex): UpdateCodexButtonBinding {
     setColors(
         context.getColor(R.color.refresh_image_active),
@@ -24,6 +25,7 @@ fun UpdateCodexButtonBinding.makeEnabled(context: Context, codex: Codex): Update
     return this
 }
 
+/** Set up *disabled* button style. */
 fun UpdateCodexButtonBinding.makeDisabled(
     context: Context,
     codex: Codex
@@ -45,6 +47,7 @@ fun UpdateCodexButtonBinding.cancelAnimation(): UpdateCodexButtonBinding {
     return this
 }
 
+/** Start button load animation if it not started. */
 fun UpdateCodexButtonBinding.continueAnimation(): UpdateCodexButtonBinding {
     if (image.animation == null) {
         image.startAnimation(
@@ -62,6 +65,9 @@ fun UpdateCodexButtonBinding.continueAnimation(): UpdateCodexButtonBinding {
     return this
 }
 
+/**
+ * Set up [foregroundColor] and [backgroundColor].
+ */
 fun UpdateCodexButtonBinding.setColors(foregroundColor: Int, backgroundColor: Int) {
     updateCodexButton.setCardBackgroundColor(backgroundColor)
     image.setColorFilter(foregroundColor)
