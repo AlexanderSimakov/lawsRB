@@ -21,5 +21,11 @@ enum class Codex(
     KoAP("https://etalonline.by/document/?regnum=hk2100091&q_id=5677256", "КоАП"),
 
     /** Represents Procedural-Executive Code on Administrative Offenses. */
-    PIKoAP("https://etalonline.by/document/?regnum=hk2100092&q_id=5677256", "ПИКоАП")
+    PIKoAP("https://etalonline.by/document/?regnum=hk2100092&q_id=5677256", "ПИКоАП");
+
+    companion object {
+        fun forEach(action: (Codex) -> Unit) {
+            enumValues<Codex>().forEach(action)
+        }
+    }
 }

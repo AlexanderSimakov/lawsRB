@@ -27,4 +27,19 @@
     <string name="empty_favorites">Вы еще не добавили ни одной статьи в избранное</string>
     <string name="empty_page">Ожидание...</string>
 
+    <!-- Update Fragment -->
+    <string name="no_network_access">Нет доступа в Интернет</string>
+    <string name="no_codex_updates_available">На данный момент обновлений нет</string>
+    <string name="codex_updates_available">Доступны обновления кодексов</string>
+    <string name="start_update_codex_check">Проверка обновлений</string>
+    <string name="internet_connection_interrupted">Интернет-соединение прервано</string>
+    <string name="UK_updating">Обновление УК</string>
+    <string name="UPK_updating">Обновление УПК</string>
+    <string name="KoAP_updating">Обновление КоАП</string>
+    <string name="PIKoAP_updating">Обновление ПИКоАП</string>
+    <string name="UK_updated">УК обновлен</string>
+    <string name="UPK_updated">УПК обновлен</string>
+    <string name="KoAP_updated">КоАП обновлен</string>
+    <string name="PIKoAP_updated">ПИКоАП обновлен</string>
+
 </resources>

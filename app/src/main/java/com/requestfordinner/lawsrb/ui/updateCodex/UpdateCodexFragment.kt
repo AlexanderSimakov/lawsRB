@@ -1,12 +1,7 @@
 package com.requestfordinner.lawsrb.ui.updateCodex
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -15,20 +10,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.requestfordinner.lawsrb.R
-import com.requestfordinner.lawsrb.basic.NetworkCheck
 import com.requestfordinner.lawsrb.basic.Preferences
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.htmlParser.Codex
-import com.requestfordinner.lawsrb.basic.htmlParser.CodexParser
-import com.requestfordinner.lawsrb.basic.htmlParser.CodexVersionParser
 import com.requestfordinner.lawsrb.basic.roomDatabase.BaseCodexDatabase
 import com.requestfordinner.lawsrb.databinding.FragmentUpdateCodexBinding
 import com.requestfordinner.lawsrb.databinding.UpdateCodexButtonBinding
+import com.requestfordinner.lawsrb.ui.updateCodex.UpdateCodexUiState.ButtonState
 import com.requestfordinner.lawsrb.ui.NotificationBadge
-import kotlinx.coroutines.*
-import java.lang.NullPointerException
+import com.requestfordinner.lawsrb.utils.ImprovedToast
 
 /**
  * This class is a child of [Fragment] which represents **Update Codex Page** where user can:
@@ -40,7 +31,6 @@ import java.lang.NullPointerException
  * @see UpdateCodexViewModel
  */
 class UpdateCodexFragment : Fragment() {
-    private val TAG = "UpdateCodexFragment"
 
     /**
      * This variable is responsible for enabling and disabling some debug functions such as
@@ -51,21 +41,18 @@ class UpdateCodexFragment : Fragment() {
     private val IS_DEBUG: Boolean = false
 
     private lateinit var model: UpdateCodexViewModel
-
-    private var _binding: FragmentUpdateCodexBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentUpdateCodexBinding
+    private lateinit var toast: ImprovedToast
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
+        binding = FragmentUpdateCodexBinding.inflate(inflater, container, false)
         model = ViewModelProviders.of(this)[UpdateCodexViewModel::class.java]
+        toast = ImprovedToast(requireContext())
 
         // Allows the AppBarLayout to open with animation if it was hidden on transition to the fragment
         val toolbarLayout = requireActivity().findViewById<AppBarLayout>(R.id.app_bar_layout)
@@ -74,23 +61,18 @@ class UpdateCodexFragment : Fragment() {
         clearMenuOptions()
         fabVisibility(false)
 
-        setUpCheckCodexUpdatesButton()
         setUpObservers()
         setUpUpdateButtons()
-        setOnClickListenerForUpdateButtons()
+        setUpListeners()
 
         if (IS_DEBUG) {
             setUpClearAllButton()
         }
 
-        return root
+        return binding.root
     }
 
-    /**
-     * Menu overriding.
-     *
-     * Allows to hide unnecessary menu items in the current fragment.
-     */
+    /** Hides unnecessary menu items in the current fragment */
     private fun clearMenuOptions() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             //Remove all existing items from the menu,
@@ -105,88 +87,19 @@ class UpdateCodexFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
 
-    /** This method configure **CheckCodexUpdates** button and set it listener. */
-    private fun setUpCheckCodexUpdatesButton() {
-        // TODO: use string.xml for text messages
-        binding.checkUpdatesButton.setOnClickListener {
-            if (NetworkCheck.isNotAvailable) {
-                Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val handler = CoroutineExceptionHandler { _, exception ->
-                Log.e(TAG, "Internet connection fallen: $exception")
-            }
-            CoroutineScope(Dispatchers.Default).launch(handler) {
-                model.isCheckUpdateButtonEnabled.postValue(false)
-                Snackbar.make(requireView(), "Проверка обновлений", Snackbar.LENGTH_SHORT).show()
-
-                CodexVersionParser.update().join()
-
-                if (CodexVersionParser.isHaveChanges()) {
-                    model.updateIsUpdateEnabled()
-                    view?.let {
-                        Snackbar.make(
-                            it,
-                            "Доступны обновления кодексов",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                } else {
-                    view?.let {
-                        Snackbar.make(
-                            it,
-                            "На данный момент обновлений нет",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                model.isCheckUpdateButtonEnabled.postValue(true)
-            }
-        }
-    }
-
-    /** This method set up *observes* for view model's button state variables. */
+    /** This method set up *observes* for view model's ui state. */
     private fun setUpObservers() {
-        model.isCheckUpdateButtonEnabled.observe(viewLifecycleOwner) {
-            binding.checkUpdatesButton.isEnabled = it
-        }
+        model.uiState.observe(viewLifecycleOwner) {
+            it.messageToShow?.let { messageId ->
+                toast.show(messageId)
+                it.messageToShow = null
+            }
 
-        model.isUpdateEnabled(Codex.UK).observe(viewLifecycleOwner) {
-            setUpUpdateButton(
-                binding.updateUk,
-                Codex.UK,
-                getString(R.string.menu_UK)
-            )
-            NotificationBadge.isVisible = model.isUpdateEnabled()
-        }
+            Codex.forEach { codex -> setUpUpdateButton(binding.getButton(codex), codex) }
+            binding.checkUpdatesButton.isEnabled =
+                it.checkUpdatesButtonState == ButtonState.ENABLED
 
-        model.isUpdateEnabled(Codex.UPK).observe(viewLifecycleOwner) {
-            setUpUpdateButton(
-                binding.updateUpk,
-                Codex.UPK,
-                getString(R.string.menu_UPK)
-            )
-            NotificationBadge.isVisible = model.isUpdateEnabled()
-        }
-
-        model.isUpdateEnabled(Codex.KoAP).observe(viewLifecycleOwner) {
-            setUpUpdateButton(
-                binding.updateKoap,
-                Codex.KoAP,
-                getString(R.string.menu_KoAP)
-            )
-            NotificationBadge.isVisible = model.isUpdateEnabled()
-        }
-
-        model.isUpdateEnabled(Codex.PIKoAP).observe(viewLifecycleOwner) {
-            setUpUpdateButton(
-                binding.updatePikoap,
-                Codex.PIKoAP,
-                getString(R.string.menu_PIKoAP)
-            )
-            NotificationBadge.isVisible = model.isUpdateEnabled()
+            NotificationBadge.isVisible = model.uiState.value?.isUpdateEnabled() ?: false
         }
     }
 
@@ -196,135 +109,25 @@ class UpdateCodexFragment : Fragment() {
      * @see setUpUpdateButton
      */
     private fun setUpUpdateButtons() {
-        binding.apply {
-            setUpUpdateButton(updateUk, Codex.UK, getString(R.string.menu_UK))
-            setUpUpdateButton(updateUpk, Codex.UPK, getString(R.string.menu_UPK))
-            setUpUpdateButton(updateKoap, Codex.KoAP, getString(R.string.menu_KoAP))
-            setUpUpdateButton(updatePikoap, Codex.PIKoAP, getString(R.string.menu_PIKoAP))
+        Codex.forEach { codex -> setUpUpdateButton(binding.getButton(codex), codex) }
+    }
+
+    /** This method configure **Update [button]** using given [codex]. */
+    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex) {
+        when (model.uiState.value!!.getState(codex)) {
+            ButtonState.ENABLED -> button.makeEnabled(requireContext(), codex).cancelAnimation()
+            ButtonState.DISABLED -> button.makeDisabled(requireContext(), codex).cancelAnimation()
+            ButtonState.UPDATING -> button.makeDisabled(requireContext(), codex).continueAnimation()
         }
     }
 
-    /** This method configure **Update [button]** using given [codex] and [title]. */
-    private fun setUpUpdateButton(button: UpdateCodexButtonBinding, codex: Codex, title: String?) {
-        if (model.isUpdateEnabled(codex).value == true) {
-            button.updateCodexButton.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.refresh_card_background_active)
-            )
-
-            val activeRefreshButtonImageColor = ContextCompat
-                .getColor(requireContext(), R.color.refresh_image_active)
-
-            button.image.setColorFilter(activeRefreshButtonImageColor)
-            button.title.setTextColor(activeRefreshButtonImageColor)
-            button.subtitle.setTextColor(activeRefreshButtonImageColor)
-
-            button.title.text = "Обновить $title"
-            button.subtitle.text = CodexVersionParser.getChangeDate(codex)
-            button.updateCodexButton.isEnabled = true
-            button.updateCodexButton.cardElevation = 20F
-        } else {
-            button.updateCodexButton.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.refresh_card_background)
-            )
-
-            val activeRefreshButtonImageColor = ContextCompat
-                .getColor(requireContext(), R.color.refresh_image)
-
-            button.image.setColorFilter(activeRefreshButtonImageColor)
-            button.title.setTextColor(activeRefreshButtonImageColor)
-            button.subtitle.setTextColor(activeRefreshButtonImageColor)
-
-            button.title.text = title
-            button.subtitle.text = Preferences.getCodexUpdateDate(codex)
-            button.updateCodexButton.isEnabled = false
-            button.updateCodexButton.cardElevation = 5F
-        }
-    }
-
-    /**
-     * This method set up *OnClickListener* for each update button using [executeUpdatingFor] method.
-     *
-     * @see executeUpdatingFor
-     */
-    private fun setOnClickListenerForUpdateButtons() {
-        binding.apply {
-            updateUk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UK) }
-            updateUpk.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.UPK) }
-            updateKoap.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.KoAP) }
-            updatePikoap.updateCodexButton.setOnClickListener { executeUpdatingFor(Codex.PIKoAP) }
-        }
-    }
-
-    /**
-     * This method execute given [codex]'s database updating.
-     *
-     * Also it manage state of given [codex]'s update button.
-     */
-    private fun executeUpdatingFor(codex: Codex) {
-        if (NetworkCheck.isNotAvailable) {
-            Snackbar.make(requireView(), "Нет доступа в Интернет", Snackbar.LENGTH_SHORT).show()
-            return
-        }
-
-        val rotateAnimation = RotateAnimation(
-            0F, 360F,
-            Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f
-        )
-        rotateAnimation.apply {
-            duration = 2000
-            interpolator = LinearInterpolator()
-            repeatCount = Animation.INFINITE
-        }
-
-        getCodexImage(codex)?.startAnimation(rotateAnimation)
-
-        //The coroutine exception handler that will be called if the coroutine failed
-        val handler = CoroutineExceptionHandler { _, exception ->
-            Log.e(TAG, "Internet connection interrupted: $exception")
-            view?.let {
-                Snackbar.make(it, "Интернет-соединение прервано", Snackbar.LENGTH_SHORT).show()
+    /** This method set up *OnClickListener* for buttons. */
+    private fun setUpListeners() {
+        binding.checkUpdatesButton.setOnClickListener { model.checkCodexUpdates() }
+        Codex.forEach { codex ->
+            binding.getButton(codex).updateCodexButton.setOnClickListener {
+                model.executeCodexUpdating(codex)
             }
-            getCodexImage(codex)?.animation?.cancel()
-            model.isUpdateEnabled(codex).postValue(true)
-        }
-        CoroutineScope(Dispatchers.Default).launch(handler) {
-            Snackbar.make(
-                requireView(),
-                "Обновление ${codex.rusName}",
-                Snackbar.LENGTH_SHORT
-            ).show()
-
-            val codexLists = CodexParser().get(codex)
-            BaseCodexDatabase.update(codex, codexLists)
-            BaseCodexProvider.setDefaultPageItems()
-            Preferences.setCodexInfo(
-                codex,
-                CodexVersionParser.getChangesCount(codex),
-                CodexVersionParser.getChangeDate(codex)
-            )
-
-            view?.let {
-                Snackbar.make(it, "${codex.rusName} обновлен", Snackbar.LENGTH_SHORT).show()
-            }
-
-            getCodexImage(codex)?.animation?.cancel()
-        }
-
-        model.isUpdateEnabled(codex).value = false
-    }
-
-    /** This method returns **Update Codex Button** image by given [codex]. */
-    private fun getCodexImage(codex: Codex): View? {
-        return if (_binding != null) {
-            when (codex) {
-                Codex.UK -> binding.updateUk.image
-                Codex.UPK -> binding.updateUpk.image
-                Codex.KoAP -> binding.updateKoap.image
-                Codex.PIKoAP -> binding.updatePikoap.image
-            }
-        } else {
-            null
         }
     }
 
@@ -337,36 +140,35 @@ class UpdateCodexFragment : Fragment() {
         binding.debugClearAllButton.visibility = View.VISIBLE
         binding.debugClearAllButton.setOnClickListener {
             BaseCodexDatabase.clearAll()
-
             BaseCodexProvider.setDefaultPageItems()
-            Preferences.setCodexChangesCount(Codex.UK, -1)
-            Preferences.setCodexChangesCount(Codex.UPK, -1)
-            Preferences.setCodexChangesCount(Codex.KoAP, -1)
-            Preferences.setCodexChangesCount(Codex.PIKoAP, -1)
-
+            Codex.forEach { codex -> Preferences.setCodexChangesCount(codex, -1) }
             model.updateIsUpdateEnabled()
 
-            Snackbar.make(requireView(), "Базы данных очищены", Snackbar.LENGTH_SHORT).show()
+            toast.show("Базы данных очищены")
         }
     }
 
     /**
-     * The method is responsible for hiding and showing the Floating Action Button.
+     * The method is responsible for hiding and showing the [FloatingActionButton].
      * @param visibility button display state, pass false to hide, pass true to show
      */
     private fun fabVisibility(visibility: Boolean) {
-        val fab: FloatingActionButton? = requireActivity().findViewById(R.id.fab)
-
-        if (fab != null) {
-            fab.isVisible = visibility
-        } else {
-            Log.e(TAG, "FAB is null: Cannot change it visibility")
-        }
+        requireActivity().findViewById<FloatingActionButton>(R.id.fab)
+            ?.isVisible = visibility
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         fabVisibility(true)
-        _binding = null
+    }
+
+    /** This method returns [UpdateCodexButtonBinding] for given [codex]. */
+    private fun FragmentUpdateCodexBinding.getButton(codex: Codex): UpdateCodexButtonBinding {
+        return when (codex) {
+            Codex.UK -> updateUk
+            Codex.UPK -> updateUpk
+            Codex.KoAP -> updateKoap
+            Codex.PIKoAP -> updatePikoap
+        }
     }
 }
