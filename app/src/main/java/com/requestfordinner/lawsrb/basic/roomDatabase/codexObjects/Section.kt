@@ -26,8 +26,8 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
         )]
 )
 data class Section(
-    val title: String,
+    override val title: String,
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "part_id") val parentId: Int,
     var isLiked: Boolean = false
-)
+) : TitledItem

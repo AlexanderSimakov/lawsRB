@@ -28,9 +28,9 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
     ]
 )
 data class Article(
-    val title: String,
+    override val title: String,
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "chapter_id") val parentId: Int,
     var isLiked: Boolean = false,
     var content: String = ""
-)
+) : TitledItem
