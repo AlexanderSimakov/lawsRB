@@ -53,18 +53,16 @@
         <item name="cardBackgroundColor">?attr/colorSurface</item>
         <item name="cardElevation">2dp</item>
         <item name="cardCornerRadius">8dp</item>
+        <item name="strokeWidth">0dp</item>
     </style>
 
     <style name="Theme.LawsRB.CardView.Item" parent="Theme.LawsRB.CardView">
         <item name="cardElevation">2dp</item>
+        <item name="strokeWidth">0dp</item>
     </style>
 
     <style name="Theme.LawsRB.CardView.Item.Light" parent="Theme.LawsRB.CardView.Item">
         <item name="cardBackgroundColor">?attr/colorSurface</item>
-    </style>
-
-    <style name="theme" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
     <style name="Theme.LawsRB.CardView.Item.Dark" parent="Theme.LawsRB.CardView.Item">
@@ -75,6 +73,7 @@
         <item name="android:text">@string/card_default_title</item>
         <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
         <item name="android:textSize">18sp</item>
+        <item name="strokeWidth">0dp</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
@@ -120,13 +119,19 @@
         <item name="android:background">@drawable/theme_toggle_button</item>
     </style>
 
+    <style name="Theme.LawsRB.TabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <!-- Tab layout styles -->
     <style name="Theme.LawsRB.TabLayout.Light" parent="Theme.MaterialComponents.DayNight">
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="tabTextAppearance">@style/Theme.LawsRB.TabText</item>
         <item name="tabTextColor">@color/light_grey</item>
         <item name="tabSelectedTextColor">?attr/colorOnPrimary</item>
         <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
         <item name="tabIndicatorHeight">4dp</item>
         <item name="tabIndicatorFullWidth">false</item>
     </style>
+
 </resources>
