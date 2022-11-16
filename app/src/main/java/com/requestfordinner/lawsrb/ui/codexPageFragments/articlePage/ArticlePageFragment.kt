@@ -1,6 +1,8 @@
 package com.requestfordinner.lawsrb.ui.codexPageFragments.articlePage
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +13,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
+import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Article
+import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Chapter
+import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Section
+import com.requestfordinner.lawsrb.databinding.ArticleCardBinding
 import com.requestfordinner.lawsrb.databinding.FragmentCodexViewerBinding
 import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
+import com.requestfordinner.lawsrb.ui.codexPageFragments.items.ArticleItem
+import com.requestfordinner.lawsrb.ui.codexPageFragments.items.TitleCardItem
+import com.xwray.groupie.GroupieAdapter
 
 /**
  * [ArticlePageFragment] is a child of [Fragment] which represent **Article page** of any codex.
@@ -24,10 +33,8 @@ class ArticlePageFragment : Fragment() {
     private lateinit var fragmentNav: FragmentNavigation
     private lateinit var codexProvider: CodexProvider
     private lateinit var model: ArticlePageViewModel
-    private var _binding: FragmentCodexViewerBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var recycler: RecyclerView
+    private lateinit var binding: FragmentCodexViewerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,27 +45,20 @@ class ArticlePageFragment : Fragment() {
         fragmentNav = FragmentNavigation(requireActivity())
         codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
-        model = ViewModelProvider(
-            this,
-            ArticlePageViewModelFactory(codexProvider)
-        )[ArticlePageViewModel::class.java]
+        binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
+        model = ViewModelProvider(this)[ArticlePageViewModel::class.java]
+        model.update(requireActivity())
 
-        _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val recycler = binding.codexFragmentRecyclerView
+        recycler = binding.codexFragmentRecyclerView
         val pageItems = model.pageItems.value as List<Any>
 
         codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
-        recycler.adapter = ArticlePageAdapter(
-            pageItems,
-            recycler,
-            codexProvider.database.articlesDao(),
-            codexProvider.codeType
-        )
+        recycler.adapter = getAdapter(pageItems)
         recycler.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerWithItems(recycler, pageItems, PageNavigation.Page.ARTICLES)
 
@@ -77,13 +77,7 @@ class ArticlePageFragment : Fragment() {
                 PageNavigation.adjustCurrentPageByItems(codexProvider)
             } else {
                 binding.emptyMessage.visibility = View.GONE
-                recycler.adapter =
-                    ArticlePageAdapter(
-                        newPageItems,
-                        recycler,
-                        codexProvider.database.articlesDao(),
-                        codexProvider.codeType
-                    )
+                recycler.adapter = getAdapter(newPageItems)
                 PageNavigation.addRecyclerWithItems(
                     recycler,
                     newPageItems,
@@ -91,6 +85,42 @@ class ArticlePageFragment : Fragment() {
                 )
             }
         }
+    }
+
+    /** Returns [GroupieAdapter] for given [items]. */
+    private fun getAdapter(items: List<Any>): GroupieAdapter {
+        val adapter = GroupieAdapter()
+        items.forEach { item ->
+            when (item) {
+                is Chapter -> adapter.add(TitleCardItem(item) {
+                    PageNavigation.moveLeftTo(it as Section)
+                })
+                is Article -> adapter.add(ArticleItem(item, model.isOpened(item),
+                    { article, itemBinding -> onArticleCardClick(article, itemBinding) },
+                    { article, isLiked -> onArticleCheckBoxClick(article, isLiked) }
+                ))
+            }
+        }
+        return adapter
+    }
+
+    private fun onArticleCardClick(article: Article, item: ArticleCardBinding) {
+        TransitionManager.beginDelayedTransition(
+            recycler as ViewGroup?,
+            AutoTransition()
+        )
+        if (item.expandableLayout.visibility == View.VISIBLE) {
+            item.expandableLayout.visibility = View.GONE
+            model.notifyOnArticleClose(article)
+        } else {
+            item.expandableLayout.visibility = View.VISIBLE
+            model.notifyOnArticleOpen(article)
+        }
+    }
+
+    private fun onArticleCheckBoxClick(article: Article, isLiked: Boolean) {
+        if (isLiked) model.addToFavorites(article)
+        else model.removeFromFavorites(article)
     }
 
     override fun onStart() {
