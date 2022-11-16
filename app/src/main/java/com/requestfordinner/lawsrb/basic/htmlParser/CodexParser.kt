@@ -275,7 +275,12 @@ class CodexParser {
         if (formattedText.contains("<sup></sup>"))
             formattedText = formattedText.replace("<sup></sup>", "")
 
-        formattedText = formattedText.replace("<sup>", "-")
+        while (formattedText.contains("<sup>")) {
+            for ((key, value) in fractionalParts) if (formattedText.contains(key))
+                formattedText = formattedText.replace(key, value)
+        }
+
+        formattedText = formattedText
             .replace("(<[^<]+>\\s*)".toRegex(), " ")
             .replace("&nbsp;", " ")
             .replace("  ", " ")
@@ -287,4 +292,17 @@ class CodexParser {
 
         return formattedText
     }
+
+    private val fractionalParts = mapOf(
+        "<sup>1</sup>" to "¹", "<sup>2</sup>" to "²", "<sup>3</sup>" to "³", "<sup>4</sup>" to "⁴",
+        "<sup>5</sup>" to "⁵", "<sup>6</sup>" to "⁶", "<sup>7</sup>" to "⁷", "<sup>8</sup>" to "⁸",
+        "<sup>9</sup>" to "⁹", "<sup>10</sup>" to "¹⁰", "<sup>11</sup>" to "¹¹",
+        "<sup>12</sup>" to "¹²", "<sup>13</sup>" to "¹³", "<sup>14</sup>" to "¹⁴",
+        "<sup>15</sup>" to "¹⁵", "<sup>16</sup>" to "¹⁶", "<sup>17</sup>" to "¹⁷",
+        "<sup>18</sup>" to "¹⁸", "<sup>19</sup>" to "¹⁹", "<sup>20</sup>" to "²⁰",
+        "<sup>21</sup>" to "²¹", "<sup>22</sup>" to "²²", "<sup>23</sup>" to "²³",
+        "<sup>24</sup>" to "²⁴", "<sup>25</sup>" to "²⁵", "<sup>26</sup>" to "²⁶",
+        "<sup>27</sup>" to "²⁷", "<sup>28</sup>" to "²⁸", "<sup>29</sup>" to "²⁹",
+        "<sup>30</sup>" to "³⁰",
+    )
 }
