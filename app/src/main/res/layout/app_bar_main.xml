@@ -27,13 +27,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         app:backgroundTint="@color/orange"
-        app:srcCompat="@drawable/ic_search" />
+        app:srcCompat="@drawable/ic_search"
+        app:tint="@color/black" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
