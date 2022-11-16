@@ -8,7 +8,6 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         style="@style/Widget.Material3.CardView.Elevated"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -27,8 +26,7 @@
                 style="@style/Theme.LawsRB.CardView.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="35dp"
-                android:textSize="18sp" />
+                android:layout_marginEnd="35dp" />
 
             <!-- Expandable part -->
             <LinearLayout
@@ -60,7 +58,7 @@
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/card_checkbox_selector"
+                android:button="@drawable/card_checkbox_card_selector"
                 app:useMaterialThemeColors="false" />
 
         </LinearLayout>
