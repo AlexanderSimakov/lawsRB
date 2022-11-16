@@ -9,7 +9,10 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Theme.LawsRB.CardView.Item.Light">
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        style="@style/Widget.Material3.CardView.Elevated" >
 
         <!-- Text -->
         <LinearLayout
