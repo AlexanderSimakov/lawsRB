@@ -40,8 +40,7 @@
     </style>
 
     <!-- Tool bar -->
-    <style name="Theme.LawsRB.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-    </style>
+    <style name="Theme.LawsRB.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
 
     <!-- CardView styles -->
     <style name="Theme.LawsRB.CardView" parent="Widget.MaterialComponents.CardView">
@@ -75,6 +74,7 @@
     <style name="Theme.LawsRB.CardView.Title" parent="Widget.MaterialComponents.TextView">
         <item name="android:text">@string/card_default_title</item>
         <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
@@ -87,6 +87,7 @@
     <style name="Theme.LawsRB.CardView.Article.Content" parent="Widget.MaterialComponents.TextView">
         <item name="android:text">@string/card_default_expandable_text</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textAppearance">?attr/textAppearanceBody1</item>
     </style>
 
