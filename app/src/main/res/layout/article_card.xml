@@ -7,12 +7,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
-        style="@style/Widget.Material3.CardView.Elevated"
+        style="@style/Theme.LawsRB.CardView.Article"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content">
 
         <!-- Text -->
         <LinearLayout
@@ -59,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/card_checkbox_card_selector"
+                app:buttonTint="?attr/colorSecondaryVariant"
                 app:useMaterialThemeColors="false" />
 
         </LinearLayout>
