@@ -29,10 +29,7 @@ class SectionPageFragment : Fragment() {
     private lateinit var fragmentNav: FragmentNavigation
     private lateinit var codexProvider: CodexProvider
     private lateinit var model: SectionPageViewModel
-    private var _binding: FragmentCodexViewerBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentCodexViewerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +43,7 @@ class SectionPageFragment : Fragment() {
         model = ViewModelProvider(this)[SectionPageViewModel::class.java]
         model.update(requireActivity())
 
-        _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
+        binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
         return binding.root
     }
 

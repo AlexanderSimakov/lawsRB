@@ -22,11 +22,7 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 class CodexPIKoAPFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
-
-    private var _binding: FragmentPikoapBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentPikoapBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +30,7 @@ class CodexPIKoAPFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentPikoapBinding.inflate(inflater, container, false)
+        binding = FragmentPikoapBinding.inflate(inflater, container, false)
         return binding.root
     }
 

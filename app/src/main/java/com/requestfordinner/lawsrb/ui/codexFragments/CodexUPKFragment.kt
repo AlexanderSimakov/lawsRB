@@ -22,11 +22,7 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 class CodexUPKFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
-
-    private var _binding: FragmentUpkBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentUpkBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +30,7 @@ class CodexUPKFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentUpkBinding.inflate(inflater, container, false)
+        binding = FragmentUpkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
