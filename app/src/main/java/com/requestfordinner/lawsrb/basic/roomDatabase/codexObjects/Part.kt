@@ -15,7 +15,7 @@ import com.requestfordinner.lawsrb.basic.roomDatabase.CodexDatabase
  */
 @Entity(tableName = CodexDatabase.PARTS_NAME)
 data class Part(
-    val title: String,
+    override val title: String,
     @PrimaryKey val id: Int,
     var isLiked: Boolean = false
-)
+) : TitledItem

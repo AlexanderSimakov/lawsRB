@@ -11,10 +11,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.requestfordinner.lawsrb.R
 import com.requestfordinner.lawsrb.basic.dataProviders.BaseCodexProvider
 import com.requestfordinner.lawsrb.basic.dataProviders.CodexProvider
+import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Part
+import com.requestfordinner.lawsrb.basic.roomDatabase.codexObjects.Section
 import com.requestfordinner.lawsrb.databinding.FragmentCodexViewerBinding
 import com.requestfordinner.lawsrb.ui.FragmentNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
+import com.requestfordinner.lawsrb.ui.codexPageFragments.items.DefaultCardItem
+import com.requestfordinner.lawsrb.ui.codexPageFragments.items.TitleCardItem
+import com.xwray.groupie.GroupieAdapter
 
 /**
  * [SectionPageFragment] is a child of [Fragment] which represent **Section page** of any codex.
@@ -53,7 +58,7 @@ class SectionPageFragment : Fragment() {
 
         codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
-        recycler.adapter = SectionPageAdapter(pageItems)
+        recycler.adapter = getAdapter(pageItems)
         recycler.layoutManager = context?.let { CenterLayoutManager(it) }
         PageNavigation.addRecyclerWithItems(recycler, pageItems, PageNavigation.Page.SECTIONS)
 
@@ -72,7 +77,7 @@ class SectionPageFragment : Fragment() {
                 PageNavigation.adjustCurrentPageByItems(codexProvider)
             } else {
                 binding.emptyMessage.visibility = View.GONE
-                recycler.adapter = SectionPageAdapter(newPageItems)
+                recycler.adapter = getAdapter(newPageItems)
                 PageNavigation.addRecyclerWithItems(
                     recycler,
                     newPageItems,
@@ -80,6 +85,20 @@ class SectionPageFragment : Fragment() {
                 )
             }
         }
+    }
+
+    /** Returns [GroupieAdapter] for given [items]. */
+    private fun getAdapter(items: List<Any>): GroupieAdapter {
+        val adapter = GroupieAdapter()
+        items.forEach { item ->
+            when (item) {
+                is Part -> adapter.add(TitleCardItem(item) { })
+                is Section -> adapter.add(DefaultCardItem(item) {
+                    PageNavigation.moveRightTo(it as Section)
+                })
+            }
+        }
+        return adapter
     }
 
     override fun onStart() {
