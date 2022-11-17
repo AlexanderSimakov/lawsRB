@@ -43,10 +43,8 @@ class SectionPageFragment : Fragment() {
         fragmentNav = FragmentNavigation(requireActivity())
         codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
-        model = ViewModelProvider(
-            this,
-            SectionPageViewModelFactory(codexProvider)
-        )[SectionPageViewModel::class.java]
+        model = ViewModelProvider(this)[SectionPageViewModel::class.java]
+        model.update(requireActivity())
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
         return binding.root

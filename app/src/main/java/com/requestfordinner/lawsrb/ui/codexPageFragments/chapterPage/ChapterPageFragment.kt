@@ -43,10 +43,8 @@ class ChapterPageFragment : Fragment() {
         fragmentNav = FragmentNavigation(requireActivity())
         codexProvider = BaseCodexProvider.get(fragmentNav.getOpenedCode())
 
-        model = ViewModelProvider(
-            this,
-            ChapterPageViewModelFactory(codexProvider)
-        )[ChapterPageViewModel::class.java]
+        model = ViewModelProvider(this)[ChapterPageViewModel::class.java]
+        model.update(requireActivity())
 
         _binding = FragmentCodexViewerBinding.inflate(inflater, container, false)
         return binding.root
