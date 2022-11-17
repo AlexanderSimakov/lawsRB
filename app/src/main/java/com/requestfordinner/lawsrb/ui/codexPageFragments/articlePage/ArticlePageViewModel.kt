@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
  * @param codexProvider Current codex provider.
  * @property pageItems Items which will shown on the **Article page**.
  * @see ViewModel
- * @see ArticlePageViewModelFactory
  * @see ArticlePageFragment
  */
 class ArticlePageViewModel : ViewModel() {
