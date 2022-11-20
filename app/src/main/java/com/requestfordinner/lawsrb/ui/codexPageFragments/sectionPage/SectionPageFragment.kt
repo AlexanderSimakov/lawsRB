@@ -19,6 +19,7 @@ import com.requestfordinner.lawsrb.ui.codexPageFragments.CenterLayoutManager
 import com.requestfordinner.lawsrb.ui.codexPageFragments.PageNavigation
 import com.requestfordinner.lawsrb.ui.codexPageFragments.items.DefaultCardItem
 import com.requestfordinner.lawsrb.ui.codexPageFragments.items.TitleCardItem
+import com.requestfordinner.lawsrb.ui.util.movementAnimation
 import com.xwray.groupie.GroupieAdapter
 
 /**
@@ -101,15 +102,15 @@ class SectionPageFragment : Fragment() {
 
         // scroll down - hide fab
         // scroll up   - show fab
-        val fab = activity?.findViewById<FloatingActionButton>(R.id.fab)
+        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
         binding.codexFragmentRecyclerView
             .addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    fab?.apply {
+                    fab.apply {
                         if (dy < 0 && !isShown) { // scroll up
-                            show()
+                            movementAnimation(requireContext(), View.VISIBLE)
                         } else if (dy > 0 && isShown) { // scroll down
-                            hide()
+                            movementAnimation(requireContext(), View.GONE)
                         }
                     }
                 }
